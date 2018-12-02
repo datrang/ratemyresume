@@ -1,1 +1,1 @@
-# ratemyresume
+# Resume Rater
