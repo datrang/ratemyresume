@@ -1,0 +1,160 @@
+{{extend 'layout.html'}}
+
+{{block head}}
+<script src="{{=URL('static', 'js/vue.js')}}"></script>
+<script>
+    var add_post_url = "{{=URL('api', 'add_post', user_signature=True)}}";
+    var get_post_list_url = "{{=URL('api', 'get_post_list')}}";
+
+    var set_thumb_url = "{{=URL('api', 'set_thumb', user_signature=True)}}";
+    var edit_post_url = "{{=URL('api', 'edit_post', user_signature=True)}}";
+
+    var add_reply_url = "{{=URL('api', 'add_reply', user_signature=True)}}";
+    var edit_reply_url = "{{=URL('api', 'edit_reply', user_signature=True)}}";
+
+    var is_logged_in = {{='false' if auth.user is None else 'true'}};
+
+</script>
+{{end}}
+
+<div class="main_content">
+
+    <div id="vue-div" class="display:none">
+        <div v-if="is_logged_in">
+            <span v-if="!form_state">
+                <button id="show_form" v-on:click="show_form">Add Post</button>
+            </span>
+            <span v-show="form_state">
+                <div id="add_post" style="display:none">
+                    <div class="container form_row">
+                        <div class="label quarter">
+                            Title:
+                        </div>
+                        <div class="form threequarters">
+                            <input v-model="form_title" placeholder="Enter the post title"/>
+                        </div>
+                    </div>
+                    <div class="container form_row">
+                        <div class="label quarter">
+                            Content:
+                        </div>
+                        <div class="form threequarters">
+                            <textarea v-model="form_content" placeholder="Enter the content of your post"></textarea>
+                        </div>
+                    </div>
+                    <div class="container form_row"><div class="quarter"></div>
+                        <div class="threequarters">
+                            <div class="submit">
+                                <button id="add-post" v-on:click="add_post">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </span>
+        </div>
+
+
+      <!-- Message in case there are no posts. -->
+        <div v-if="post_list.length === 0">There are no posts.</div>
+
+      <!-- We display the posts. -->
+        <div id="post_list">
+            <div class="post_div" v-for="post in post_list">
+                <div class="post_title">${post.post_title}</div>
+                <div v-if="!post.editing">
+                    <div class="post_content">${post.post_content}</div>
+                </div>
+                <div v-if="post.editing">
+                    <textarea v-model="post.post_content"></textarea>
+                    <button id="submit_edit" v-on:click="submit_edit(post._idx, post.post_content)">Submit</button>
+                </div>
+                <div v-if="is_logged_in" class="attributes">
+                    <div v-if="post.is_author == true">
+                        <button v-on:click="show_edit_post_button(post._idx)">Edit <i class = "fa fa-pencil-square-o"></i></button>
+                    </div>
+                    <span class="post_buttons">
+                        <span v-if="post.thumb=='u'">
+                            <span v-if="post.hover == 'u'">
+                                <i class = "fa fa-thumbs-up" v-on:mouseout="thumb_mouseout(post._idx)" v-on:click="thumb_mouseclick(post._idx, 'u')"></i>
+                                <i class = "fa fa-thumbs-o-down grayiconcolor"></i>
+                            </span>
+                            <span v-if="post.hover == 'd'">
+                                <i class = "fa fa-thumbs-o-up blackiconcolor"></i>
+                                <i class = "fa fa-thumbs-down grayiconcolor" v-on:mouseout="thumb_mouseout(post._idx)" v-on:click="thumb_mouseclick(post._idx, 'd')"></i>
+                            </span>
+                            <span v-if="post.hover == null">
+                                <i class = "fa fa-thumbs-up" v-on:mouseover="thumb_mouseover(post._idx,'u')"></i>
+                                <i class = "fa fa-thumbs-o-down" v-on:mouseover="thumb_mouseover(post._idx,'d')"></i>
+                            </span>
+                            <span>  ${thumb_count(post.thumb_count, 'u')} </span>
+                        </span>
+                        <span v-if="post.thumb=='d'">
+                            <span v-if="post.hover == 'u'">
+                                <i class = "fa fa-thumbs-up grayiconcolor" v-on:mouseout="thumb_mouseout(post._idx)" v-on:click="thumb_mouseclick(post._idx, 'u')"></i>
+                                <i class = "fa fa-thumbs-o-down blackiconcolor"></i>
+                            </span>
+                            <span v-if="post.hover == 'd'">
+                                <i class = "fa fa-thumbs-o-up grayiconcolor"></i>
+                                <i class = "fa fa-thumbs-down" v-on:mouseout="thumb_mouseout(post._idx)" v-on:click="thumb_mouseclick(post._idx, 'd')"></i>
+                            </span>
+                            <span v-if="post.hover == null">
+                                <i class = "fa fa-thumbs-o-up" v-on:mouseover="thumb_mouseover(post._idx,'u')"></i>
+                                <i class = "fa fa-thumbs-down" v-on:mouseover="thumb_mouseover(post._idx,'d')"></i>
+                            </span>
+                            <span>  ${thumb_count(post.thumb_count, 'd')} </span>
+                        </span>
+                        <span v-if="post.thumb==null">
+                            <span v-if="post.hover == 'u'">
+                                <i class = "fa fa-thumbs-up" v-on:mouseout="thumb_mouseout(post._idx)" v-on:click="thumb_mouseclick(post._idx, 'u')"></i>
+                                <i class = "fa fa-thumbs-o-down grayiconcolor"></i>
+                            </span>
+                            <span v-if="post.hover == 'd'">
+                                <i class = "fa fa-thumbs-o-up grayiconcolor"></i>
+                                <i class = "fa fa-thumbs-down" v-on:mouseout="thumb_mouseout(post._idx)" v-on:click="thumb_mouseclick(post._idx, 'd')"></i>
+                            </span>
+                            <span v-if="post.hover == null">
+                                <i class = "fa fa-thumbs-o-up" v-on:mouseover="thumb_mouseover(post._idx,'u')"></i>
+                                <i class = "fa fa-thumbs-o-down" v-on:mouseover="thumb_mouseover(post._idx,'d')"></i>
+                            </span>
+                            <span>  ${thumb_count(post.thumb_count, null)} </span>
+                        </span>
+                    </span>
+                    <div class="post_replies">
+                        <span v-if="!post.show_reply">
+                            <button v-on:click="show_reply_button(post._idx)">Show Reply</button>
+                        </span>
+                        <span v-if="post.show_reply">
+                            <button v-on:click="show_reply_button(post._idx)">Hide Reply</button>
+                            <div>
+                                <span v-if="!post.add_reply">
+                                    <button v-on:click="add_reply_button(post._idx)">Add Reply +</button>
+                                </span>
+                                <span v-if="post.add_reply">
+                                    <textarea v-model="post.form_reply_content" placeholder="Enter the content of your post"></textarea>
+                                    <button id="add-reply" v-on:click="submit_reply_button(post._idx, post.form_reply_content)">Submit</button>
+                                </span>
+                            </div>
+                            <div v-if="post.reply_list.length === 0">There are no replies.</div>
+                            <div class="reply_div" v-for="reply in post.reply_list">
+                                <div class="reply_content">
+                                    <span v-if="!reply.reply_editing">
+                                        ${reply.reply_content}
+                                        <span v-if="reply.is_author == true">
+                                            <i class = "fa fa-pencil-square-o" v-on:click="open_reply_edit_button(post._idx, reply._idx)"></i>
+                                        </span>
+                                    </span>
+                                    <span v-if="reply.reply_editing">
+                                        <textarea v-model="reply.reply_content"></textarea>
+                                        <button v-on:click="submit_reply_edit_button(post._idx, reply._idx, reply.reply_content)">Submit</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{{=URL('static', 'js/default_index.js')}}"></script>
