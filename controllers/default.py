@@ -14,6 +14,10 @@ def index():
     return dict()
 
 
+def hub():
+    return dict()
+
+
 def user():
     """
     exposes:
