@@ -2,8 +2,11 @@
 
 {{block head}}
 <script src="{{=URL('static', 'js/vue.js')}}"></script>
+
 {{end}}
 
+<!DOCTYPE html>
+<html lang="en">
 <div class="main_content">
 
     <div class="container padded center">
@@ -14,5 +17,10 @@
         <button>View Feedback</button> <br>
     </div>
 
-    <div>Show Past Resumes</div>
+    <div class = "container padded center">
+        <button>Show Past Resumes</button> <br>
+    </div>
 </div>
+
+
+<script src="{{=URL('static', 'js/default_hub.js')}}"></script>
