@@ -1,37 +1,40 @@
 // This is the js for the default/index.html view.
 var app = function() {
 
-    var self = {};
+  var self = {};
 
-    Vue.config.silent = false; // show all warnings
+  Vue.config.silent = false; // show all warnings
 
-    // Extends an array
-    self.extend = function(a, b) {
-        for (var i = 0; i < b.length; i++) {
-            a.push(b[i]);
-        }
-    };
+  // Extends an array
+  self.extend = function(a, b) {
+    for (var i = 0; i < b.length; i++) {
+      a.push(b[i]);
+    }
+  };
 
-    // Enumerates an array.
-    var enumerate = function(arr) {
-        var k=0; return arr.map(function(e) {
-            e._idx = k++;
-        });
-    };
-
-    // Complete as needed.
-    self.vue = new Vue({
-        el: "#vue-div",
-        delimiters: ['${', '}'],
-        unsafeDelimiters: ['!{', '}'],
-        data: {
-            show_past: false,
-        },
-        methods: {
-
-        }
+  // Enumerates an array.
+  var enumerate = function(arr) {
+    var k = 0;
+    return arr.map(function(e) {
+      e._idx = k++;
     });
-    return self;
+  };
+  self.show_past = function() {
+    this.show_past_resumes = !this.show_past_resumes;
+  };
+  // Complete as needed.
+  self.vue = new Vue({
+    el: "#vue-div",
+    delimiters: ['${', '}'],
+    unsafeDelimiters: ['!{', '}'],
+    data: {
+      show_past_resumes: false,
+    },
+    methods: {
+      show_past: self.show_past
+    }
+  });
+  return self;
 };
 
 var APP = null;
@@ -41,4 +44,6 @@ var APP = null;
 
 // This will make everything accessible from the js console;
 // for instance, self.x above would be accessible as APP.x
-jQuery(function(){APP = app();});
+jQuery(function() {
+  APP = app();
+});

@@ -8,18 +8,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <div class="main_content">
-
+  <div id="vue-div" class="display:none">
     <div class="container padded center">
-        <h1>My Resume </h1>
-        Resume Image <br>
-        Resume Title <br>
-        Average Score <br>
-        <button>View Feedback</button> <br>
+      <h1>My Resume </h1>
+      Resume Image <br>
+      Resume Title <br>
+      Average Score <br>
+      <button>View Feedback</button> <br>
     </div>
 
-    <div class = "container padded center">
-        <button>Show Past Resumes</button> <br>
+    <div class="container padded center" v-show="!show_past_resumes">
+      <button type="button" name="button" @click="show_past">Show Past Resumes</button>
     </div>
+    <<div class="container padded center" v-show="show_past_resumes">
+      <button type="button" name="button" @click="show_past">Hide Past Resumes</button>
+  </div>
+</div>
 </div>
 
 
