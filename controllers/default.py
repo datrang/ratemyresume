@@ -18,6 +18,10 @@ def hub():
     return dict()
 
 
+def rateresume():
+    return dict()
+
+
 def user():
     """
     exposes:

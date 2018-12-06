@@ -39,3 +39,31 @@ div.main_content span.likers_list {
 .blackiconcolor {
   color:black;
 }
+
+
+div.resume_listing {
+    border-radius: 3px;
+    border: 1px #DDDFE2 solid;
+    background: #FFFFFF;
+    max-width: 75%;
+    height: 150px;
+    margin: 25px auto;
+    padding: 10px;
+}
+
+div.listing_title {
+
+}
+
+div.listing_author {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+div.listing_description {
+    font-size: 13px;
+}
+
+div.listing_text {
+    margin-top: 1px;
+}

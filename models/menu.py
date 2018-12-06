@@ -50,11 +50,11 @@ def _():
     # useful links to internal and external resources
     # ------------------------------------------------------------------------------------------------------------------
     response.menu += [
-        (T('Rate a Resume'), False, URL('admin', 'default', 'site')),
-        (T('Sample Menu 1'), False, '#', [
-            (T('Entry1'), False, URL('default', 'entry1')),
-            (T('Entry2'), False, URL('default', 'entry2')),
-        ]),
+        (T('Rate a Resume'), False, URL('default', 'rateresume')),
+        # (T('Sample Menu 1'), False, '#', [
+        #     (T('Entry1'), False, URL('default', 'entry1')),
+        #     (T('Entry2'), False, URL('default', 'entry2')),
+        # ]),
         (T('Hub'), False, URL('default', 'hub')),
         (T('Reviews'), False, URL('default', 'index'))
     ]
