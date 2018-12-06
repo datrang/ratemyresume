@@ -1,0 +1,17 @@
+{{extend 'layout.html'}}
+
+{{block head}}
+<script src="{{=URL('static', 'js/vue.js')}}"></script>
+
+{{end}}
+
+<!DOCTYPE html>
+<html lang="en">
+<div class="main_content">
+  <div id="vue-div" class="display:none">
+    HELLO
+  </div>
+</div>
+
+
+<script src="{{=URL('static', 'js/default_feedback.js')}}"></script>

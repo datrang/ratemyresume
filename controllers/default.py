@@ -13,8 +13,10 @@ def index():
     # We just want to expand the template.
     return dict()
 
-
 def hub():
+    return dict()
+
+def feedback():
     return dict()
 
 
@@ -54,5 +56,3 @@ def call():
     supports xml, json, xmlrpc, jsonrpc, amfrpc, rss, csv
     """
     return service()
-
-
