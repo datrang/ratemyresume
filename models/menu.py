@@ -55,8 +55,7 @@ def _():
         #     (T('Entry1'), False, URL('default', 'entry1')),
         #     (T('Entry2'), False, URL('default', 'entry2')),
         # ]),
-        (T('Hub'), False, URL('default', 'hub')),
-        (T('Reviews'), False, URL('default', 'index'))
+        (T('Reviews'), False, URL('default', 'resume_reviews'))
     ]
 
 

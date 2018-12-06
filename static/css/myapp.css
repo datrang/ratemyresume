@@ -67,3 +67,23 @@ div.listing_description {
 div.listing_text {
     margin-top: 1px;
 }
+
+div.feedback_listing {
+    border-radius: 3px;
+    border: 1px #DDDFE2 solid;
+    background: #FFFFFF;
+    max-width: 75%;
+    height: 80px;
+    margin: 25px auto;
+    padding: 15px;
+}
+
+div.resume_view {
+    border-radius: 3px;
+    border: 1px #DDDFE2 solid;
+    background: #FFFFFF;
+    max-width: 35%;
+    height: 500px;
+    margin: 25px auto;
+    padding: 15px;
+}
