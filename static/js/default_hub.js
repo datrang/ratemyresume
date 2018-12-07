@@ -1,3 +1,11 @@
+let listing_mouseover = function(listing){
+    listing.style.background = "#F5F6F7"
+};
+
+let listing_mouseout = function(listing){
+    listing.style.background = "#FFFFFF"
+};
+
 // This is the js for the default/index.html view.
 var app = function() {
 
@@ -19,20 +27,28 @@ var app = function() {
       e._idx = k++;
     });
   };
-  self.show_past = function() {
-    this.show_past_resumes = !this.show_past_resumes;
+
+  self.show_past_resume = function() {
+      this.show_past_resumes = !this.show_past_resumes;
   };
-  // Complete as needed.
+
+  self.show_feedback = function() {
+      this.show_resume_feedback = !this.show_resume_feedback;
+  };
+
+
   self.vue = new Vue({
-    el: "#vue-div",
-    delimiters: ['${', '}'],
-    unsafeDelimiters: ['!{', '}'],
-    data: {
-      show_past_resumes: false,
-    },
-    methods: {
-      show_past: self.show_past
-    }
+      el: "#vue-div",
+      delimiters: ['${', '}'],
+      unsafeDelimiters: ['!{', '}'],
+      data: {
+          show_past_resumes: false,
+          show_resume_feedback: false,
+      },
+      methods: {
+          show_past_resume: self.show_past_resume,
+          show_feedback: self.show_feedback
+      }
   });
   return self;
 };
