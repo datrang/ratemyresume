@@ -1,3 +1,28 @@
+// Initialize Firebase
+var config = {
+  apiKey: "AIzaSyCxdoH5XmTKOXxA37mK_I_gDRi5fkvrXkk",
+  authDomain: "resume-rater.firebaseapp.com",
+  databaseURL: "https://resume-rater.firebaseio.com",
+  projectId: "resume-rater",
+  storageBucket: "resume-rater.appspot.com",
+  messagingSenderId: "220789866717"
+};
+firebase.initializeApp(config);
+const firestore = firebase.firestore();
+const settings = {/* your settings... */ timestampsInSnapshots: true};
+firestore.settings(settings);
+//=====================FIREBASE====================
+const docRef = firestore.doc("users/pH4XWMHoEgKvlgcm8r9d");
+const header = document.querySelector("#test");
+const feedback = document.querySelector("#feedbackButton");
+feedback.addEventListener("click", function(){
+  console.log("I am going to save into firestore");
+  docRef.set({
+    name: "Hello"
+  }).then(function(){
+    console.log("finished");
+  });
+})
 
 let listing_mouseover = function(listing){
     listing.style.background = "#F5F6F7"
@@ -36,7 +61,26 @@ var app = function() {
       this.show_resume_feedback = !this.show_resume_feedback;
   };
 
-
+var feedback = function(){
+    console.log("Test set");
+    docRef.set({
+      name: "new name"
+    }).then(function(){
+      console.log("Finished set");
+    }).catch(function (error){
+      console.log("Caught error: ", error);
+    })
+};
+var new_feedback = function(){
+    console.log("Test get");
+    docRef.get().then(function(doc){
+      if(doc && doc.exists){
+        console.log("This data is: ", doc.data().name);
+      }
+    }).catch(function (error){
+      console.log("Caught error: ", error);
+    })
+};
   self.vue = new Vue({
       el: "#vue-div",
       delimiters: ['${', '}'],
@@ -47,7 +91,9 @@ var app = function() {
       },
       methods: {
           show_past_resume: self.show_past_resume,
-          show_feedback: self.show_feedback
+          show_feedback: self.show_feedback,
+          test: feedback,
+          other_test: new_feedback
       }
   });
   return self;
@@ -63,16 +109,3 @@ var APP = null;
 jQuery(function() {
   APP = app();
 });
-
-var firestore = firebase.firestore();
-//=====================FIREBASE====================
-const docRef = firestore.doc("users/pH4XWMHoEgKvlgcm8r9d");
-const header = document.querySelector("#test");
-const feedback = document.querySelector("#feedbackButton");
-feedback.addEventListener("click", function(){
-  console.log("I am going to save into firestore");
-  docRef.set({
-    name: "Hello"
-  });
-})
-firebase.initializeApp(config);
