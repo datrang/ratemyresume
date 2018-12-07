@@ -29,7 +29,7 @@ response.google_analytics_id = None
 # ----------------------------------------------------------------------------------------------------------------------
 
 response.menu = [
-    (T('Home'), False, URL('default', 'hub'), [])
+    (T('Home'), False, URL('default', 'index'), [])
 
 ]
 
@@ -50,12 +50,13 @@ def _():
     # useful links to internal and external resources
     # ------------------------------------------------------------------------------------------------------------------
     response.menu += [
+        (T('Hub'), False, URL('default', 'hub')),
         (T('Rate a Resume'), False, URL('default', 'rateresume')),
+        (T('Reviews'), False, URL('default', 'resume_reviews'))
         # (T('Sample Menu 1'), False, '#', [
         #     (T('Entry1'), False, URL('default', 'entry1')),
         #     (T('Entry2'), False, URL('default', 'entry2')),
         # ]),
-        (T('Reviews'), False, URL('default', 'resume_reviews'))
     ]
 
 
