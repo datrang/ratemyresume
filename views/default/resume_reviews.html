@@ -3,3 +3,67 @@
 {{block head}}
 <script src="{{=URL('static', 'js/vue.js')}}"></script>
 {{end}}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<div class="main_content">
+    <div id="vue-div" class="display:none">
+        <div class="container padded center resume_view">
+            <h4>My Resume </h4>
+            Resume Image <br>
+            Resume Title <br>
+            Average Score <br>
+
+        </div>
+
+        <div class="container center review_div">
+            <textarea class="review_textarea" placeholder="Type your Review"></textarea>
+        </div>
+
+        <div onmouseover="listing_mouseover(this)" onmouseout="listing_mouseout(this)" class="feedback_listing container">
+            <div class="third container">
+                <div class="half">
+                    <i class="center fa fa-user fa-3x" aria-hidden="true"></i>
+                </div>
+                <div class="half">
+                    <div class="listing_author listing_text">John Doe</div>
+                    <div class="listing_text">Software Engineer</div>
+                </div>
+            </div>
+            <div class="twothirds">
+                <div class="listing_description listing_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer turpis enim, varius nec faucibus interdum, fringilla in ante. Nunc non luctus neque, vel sagittis risus. Donec at nisi eu nisi blandit tempor vitae in ipsum. Cras et est sit amet metus.</div>
+            </div>
+        </div>
+        <div onmouseover="listing_mouseover(this)" onmouseout="listing_mouseout(this)" class="feedback_listing container">
+            <div class="third container">
+                <div class="half">
+                    <i class="center fa fa-user fa-3x" aria-hidden="true"></i>
+                </div>
+                <div class="half">
+                    <div class="listing_author listing_text">John Doe</div>
+                    <div class="listing_text">Software Engineer</div>
+                </div>
+            </div>
+            <div class="twothirds">
+                <div class="listing_description listing_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer turpis enim, varius nec faucibus interdum, fringilla in ante. Nunc non luctus neque, vel sagittis risus. Donec at nisi eu nisi blandit tempor vitae in ipsum. Cras et est sit amet metus.</div>
+            </div>
+        </div>
+        <div onmouseover="listing_mouseover(this)" onmouseout="listing_mouseout(this)" class="feedback_listing container">
+            <div class="third container">
+                <div class="half">
+                    <i class="center fa fa-user fa-3x" aria-hidden="true"></i>
+                </div>
+                <div class="half">
+                    <div class="listing_author listing_text">John Doe</div>
+                    <div class="listing_text">Software Engineer</div>
+                </div>
+            </div>
+            <div class="twothirds">
+                <div class="listing_description listing_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer turpis enim, varius nec faucibus interdum, fringilla in ante. Nunc non luctus neque, vel sagittis risus. Donec at nisi eu nisi blandit tempor vitae in ipsum. Cras et est sit amet metus.</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{{=URL('static', 'js/resume_reviews.js')}}"></script>

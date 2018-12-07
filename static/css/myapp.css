@@ -87,3 +87,19 @@ div.resume_view {
     margin: 25px auto;
     padding: 15px;
 }
+
+div.review_div{
+    width: 70%;
+    background: #FFFFFF;
+    margin: 25px auto;
+    border-radius: 3px;
+}
+
+textarea.review_textarea {
+    max-width: 99%;
+    min-height: 50px;
+    max-height: auto;
+    border: none;
+    resize: vertical;
+}
+

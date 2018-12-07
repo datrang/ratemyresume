@@ -8,102 +8,190 @@
 <!DOCTYPE html>
 <html lang="en">
 <div class="main_content">
-  <div id="vue-div" class="display:none">
-    <div class="container padded center resume_view">
-      <h4>My Resume </h4>
-      Resume Image <br>
-      Resume Title <br>
-      Average Score <br>
-    </div>
-
-      <div class="container padded center" v-show="!show_resume_feedback">
-          <button type="button" @click="show_feedback">Show Feedback</button>
-      </div>
-      <div class="container padded center" v-show="show_resume_feedback">
-          <button type="button" @click="show_feedback">Hide Feedback</button>
-          <div onmouseover="listing_mouseover(this)" onmouseout="listing_mouseout(this)" class="feedback_listing container">
-              <div class="third container">
-                  <div class="half">
-                      <i class="center fa fa-user fa-3x" aria-hidden="true"></i>
-                  </div>
-                  <div class="half">
-                      <div class="listing_author listing_text">John Doe</div>
-                      <div class="listing_text">Software Engineer</div>
-                  </div>
-              </div>
-              <div class="twothirds">
-                  <div class="listing_description listing_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer turpis enim, varius nec faucibus interdum, fringilla in ante. Nunc non luctus neque, vel sagittis risus. Donec at nisi eu nisi blandit tempor vitae in ipsum. Cras et est sit amet metus.</div>
-              </div>
-          </div>
-          <div onmouseover="listing_mouseover(this)" onmouseout="listing_mouseout(this)" class="feedback_listing container">
-              <div class="third container">
-                  <div class="half">
-                      <i class="center fa fa-user fa-3x" aria-hidden="true"></i>
-                  </div>
-                  <div class="half">
-                      <div class="listing_author listing_text">John Doe</div>
-                      <div class="listing_text">Software Engineer</div>
-                  </div>
-              </div>
-              <div class="twothirds">
-                  <div class="listing_description listing_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer turpis enim, varius nec faucibus interdum, fringilla in ante. Nunc non luctus neque, vel sagittis risus. Donec at nisi eu nisi blandit tempor vitae in ipsum. Cras et est sit amet metus.</div>
-              </div>
-          </div>
-          <div onmouseover="listing_mouseover(this)" onmouseout="listing_mouseout(this)" class="feedback_listing container">
-              <div class="third container">
-                  <div class="half">
-                      <i class="center fa fa-user fa-3x" aria-hidden="true"></i>
-                  </div>
-                  <div class="half">
-                      <div class="listing_author listing_text">John Doe</div>
-                      <div class="listing_text">Software Engineer</div>
-                  </div>
-              </div>
-              <div class="twothirds">
-                  <div class="listing_description listing_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer turpis enim, varius nec faucibus interdum, fringilla in ante. Nunc non luctus neque, vel sagittis risus. Donec at nisi eu nisi blandit tempor vitae in ipsum. Cras et est sit amet metus.</div>
-              </div>
-          </div>
-      </div>
-
-    <div class="container padded center" v-show="!show_past_resumes">
-      <button type="button" name="button" @click="show_past_resume">Show Past Resumes</button>
-    </div>
-    <div class="container padded center" v-show="show_past_resumes">
-      <button type="button" name="button" @click="show_past_resume">Hide Past Resumes</button>
-        <div onmouseover="listing_mouseover(this)" onmouseout="listing_mouseout(this)" class="resume_listing container">
-        <div class="half container">
-            <div class="third"></div>
-            <div class ="third">
-                <span>
-                    <i style="margin: 25px auto" class="fa fa-file-text fa-5x" aria-hidden="true"></i>
-                </span>
-            </div>
+    <div id="vue-div" class="display:none">
+        <div class="container padded center resume_view">
+            <h4>My Resume </h4>
+            Resume Image <br>
+            Resume Title <br>
+            Average Score <br>
         </div>
-        <div class="half container">
-            <h6>Resume Title</h6>
-            <div class="listing_author listing_text">Author: John Doe</div>
-            <div class="listing_date listing_text">Date: December 25, 2018</div>
-            <div class="listing_description listing_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer turpis enim, varius nec faucibus interdum, fringilla in ante. Nunc non luctus neque, vel sagittis risus. Donec at nisi eu nisi blandit tempor vitae in ipsum. Cras et est sit amet metus.</div>
+
+        <div class="container padded center" v-show="!show_resume_feedback">
+            <button type="button" @click="show_feedback">Show Feedback</button>
         </div>
-    </div>
-        <div onmouseover="listing_mouseover(this)" onmouseout="listing_mouseout(this)" class="resume_listing container">
-            <div class="half container">
-                <div class="third"></div>
-                <div class ="third">
-                    <span>
-                        <i style="margin: 25px auto" class="fa fa-file-text fa-5x" aria-hidden="true"></i>
-                    </span>
+        <div class="container padded center" v-show="show_resume_feedback">
+            <button type="button" @click="show_feedback">Hide Feedback</button>
+            <div onmouseover="listing_mouseover(this)" onmouseout="listing_mouseout(this)"
+                 class="feedback_listing container">
+                <div class="third container">
+                    <div class="half">
+                        <i class="center fa fa-user fa-3x" aria-hidden="true"></i>
+                    </div>
+                    <div class="half">
+                        <div class="listing_author listing_text">John Doe</div>
+                        <div class="listing_text">Software Engineer</div>
+                    </div>
+                </div>
+                <div class="twothirds">
+                    <div class="listing_description listing_text">Lorem ipsum dolor sit amet, consectetur adipiscing
+                        elit. Integer turpis enim, varius nec faucibus interdum, fringilla in ante. Nunc non luctus
+                        neque, vel sagittis risus. Donec at nisi eu nisi blandit tempor vitae in ipsum. Cras et est sit
+                        amet metus.
+                    </div>
                 </div>
             </div>
-            <div class="half container">
-                <h6>Resume Title</h6>
-                <div class="listing_author listing_text">Author: John Doe</div>
-                <div class="listing_date listing_text">Date: December 25, 2018</div>
-                <div class="listing_description listing_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer turpis enim, varius nec faucibus interdum, fringilla in ante. Nunc non luctus neque, vel sagittis risus. Donec at nisi eu nisi blandit tempor vitae in ipsum. Cras et est sit amet metus.</div>
+            <div onmouseover="listing_mouseover(this)" onmouseout="listing_mouseout(this)"
+                 class="feedback_listing container">
+                <div class="third container">
+                    <div class="half">
+                        <i class="center fa fa-user fa-3x" aria-hidden="true"></i>
+                    </div>
+                    <div class="half">
+                        <div class="listing_author listing_text">John Doe</div>
+                        <div class="listing_text">Software Engineer</div>
+                    </div>
+                </div>
+                <div class="twothirds">
+                    <div class="listing_description listing_text">Lorem ipsum dolor sit amet, consectetur adipiscing
+                        elit. Integer turpis enim, varius nec faucibus interdum, fringilla in ante. Nunc non luctus
+                        neque, vel sagittis risus. Donec at nisi eu nisi blandit tempor vitae in ipsum. Cras et est sit
+                        amet metus.
+                    </div>
+                </div>
+            </div>
+            <div onmouseover="listing_mouseover(this)" onmouseout="listing_mouseout(this)"
+                 class="feedback_listing container">
+                <div class="third container">
+                    <div class="half">
+                        <i class="center fa fa-user fa-3x" aria-hidden="true"></i>
+                    </div>
+                    <div class="half">
+                        <div class="listing_author listing_text">John Doe</div>
+                        <div class="listing_text">Software Engineer</div>
+                    </div>
+                </div>
+                <div class="twothirds">
+                    <div class="listing_description listing_text">Lorem ipsum dolor sit amet, consectetur adipiscing
+                        elit. Integer turpis enim, varius nec faucibus interdum, fringilla in ante. Nunc non luctus
+                        neque, vel sagittis risus. Donec at nisi eu nisi blandit tempor vitae in ipsum. Cras et est sit
+                        amet metus.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container padded center" v-show="!show_past_resumes">
+            <button type="button" name="button" @click="show_past_resume">Show Past Resumes</button>
+        </div>
+        <div class="container padded center" v-show="show_past_resumes">
+            <button type="button" name="button" @click="show_past_resume">Hide Past Resumes</button>
+            <div onclick="location.href='resume_reviews';" onmouseover="listing_mouseover(this)"
+                 onmouseout="listing_mouseout(this)" class="resume_listing container">
+                <div class="half container">
+                    <div class="third"></div>
+                    <div class="third">
+                      <span>
+                          <i style="margin: 25px auto" class="fa fa-file-text fa-5x" aria-hidden="true"></i>
+                      </span>
+                    </div>
+                </div>
+                <div class="half container">
+                    <h6>Resume Title</h6>
+                    <div class="listing_author listing_text">Author: John Doe</div>
+                    <div class="listing_date listing_text">Date: December 25, 2018</div>
+                    <div class="listing_description listing_text">Lorem ipsum dolor sit amet, consectetur adipiscing
+                        elit. Integer turpis enim, varius nec faucibus interdum, fringilla in ante. Nunc non luctus
+                        neque, vel sagittis risus. Donec at nisi eu nisi blandit tempor vitae in ipsum. Cras et est sit
+                        amet metus.
+                    </div>
+                </div>
+            </div>
+            <div onclick="location.href='resume_reviews';" onmouseover="listing_mouseover(this)"
+                 onmouseout="listing_mouseout(this)" class="resume_listing container">
+                <div class="half container">
+                    <div class="third"></div>
+                    <div class="third">
+                      <span>
+                          <i style="margin: 25px auto" class="fa fa-file-text fa-5x" aria-hidden="true"></i>
+                      </span>
+                    </div>
+                </div>
+                <div class="half container">
+                    <h6>Resume Title</h6>
+                    <div class="listing_author listing_text">Author: John Doe</div>
+                    <div class="listing_date listing_text">Date: December 25, 2018</div>
+                    <div class="listing_description listing_text">Lorem ipsum dolor sit amet, consectetur adipiscing
+                        elit. Integer turpis enim, varius nec faucibus interdum, fringilla in ante. Nunc non luctus
+                        neque, vel sagittis risus. Donec at nisi eu nisi blandit tempor vitae in ipsum. Cras et est sit
+                        amet metus.
+                    </div>
+                </div>
+            </div>
+            <div onclick="location.href='resume_reviews';" onmouseover="listing_mouseover(this)"
+                 onmouseout="listing_mouseout(this)" class="resume_listing container">
+                <div class="half container">
+                    <div class="third"></div>
+                    <div class="third">
+                      <span>
+                          <i style="margin: 25px auto" class="fa fa-file-text fa-5x" aria-hidden="true"></i>
+                      </span>
+                    </div>
+                </div>
+                <div class="half container">
+                    <h6>Resume Title</h6>
+                    <div class="listing_author listing_text">Author: John Doe</div>
+                    <div class="listing_date listing_text">Date: December 25, 2018</div>
+                    <div class="listing_description listing_text">Lorem ipsum dolor sit amet, consectetur adipiscing
+                        elit. Integer turpis enim, varius nec faucibus interdum, fringilla in ante. Nunc non luctus
+                        neque, vel sagittis risus. Donec at nisi eu nisi blandit tempor vitae in ipsum. Cras et est sit
+                        amet metus.
+                    </div>
+                </div>
+            </div>
+            <div onclick="location.href='resume_reviews';" onmouseover="listing_mouseover(this)"
+                 onmouseout="listing_mouseout(this)" class="resume_listing container">
+                <div class="half container">
+                    <div class="third"></div>
+                    <div class="third">
+                      <span>
+                          <i style="margin: 25px auto" class="fa fa-file-text fa-5x" aria-hidden="true"></i>
+                      </span>
+                    </div>
+                </div>
+                <div class="half container">
+                    <h6>Resume Title</h6>
+                    <div class="listing_author listing_text">Author: John Doe</div>
+                    <div class="listing_date listing_text">Date: December 25, 2018</div>
+                    <div class="listing_description listing_text">Lorem ipsum dolor sit amet, consectetur adipiscing
+                        elit. Integer turpis enim, varius nec faucibus interdum, fringilla in ante. Nunc non luctus
+                        neque, vel sagittis risus. Donec at nisi eu nisi blandit tempor vitae in ipsum. Cras et est sit
+                        amet metus.
+                    </div>
+                </div>
+            </div>
+            <div onclick="location.href='resume_reviews';" onmouseover="listing_mouseover(this)"
+                 onmouseout="listing_mouseout(this)" class="resume_listing container">
+                <div class="half container">
+                    <div class="third"></div>
+                    <div class="third">
+                      <span>
+                          <i style="margin: 25px auto" class="fa fa-file-text fa-5x" aria-hidden="true"></i>
+                      </span>
+                    </div>
+                </div>
+                <div class="half container">
+                    <h6>Resume Title</h6>
+                    <div class="listing_author listing_text">Author: John Doe</div>
+                    <div class="listing_date listing_text">Date: December 25, 2018</div>
+                    <div class="listing_description listing_text">Lorem ipsum dolor sit amet, consectetur adipiscing
+                        elit. Integer turpis enim, varius nec faucibus interdum, fringilla in ante. Nunc non luctus
+                        neque, vel sagittis risus. Donec at nisi eu nisi blandit tempor vitae in ipsum. Cras et est sit
+                        amet metus.
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
 </div>
 
 
