@@ -5,19 +5,19 @@
 # Customize your APP title, subtitle and menus here
 # ----------------------------------------------------------------------------------------------------------------------
 
-response.logo = A(B('web', SPAN(2), 'py'), XML('&trade;&nbsp;'),
-                  _class="navbar-brand", _href="http://www.web2py.com/",
-                  _id="web2py-logo")
-response.title = request.application.replace('_', ' ').title()
-response.subtitle = ''
+# response.logo = A(B('web', SPAN(2), 'py'), XML('&trade;&nbsp;'),
+#                   _class="navbar-brand", _href="http://www.web2py.com/",
+#                   _id="web2py-logo")
+# response.title = request.application.replace('_', ' ').title()
+# response.subtitle = ''
 
 # ----------------------------------------------------------------------------------------------------------------------
 # read more at http://dev.w3.org/html5/markup/meta.name.html
 # ----------------------------------------------------------------------------------------------------------------------
-response.meta.author = myconf.get('app.author')
-response.meta.description = myconf.get('app.description')
-response.meta.keywords = myconf.get('app.keywords')
-response.meta.generator = myconf.get('app.generator')
+# response.meta.author = myconf.get('app.author')
+# response.meta.description = myconf.get('app.description')
+# response.meta.keywords = myconf.get('app.keywords')
+# response.meta.generator = myconf.get('app.generator')
 
 # ----------------------------------------------------------------------------------------------------------------------
 # your http://google.com/analytics id
@@ -52,7 +52,8 @@ def _():
     response.menu += [
         (T('Hub'), False, URL('default', 'hub')),
         (T('Rate a Resume'), False, URL('default', 'rateresume')),
-        (T('Reviews'), False, URL('default', 'resume_reviews'))
+        (T('Reviews'), False, URL('default', 'resume_reviews')),
+        (T('Profile'), False, URL('default', 'profile'))
         # (T('Sample Menu 1'), False, '#', [
         #     (T('Entry1'), False, URL('default', 'entry1')),
         #     (T('Entry2'), False, URL('default', 'entry2')),

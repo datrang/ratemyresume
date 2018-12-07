@@ -25,6 +25,11 @@ def rateresume():
 def resume_reviews():
     return dict()
 
+
+def profile():
+    return dict()
+
+
 def user():
     """
     exposes:

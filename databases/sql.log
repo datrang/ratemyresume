@@ -1,4 +1,4 @@
-timestamp: 2018-12-05T16:18:27.805000
+timestamp: 2018-12-06T23:28:52.197000
 CREATE TABLE "web2py_session_ratemyresume"(
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
     "locked" CHAR(1),
@@ -9,7 +9,7 @@ CREATE TABLE "web2py_session_ratemyresume"(
     "session_data" BLOB
 );
 success!
-timestamp: 2018-12-05T16:18:27.852000
+timestamp: 2018-12-06T23:29:36.916000
 CREATE TABLE "auth_user"(
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
     "first_name" CHAR(128),
@@ -21,21 +21,21 @@ CREATE TABLE "auth_user"(
     "registration_id" CHAR(512)
 );
 success!
-timestamp: 2018-12-05T16:18:27.907000
+timestamp: 2018-12-06T23:29:37.012000
 CREATE TABLE "auth_group"(
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
     "role" CHAR(512),
     "description" TEXT
 );
 success!
-timestamp: 2018-12-05T16:18:27.999000
+timestamp: 2018-12-06T23:29:37.109000
 CREATE TABLE "auth_membership"(
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
     "user_id" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE  ,
     "group_id" INTEGER REFERENCES "auth_group" ("id") ON DELETE CASCADE  
 );
 success!
-timestamp: 2018-12-05T16:18:28.097000
+timestamp: 2018-12-06T23:29:37.219000
 CREATE TABLE "auth_permission"(
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
     "group_id" INTEGER REFERENCES "auth_group" ("id") ON DELETE CASCADE  ,
@@ -44,7 +44,7 @@ CREATE TABLE "auth_permission"(
     "record_id" INTEGER
 );
 success!
-timestamp: 2018-12-05T16:18:28.148000
+timestamp: 2018-12-06T23:29:37.315000
 CREATE TABLE "auth_event"(
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
     "time_stamp" TIMESTAMP,
@@ -54,7 +54,7 @@ CREATE TABLE "auth_event"(
     "description" TEXT
 );
 success!
-timestamp: 2018-12-05T16:18:28.178000
+timestamp: 2018-12-06T23:29:37.401000
 CREATE TABLE "auth_cas"(
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
     "user_id" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE  ,
@@ -64,7 +64,7 @@ CREATE TABLE "auth_cas"(
     "renew" CHAR(1)
 );
 success!
-timestamp: 2018-12-05T16:18:28.212000
+timestamp: 2018-12-06T23:29:37.533000
 CREATE TABLE "post"(
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
     "post_author" CHAR(512),
@@ -73,7 +73,7 @@ CREATE TABLE "post"(
     "post_time" TIMESTAMP
 );
 success!
-timestamp: 2018-12-05T16:18:28.264000
+timestamp: 2018-12-06T23:29:37.630000
 CREATE TABLE "thumb"(
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
     "user_email" CHAR(512),
@@ -81,7 +81,7 @@ CREATE TABLE "thumb"(
     "thumb_state" CHAR(512)
 );
 success!
-timestamp: 2018-12-05T16:18:28.339000
+timestamp: 2018-12-06T23:29:37.723000
 CREATE TABLE "reply"(
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
     "post_id" INTEGER REFERENCES "post" ("id") ON DELETE CASCADE  ,
@@ -89,4 +89,30 @@ CREATE TABLE "reply"(
     "reply_content" TEXT,
     "reply_time" TIMESTAMP
 );
+success!
+timestamp: 2018-12-06T23:33:16.897000
+ALTER TABLE "auth_user" ADD "phone" CHAR(512);
+timestamp: 2018-12-06T23:33:16.930000
+ALTER TABLE "auth_user" ADD "address" CHAR(512);
+success!
+timestamp: 2018-12-06T23:33:37.690000
+ALTER TABLE "auth_user" ADD "occupation" CHAR(512);
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
 success!

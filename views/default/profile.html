@@ -1,0 +1,20 @@
+{{extend 'layout.html'}}
+
+{{block head}}
+<script src="{{URL('static','js/vue.js')}}"></script>
+<script>
+    var is_logged_in = "{{='false' if auth.user is None else 'true'}}";
+</script>
+{{end}}
+
+<!DOCTYPE html>
+<html lang="en">
+<div class="main_content">
+    <div id="vue-div" class="display:none">
+        <div id="profile_section" style="display:none">
+            Logged In
+        </div>
+    </div>
+</div>
+
+<script src="{{=URL('static', 'js/profile.js')}}"></script>
