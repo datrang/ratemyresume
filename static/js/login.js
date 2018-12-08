@@ -46,6 +46,7 @@ var app = function() {
       console.log("signed in");
       var user = firebase.auth().currentUser;
       console.log( user.displayName, user.email, user.uid);
+      location.href='hub';
     })
     .catch(function(error) {
       // Handle Errors here.
@@ -56,12 +57,6 @@ var app = function() {
       // ...
     });
   }
-  var signUp = function(){
-    console.log("TODO : move to signUp page");
-  }
-  var forgotPassword = function(){
-    console.log("TODO: move to forgotPassword page");
-  }
   self.vue = new Vue({
       el: "#vue-div",
       delimiters: ['${', '}'],
@@ -70,9 +65,7 @@ var app = function() {
 
       },
       methods: {
-          signIn : signIn,
-          signUp : signUp,
-          forgotPassword : forgotPassword
+          signIn : signIn
       }
   });
   return self;
