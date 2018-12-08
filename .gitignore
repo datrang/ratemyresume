@@ -1,2 +1,6 @@
+#files to ignore
 databases/*
 errors/*
+
+#to keep empty directories
+!*/.gitkeep
