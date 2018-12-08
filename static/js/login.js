@@ -46,7 +46,7 @@ var app = function() {
       console.log("signed in");
       var user = firebase.auth().currentUser;
       console.log( user.displayName, user.email, user.uid);
-      location.href='hub';
+      location.href='profile';
     })
     .catch(function(error) {
       // Handle Errors here.
