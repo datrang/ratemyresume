@@ -1,0 +1,27 @@
+{{extend 'layout.html'}}
+
+{{block head}}
+<script src="{{=URL('static', 'js/vue.js')}}"></script>
+<script src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js"></script>
+{{end}}
+
+<!DOCTYPE html>
+<html lang="en">
+<div class="main_content">
+    <div id="vue-div" class="display:none">
+      <div class="container padded center resume_view">
+          <h1> Sign Up </h1>
+          <input type="text" id = "email" placeholder="Email">
+          <input type="text" placeholder="Confrim Email">
+          <input type="text" id = "password" placeholder="Password">
+          <input type="text" placeholder="Confirm Password">
+          <input type="text" id = "name" placeholder="Name">
+          <button type="button" name="signUp" @click = "signUp"> Sign Up</button>
+          <div id = "error">
+             <h4 id = "error_message">Error Message goes here </h4>
+          </div>
+      </div>
+    </div>
+</div>
+
+<script src="{{=URL('static', 'js/signUp.js')}}"></script>

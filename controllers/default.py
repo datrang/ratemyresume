@@ -25,11 +25,17 @@ def rateresume():
 def resume_reviews():
     return dict()
 
-
 def profile():
     return dict()
 
+def login():
+    return dict()
 
+def signUp():
+    return dict()
+    
+def forgotPassword():
+    return dict()
 def user():
     """
     exposes:
@@ -66,5 +72,3 @@ def call():
     supports xml, json, xmlrpc, jsonrpc, amfrpc, rss, csv
     """
     return service()
-
-

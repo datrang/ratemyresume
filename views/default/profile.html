@@ -2,22 +2,23 @@
 
 {{block head}}
 <script src="{{URL('static','js/vue.js')}}"></script>
-<script>
-    let get_users_url = "{{=URL('api', 'get_users', user_signature=True)}}}";
-    let is_logged_in = {{='false' if auth.user is None else 'true'}};
-</script>
+<script src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js"></script>
 {{end}}
 
 <!DOCTYPE html>
 <html lang="en">
 <div class="main_content">
     <div id="vue-div" class="display:none">
-        <div id="profile_section" style="display:none">
-            Logged in <br>
-            ${current_user.first_name} ${current_user.last_name} <br>
-            ${current_user.email} <br>
-            ${current_user.occupation} <br>
-        </div>
+      <h1>Profile</h1>
+        <input type="text" id = "email">
+        <input type="text" id = "name">
+        <input type="text" id = "password">
+        <button type="button" name="delete" @click = "deleteUser"> Delete Account</button>
+        <button type="button" name="signOut" @click = "signOut">Sign Out</button>
+        <button type="button" name="updateEmail" @click = "updateEmail">Update Email</button>
+        <button type="button" name="updatePassword">Update Password</button>
+        <button type="button" name="reauthenticate" @click = "reauthenticate"> reauthenticate Account</button>
+        <button type="button" name="updateProfile" @click = "updateProfile">Update Profile</button>
     </div>
 </div>
 
