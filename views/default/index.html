@@ -5,38 +5,102 @@
 {{end}}
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
-  <title>Welcome to ResumeRater</title>
-  <link href="/css/stupid.css" rel="stylesheet" type="text/css" />
-  <link href="/css/myapp.css" rel="stylesheet" type="text/css" />
+  <title>Welcome to Resume Rater</title>
+  <link href="/css/stupid.css" rel="stylesheet" type="text/css"/>
+  <link href="/css/myapp.css" rel="stylesheet" type="text/css"/>
   <script src="{{=URL('static', 'js/vue.js')}}"></script>
 </head>
-
 <body>
-  <div class="header-logo">
+<div class="header-logo">
     <img id="logo" src="/images/logo.png" />
-  </div>
+</div>
 
-  <div class="header-wrapper">
+<div class="header-wrapper">
     <div class="header-content">
-      <p id="hero-title">Welcome to ResumeRater</p>
-      <button>Upload Your Resume</button>
-      <button>Log In</button>
+        <h1 id="hero-title">Welcome to ResumeRater</p>
+        <button>Upload Your Resume</button>
+        <button>Log In</button>
     </div>
-  </div>
+</div>
 
 
-  <div class="how-it-works-wrapper">
+<div class="how-it-works-wrapper">
     <div class="how-it-works-content">
-      <p id="how-title">How It Works</p>
-      <p>It's easy as 1, 2, 3!</p>
+        <h2 id="how-title">How It Works</h3>
+        <p>It's easy as 1, 2, 3!</p>
     </div>
-  </div>
+</div> 
+
+<div class="steps-container">
+    <div class="steps">
+        <span>step 1 goes here</span>
+        <div>step 2 goes here</div>
+        <div>step 3 goes here</div>
+    </div>
+</div>
+
+<div class="desc-container">
+    <div class="desc">
+        <span>
+            description for step 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris turpis nulla, congue sit amet fermentum sit amet, rutrum at augue.
+        </span>
+        <div>
+            description for step 2: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris turpis nulla, congue sit amet fermentum sit amet, rutrum at augue.
+        </div>
+        <div>
+            description for step 3: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris turpis nulla, congue sit amet fermentum sit amet, rutrum at augue.
+        </div>
+    </div>
+</div>
+
+    <div class="why-container">
+        <div class="why">
+            <span>
+                <h2>Why Choose ResumeRater</h3>
+            </span>
+            <div>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris turpis nulla, congue sit amet fermentum sit amet, rutrum at augue. Donec varius ipsum et condimentum ultrices. Proin vel ullamcorper leo. Quisque in nisi tincidunt, maximus dolor in, fringilla nibh. Etiam tempor posuere massa nec porta. Vivamus volutpat blandit mauris, in imperdiet ex accumsan in. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+            </div>
+        </div>
+    </div>
 
 
-  <div class="test"></div>
+
+<div class="started">
+    <h2>Get Started!</h3>
+    <br>
+    <br>
+    <button>Upload Your Resume</button>
+</div>
+
+<div class="footer-container">
+    <div class="footer">
+        <span>
+           <img id="logo" src="/images/logo.png" />
+        </span>
+        <div>
+            Created By:
+            Ryan Cho
+            Matthew Oey
+            David Trang
+            Thomas Wong
+        </div>
+        <div>
+            Contact Us:
+            rccho@ucsc.edu
+            moey@ucsc.edu
+            datrang@ucsc.edu
+            twong40@ucsc.edu
+        </div>
+        <div>
+            --Social Media Icons---
+        </div>
+    </div>
+</div>
+<!-- <div class="test"></div>
+ -->
 
 
-  <script src="{{=URL('static', 'js/default_index.js')}}"></script>
+<script src="{{=URL('static', 'js/default_index.js')}}"></script>
