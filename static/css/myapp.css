@@ -103,3 +103,80 @@ textarea.review_textarea {
     resize: vertical;
 }
 
+.header-wrapper {
+  background-color: #0a2f59;
+  height: 500px;
+  text-align: center;
+  display: flex;
+}
+
+.header-content {
+  margin: auto;
+}
+
+#hero-title {
+  color: white;
+  font-weight: bold;
+  font-size: 60px;
+}
+
+#logo {
+
+}
+
+.how-it-works-wrapper{
+  margin-top: 30px;
+  text-align: center;
+  display: flex;
+}
+
+.how-it-works-content {
+  margin: auto;
+}
+
+#how-title {
+  font-size: 30px;
+  font-weight: bold;
+
+}
+
+/*.test {
+    border-left: 1px solid grey;
+    height: 50px;
+    left: 33%;
+}*/
+
+.steps-container {
+  text-align: center;
+  padding: 200px;
+  column-count: 3;
+}
+
+.desc-container {
+  padding: 15px;
+  text-align: left;
+  column-count: 3;
+  margin-bottom: 200px;
+}
+
+.desc {
+  font-weight: bold;
+}
+
+.why-container {
+  padding: 100px;
+  background-color: lightgrey;
+  column-count: 2;
+  }
+
+.started {
+  margin: 150px;
+  text-align: center;
+}
+
+.footer-container {
+  background-color: lightgrey;
+  text-align: left;
+  padding: 30px;
+  column-count: 4;
+}
