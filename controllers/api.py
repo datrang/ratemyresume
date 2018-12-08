@@ -2,6 +2,21 @@
 
 
 @auth.requires_signature()
+def get_users():
+    current_user = auth.user
+    # users = []
+    # for user in db(db.auth_user.id).select():
+    #     users.append(dict(
+    #         id=user.id,
+    #         first_name=user.first_name,
+    #         last_name=user.last_name,
+    #         email=user.email,
+    #         occupation=user.occupation
+    #     ))
+    return response.json(dict(current_user=current_user))
+
+
+@auth.requires_signature()
 def add_post():
     post_id = db.post.insert(
         post_title=request.vars.post_title,

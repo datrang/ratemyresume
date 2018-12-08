@@ -3,7 +3,8 @@
 {{block head}}
 <script src="{{URL('static','js/vue.js')}}"></script>
 <script>
-    var is_logged_in = "{{='false' if auth.user is None else 'true'}}";
+    let get_users_url = "{{=URL('api', 'get_users', user_signature=True)}}}";
+    let is_logged_in = {{='false' if auth.user is None else 'true'}};
 </script>
 {{end}}
 
@@ -12,7 +13,10 @@
 <div class="main_content">
     <div id="vue-div" class="display:none">
         <div id="profile_section" style="display:none">
-            Logged In
+            Logged in <br>
+            ${current_user.first_name} ${current_user.last_name} <br>
+            ${current_user.email} <br>
+            ${current_user.occupation} <br>
         </div>
     </div>
 </div>
