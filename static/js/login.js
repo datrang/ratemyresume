@@ -328,17 +328,15 @@ var app = function() {
     });
   };
 
-  var uploadResume = function(){
-      var selectedFile = document.getElementById('uploader').files[0];
-      var filename = selectedFile.name;
-      var storageRef = firebase.storage().ref('/resumes/' + filename);
-      var uploadTask = storageRef.put(selectedFile);
+  let uploadResume = function(){
+      let selectedFile = document.getElementById('uploader').files[0];
+      let filename = selectedFile.name;
+      let storageRef = firebase.storage().ref('/resumes/' + filename);
+      let uploadTask = storageRef.put(selectedFile);
 
       uploadTask.on('state_changed',
-          function progress(snapshot){
-          },
-          function error(error){
-          },
+          function progress(snapshot){},
+          function error(error){},
           function complete(){
           uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
               console.log('File available at', downloadURL);
@@ -347,8 +345,18 @@ var app = function() {
                   url: downloadURL,
                   user: getCurrentUserId()
               });
+              document.getElementById('uploader').value = "";
           });
       });
+  };
+
+  let showResume = function(){
+    console.log("Show Resume");
+    firestore.collection("resumes").where("user", "==", getCurrentUserId()).get().then((snapshot) =>
+        snapshot.docs.forEach(doc => {
+            console.log(doc.data());
+        })
+    );
   };
 
   var getCurrentUserId = function(){
@@ -392,7 +400,8 @@ var app = function() {
         updatePassword : updatePassword,
         updateProfile : updateProfile,
         deleteUser : deleteUser,
-        uploadResume : uploadResume
+        uploadResume : uploadResume,
+        showResume : showResume
     }
   });
 
