@@ -9,7 +9,12 @@
 <html lang="en">
 <div class="main_content">
     <div id="vue-div" class="display:none">
+
+        <h1>Resume Upload</h1>
+        <input type="file" id="uploader">
+        <button type="button" @click="uploadResume">Upload Resume</button>
         <h1>Profile</h1>
+
         <div v-show = "!need_auth">
           Confirm Your Account To Edit Correctly<br>
           <button type="button" name="authorize" @click = "inverse_auth">Authorize</button>

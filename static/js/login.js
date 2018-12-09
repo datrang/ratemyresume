@@ -7,7 +7,9 @@ var config = {
   storageBucket: "resume-rater.appspot.com",
   messagingSenderId: "220789866717"
 };
+
 firebase.initializeApp(config);
+
 const firestore = firebase.firestore();
 const settings = { /* your settings... */
   timestampsInSnapshots: true
@@ -66,7 +68,7 @@ var app = function() {
         document.getElementById("login_error").innerHTML = errorMessage;
         // ...
       });
-  }
+  };
   //makes sure the fields are filled and correct
   var validateSignUp = function() {
     //get all the input values
@@ -88,7 +90,7 @@ var app = function() {
     } else {
       return true;
     }
-  }
+  };
   //sign up through firebase
   var signUp = function() {
     //grab input data
@@ -133,7 +135,7 @@ var app = function() {
             .catch(function(error) {
               console.error("Error adding document: ", error);
             });
-          location.href = 'login';
+          // location.href = 'login';
         })
         .catch(function(error) {
           // Handle Errors here.
@@ -144,7 +146,7 @@ var app = function() {
           // ...
         });
     }
-  }
+  };
   //sends a link to reset their password
   var resetPassword = function() {
     var auth = firebase.auth();
@@ -160,7 +162,7 @@ var app = function() {
       console.log("Error sending password reset email ", error);
       document.getElementById("forgotError").innerHTML = error;
     });
-  }
+  };
   var updateEmail = function(){
     //get documentbyId ref to the new email in profile
     var user = firebase.auth().currentUser;
@@ -194,7 +196,8 @@ var app = function() {
         document.getElementById("profileError").innerHTML = error;
       });
     }
-  }
+  };
+
   var validatePassword = function(){
     var newP = document.getElementById("newPassword").value;
     var confirm = document.getElementById("confirmPassword").value;
@@ -311,7 +314,8 @@ var app = function() {
       console.log("Error signing out: ", error);
       document.getElementById("profileError").innerHTML = error;
     });
-  }
+  };
+
   var refresh = function (){
     firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
@@ -322,7 +326,31 @@ var app = function() {
           // No user is signed in.
         }
     });
-  }
+  };
+
+  var uploadResume = function(){
+      var selectedFile = document.getElementById('uploader').files[0];
+      var filename = selectedFile.name;
+      var storageRef = firebase.storage().ref('/resumes/' + filename);
+      var uploadTask = storageRef.put(selectedFile);
+
+      uploadTask.on('state_changed',
+          function progress(snapshot){
+          },
+          function error(error){
+          },
+          function complete(){
+          uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+              console.log('File available at', downloadURL);
+              firestore.collection('resumes').doc().set({
+                  name:filename,
+                  url: downloadURL,
+                  user: getCurrentUserId()
+              });
+          });
+      });
+  };
+
   var getCurrentUserId = function(){
     return firebase.auth().currentUser.uid;
   }
@@ -350,22 +378,24 @@ var app = function() {
       authD : false
     },
     methods: {
-      signIn: signIn,
-      signUp: signUp,
-      signOut : signOut,
-      validateSignUp: validateSignUp,
-      resetPassword : resetPassword,
-      inverse_auth : inverse_auth,
-      inverse_email : inverse_email,
-      inverse_password : inverse_password,
-      inverse_name : inverse_name,
-      reauthenticate : reauthenticate,
-      updateEmail : updateEmail,
-      updatePassword : updatePassword,
-      updateProfile : updateProfile,
-      deleteUser : deleteUser
+        signIn: signIn,
+        signUp: signUp,
+        signOut : signOut,
+        validateSignUp: validateSignUp,
+        resetPassword : resetPassword,
+        inverse_auth : inverse_auth,
+        inverse_email : inverse_email,
+        inverse_password : inverse_password,
+        inverse_name : inverse_name,
+        reauthenticate : reauthenticate,
+        updateEmail : updateEmail,
+        updatePassword : updatePassword,
+        updateProfile : updateProfile,
+        deleteUser : deleteUser,
+        uploadResume : uploadResume
     }
   });
+
   return self;
 };
 
