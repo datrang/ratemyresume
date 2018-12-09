@@ -14,15 +14,41 @@ const settings = { /* your settings... */
 };
 firestore.settings(settings);
 firebase.auth().onAuthStateChanged(function(user) {
+    var profileTab = document.getElementById("profileTab");
+    var loginTab = document.getElementById("loginTab");
+    var hubTab = document.getElementById("hubTab");
+    var rateTab = document.getElementById("rateTab");
+    var reviewTab = document.getElementById("reviewTab");
+    var email = document.getElementById("email");;
+    var name = document.getElementById("name");
     if (user) {
-      console.log(user);
-      document.getElementById("email").innerHTML = user.email;
-      document.getElementById("name").innerHTML = user.displayName;
+      if(email != null && name != null){
+        document.getElementById("email").innerHTML = user.email;
+        document.getElementById("name").innerHTML = user.displayName;
+      }
+      profileTab.style.display = "block";
+      hubTab.style.display = "block";
+      reviewTab.style.display = "block";
+      rateTab.style.display = "block";
+      loginTab.style.display = "none";
       // User is signed in.
     } else {
-      // No user is signed in.
+      // No user is signed in."
+      profileTab.style.display = "none";
+      hubTab.style.display = "none";
+      reviewTab.style.display = "none";
+      rateTab.style.display = "none";
+      loginTab.style.display = "block";
     }
 });
+
+let listing_mouseover = function(listing){
+    listing.style.background = "#F5F6F7"
+};
+
+let listing_mouseout = function(listing){
+    listing.style.background = "#FFFFFF"
+};
 
 var app = function() {
 
@@ -323,6 +349,23 @@ var app = function() {
         }
     });
   }
+  var checkLogin = function(){
+      firebase.auth().onAuthStateChanged(function(user) {
+          var profileTab = document.getElementById("profileTab");
+          var loginTab = document.getElementById("loginTab");
+          if (user) {
+            document.getElementById("email").innerHTML = user.email;
+            document.getElementById("name").innerHTML = user.displayName;
+            profileTab.style.display = "block";
+            loginTab.style.display = "none";
+            // User is signed in.
+          } else {
+            // No user is signed in."
+            profileTab.style.display = "none";
+            loginTab.style.display = "block";
+          }
+      });
+  }
   var getCurrentUserId = function(){
     return firebase.auth().currentUser.uid;
   }
@@ -363,14 +406,14 @@ var app = function() {
       updateEmail : updateEmail,
       updatePassword : updatePassword,
       updateProfile : updateProfile,
-      deleteUser : deleteUser
+      deleteUser : deleteUser,
+      checkLogin : checkLogin
     }
   });
   return self;
 };
 
 var APP = null;
-
 // No, this would evaluate it too soon.
 // var APP = app();
 

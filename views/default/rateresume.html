@@ -2,117 +2,122 @@
 
 {{block head}}
 <script src="{{=URL('static', 'js/vue.js')}}"></script>
+<script src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js"></script>
+<link href="../static/css/stupid.css" rel="stylesheet" type="text/css" />
+<link href="../static/css/myapp.css" rel="stylesheet" type="text/css" />
 {{end}}
-
-
-<div>
+<div id="vue-div" class="display:none">
+  <div class="navbar">
+    <a href="#home" onClick="location.href='index';">Home</a>
+    <a id="hubTab" onClick="location.href='hub';">Hub</a>
+    <a id="rateTab" onClick="location.href='rateresume';">Rate A Resume</a>
+    <a id="reviewTab"onClick="location.href='resume_reviews';">Review A Resume</a>
+    <a id="profileTab" onClick="location.href='profile';">Profile</a>
+    <a id="loginTab" onClick="location.href='login';" >Login</a>
+  </div>
+  <div>
     <div style="height:10px"></div>
-    <div onclick="location.href='resume_reviews';" onmouseover="listing_mouseover(this)"
-         onmouseout="listing_mouseout(this)" class="resume_listing container">
-        <div class="half container">
-            <div class="third"></div>
-            <div class="third">
-                      <span>
-                          <i style="margin: 25px auto" class="fa fa-file-text fa-5x" aria-hidden="true"></i>
-                      </span>
-            </div>
+    <div onclick="location.href='resume_reviews';" onmouseover="listing_mouseover(this)" onmouseout="listing_mouseout(this)" class="resume_listing container">
+      <div class="half container">
+        <div class="third"></div>
+        <div class="third">
+          <span>
+            <i style="margin: 25px auto" class="fa fa-file-text fa-5x" aria-hidden="true"></i>
+          </span>
         </div>
-        <div class="half container">
-            <h6>Resume Title</h6>
-            <div class="listing_author listing_text">Author: John Doe</div>
-            <div class="listing_date listing_text">Date: December 25, 2018</div>
-            <div class="listing_description listing_text">Lorem ipsum dolor sit amet, consectetur adipiscing
-                elit. Integer turpis enim, varius nec faucibus interdum, fringilla in ante. Nunc non luctus
-                neque, vel sagittis risus. Donec at nisi eu nisi blandit tempor vitae in ipsum. Cras et est sit
-                amet metus.
-            </div>
+      </div>
+      <div class="half container">
+        <h6>Resume Title</h6>
+        <div class="listing_author listing_text">Author: John Doe</div>
+        <div class="listing_date listing_text">Date: December 25, 2018</div>
+        <div class="listing_description listing_text">Lorem ipsum dolor sit amet, consectetur adipiscing
+          elit. Integer turpis enim, varius nec faucibus interdum, fringilla in ante. Nunc non luctus
+          neque, vel sagittis risus. Donec at nisi eu nisi blandit tempor vitae in ipsum. Cras et est sit
+          amet metus.
         </div>
+      </div>
     </div>
-    <div onclick="location.href='resume_reviews';" onmouseover="listing_mouseover(this)"
-         onmouseout="listing_mouseout(this)" class="resume_listing container">
-        <div class="half container">
-            <div class="third"></div>
-            <div class="third">
-                      <span>
-                          <i style="margin: 25px auto" class="fa fa-file-text fa-5x" aria-hidden="true"></i>
-                      </span>
-            </div>
+    <div onclick="location.href='resume_reviews';" onmouseover="listing_mouseover(this)" onmouseout="listing_mouseout(this)" class="resume_listing container">
+      <div class="half container">
+        <div class="third"></div>
+        <div class="third">
+          <span>
+            <i style="margin: 25px auto" class="fa fa-file-text fa-5x" aria-hidden="true"></i>
+          </span>
         </div>
-        <div class="half container">
-            <h6>Resume Title</h6>
-            <div class="listing_author listing_text">Author: John Doe</div>
-            <div class="listing_date listing_text">Date: December 25, 2018</div>
-            <div class="listing_description listing_text">Lorem ipsum dolor sit amet, consectetur adipiscing
-                elit. Integer turpis enim, varius nec faucibus interdum, fringilla in ante. Nunc non luctus
-                neque, vel sagittis risus. Donec at nisi eu nisi blandit tempor vitae in ipsum. Cras et est sit
-                amet metus.
-            </div>
+      </div>
+      <div class="half container">
+        <h6>Resume Title</h6>
+        <div class="listing_author listing_text">Author: John Doe</div>
+        <div class="listing_date listing_text">Date: December 25, 2018</div>
+        <div class="listing_description listing_text">Lorem ipsum dolor sit amet, consectetur adipiscing
+          elit. Integer turpis enim, varius nec faucibus interdum, fringilla in ante. Nunc non luctus
+          neque, vel sagittis risus. Donec at nisi eu nisi blandit tempor vitae in ipsum. Cras et est sit
+          amet metus.
         </div>
+      </div>
     </div>
-    <div onclick="location.href='resume_reviews';" onmouseover="listing_mouseover(this)"
-         onmouseout="listing_mouseout(this)" class="resume_listing container">
-        <div class="half container">
-            <div class="third"></div>
-            <div class="third">
-                      <span>
-                          <i style="margin: 25px auto" class="fa fa-file-text fa-5x" aria-hidden="true"></i>
-                      </span>
-            </div>
+    <div onclick="location.href='resume_reviews';" onmouseover="listing_mouseover(this)" onmouseout="listing_mouseout(this)" class="resume_listing container">
+      <div class="half container">
+        <div class="third"></div>
+        <div class="third">
+          <span>
+            <i style="margin: 25px auto" class="fa fa-file-text fa-5x" aria-hidden="true"></i>
+          </span>
         </div>
-        <div class="half container">
-            <h6>Resume Title</h6>
-            <div class="listing_author listing_text">Author: John Doe</div>
-            <div class="listing_date listing_text">Date: December 25, 2018</div>
-            <div class="listing_description listing_text">Lorem ipsum dolor sit amet, consectetur adipiscing
-                elit. Integer turpis enim, varius nec faucibus interdum, fringilla in ante. Nunc non luctus
-                neque, vel sagittis risus. Donec at nisi eu nisi blandit tempor vitae in ipsum. Cras et est sit
-                amet metus.
-            </div>
+      </div>
+      <div class="half container">
+        <h6>Resume Title</h6>
+        <div class="listing_author listing_text">Author: John Doe</div>
+        <div class="listing_date listing_text">Date: December 25, 2018</div>
+        <div class="listing_description listing_text">Lorem ipsum dolor sit amet, consectetur adipiscing
+          elit. Integer turpis enim, varius nec faucibus interdum, fringilla in ante. Nunc non luctus
+          neque, vel sagittis risus. Donec at nisi eu nisi blandit tempor vitae in ipsum. Cras et est sit
+          amet metus.
         </div>
+      </div>
     </div>
-    <div onclick="location.href='resume_reviews';" onmouseover="listing_mouseover(this)"
-         onmouseout="listing_mouseout(this)" class="resume_listing container">
-        <div class="half container">
-            <div class="third"></div>
-            <div class="third">
-                      <span>
-                          <i style="margin: 25px auto" class="fa fa-file-text fa-5x" aria-hidden="true"></i>
-                      </span>
-            </div>
+    <div onclick="location.href='resume_reviews';" onmouseover="listing_mouseover(this)" onmouseout="listing_mouseout(this)" class="resume_listing container">
+      <div class="half container">
+        <div class="third"></div>
+        <div class="third">
+          <span>
+            <i style="margin: 25px auto" class="fa fa-file-text fa-5x" aria-hidden="true"></i>
+          </span>
         </div>
-        <div class="half container">
-            <h6>Resume Title</h6>
-            <div class="listing_author listing_text">Author: John Doe</div>
-            <div class="listing_date listing_text">Date: December 25, 2018</div>
-            <div class="listing_description listing_text">Lorem ipsum dolor sit amet, consectetur adipiscing
-                elit. Integer turpis enim, varius nec faucibus interdum, fringilla in ante. Nunc non luctus
-                neque, vel sagittis risus. Donec at nisi eu nisi blandit tempor vitae in ipsum. Cras et est sit
-                amet metus.
-            </div>
+      </div>
+      <div class="half container">
+        <h6>Resume Title</h6>
+        <div class="listing_author listing_text">Author: John Doe</div>
+        <div class="listing_date listing_text">Date: December 25, 2018</div>
+        <div class="listing_description listing_text">Lorem ipsum dolor sit amet, consectetur adipiscing
+          elit. Integer turpis enim, varius nec faucibus interdum, fringilla in ante. Nunc non luctus
+          neque, vel sagittis risus. Donec at nisi eu nisi blandit tempor vitae in ipsum. Cras et est sit
+          amet metus.
         </div>
+      </div>
     </div>
-    <div onclick="location.href='resume_reviews';" onmouseover="listing_mouseover(this)"
-         onmouseout="listing_mouseout(this)" class="resume_listing container">
-        <div class="half container">
-            <div class="third"></div>
-            <div class="third">
-                      <span>
-                          <i style="margin: 25px auto" class="fa fa-file-text fa-5x" aria-hidden="true"></i>
-                      </span>
-            </div>
+    <div onclick="location.href='resume_reviews';" onmouseover="listing_mouseover(this)" onmouseout="listing_mouseout(this)" class="resume_listing container">
+      <div class="half container">
+        <div class="third"></div>
+        <div class="third">
+          <span>
+            <i style="margin: 25px auto" class="fa fa-file-text fa-5x" aria-hidden="true"></i>
+          </span>
         </div>
-        <div class="half container">
-            <h6>Resume Title</h6>
-            <div class="listing_author listing_text">Author: John Doe</div>
-            <div class="listing_date listing_text">Date: December 25, 2018</div>
-            <div class="listing_description listing_text">Lorem ipsum dolor sit amet, consectetur adipiscing
-                elit. Integer turpis enim, varius nec faucibus interdum, fringilla in ante. Nunc non luctus
-                neque, vel sagittis risus. Donec at nisi eu nisi blandit tempor vitae in ipsum. Cras et est sit
-                amet metus.
-            </div>
+      </div>
+      <div class="half container">
+        <h6>Resume Title</h6>
+        <div class="listing_author listing_text">Author: John Doe</div>
+        <div class="listing_date listing_text">Date: December 25, 2018</div>
+        <div class="listing_description listing_text">Lorem ipsum dolor sit amet, consectetur adipiscing
+          elit. Integer turpis enim, varius nec faucibus interdum, fringilla in ante. Nunc non luctus
+          neque, vel sagittis risus. Donec at nisi eu nisi blandit tempor vitae in ipsum. Cras et est sit
+          amet metus.
         </div>
+      </div>
     </div>
     <div style="height:10px"></div>
+  </div>
 </div>
-
-<script src="{{=URL('static', 'js/rateresume.js')}}"></script>
+<script src="{{=URL('static', 'js/login.js')}}"></script>
