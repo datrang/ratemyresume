@@ -356,16 +356,16 @@ var app = function() {
   let renderResumeList = function(doc){
       let li = document.createElement('li');
       let name = document.createElement('span');
-      let img = document.createElement('img');
+      let resume = document.createElement('iframe');
       let date = document.createElement('span');
 
       li.setAttribute('data-id', doc.id);
       name.textContent = doc.data().name;
-      img.src = doc.data().url;
+      resume.src = doc.data().url;
       date.textContent = doc.data().upload_time.toDate();
 
       li.appendChild(name);
-      li.appendChild(img);
+      li.appendChild(resume);
       li.appendChild(date);
 
       resume_list.appendChild(li);
