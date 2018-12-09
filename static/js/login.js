@@ -10,10 +10,12 @@ var config = {
 
 firebase.initializeApp(config);
 
+
 const firestore = firebase.firestore();
 const settings = { /* your settings... */
   timestampsInSnapshots: true
 };
+
 firestore.settings(settings);
 firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
@@ -343,25 +345,53 @@ var app = function() {
               firestore.collection('resumes').doc().set({
                   name:filename,
                   url: downloadURL,
-                  user: getCurrentUserId()
+                  user: getCurrentUserId(),
+                  upload_time: firebase.firestore.FieldValue.serverTimestamp()
               });
               document.getElementById('uploader').value = "";
           });
       });
   };
 
+  let renderResumeList = function(doc){
+      let li = document.createElement('li');
+      let name = document.createElement('span');
+      let img = document.createElement('img');
+      let date = document.createElement('span');
+
+      li.setAttribute('data-id', doc.id);
+      name.textContent = doc.data().name;
+      img.src = doc.data().url;
+      date.textContent = doc.data().upload_time.toDate();
+
+      li.appendChild(name);
+      li.appendChild(img);
+      li.appendChild(date);
+
+      resume_list.appendChild(li);
+  };
+
   let showResume = function(){
     console.log("Show Resume");
     firestore.collection("resumes").where("user", "==", getCurrentUserId()).get().then((snapshot) =>
         snapshot.docs.forEach(doc => {
-            console.log(doc.data());
+            // console.log(doc.data().name);
+            // console.log(doc.data().upload_time.toDate());
+            // console.log(doc.data().url);
+            renderResumeList(doc);
         })
     );
+
+    //     .get().then((snapshot) =>
+    //     snapshot.docs.forEach(doc => {
+    //         console.log(doc.data());
+    //     })
+    // );
   };
 
   var getCurrentUserId = function(){
     return firebase.auth().currentUser.uid;
-  }
+  };
   var inverse_email = function(){
     this.show_email = !this.show_email;
   }
@@ -405,6 +435,7 @@ var app = function() {
     }
   });
 
+  showResume();
   return self;
 };
 
