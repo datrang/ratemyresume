@@ -15,6 +15,7 @@ const settings = { /* your settings... */
 firestore.settings(settings);
 firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
+      console.log(user);
       document.getElementById("email").innerHTML = user.email;
       document.getElementById("name").innerHTML = user.displayName;
       // User is signed in.
@@ -100,6 +101,7 @@ var app = function() {
         .then(function() {
           //send the user email a verification
           var user = firebase.auth().currentUser;
+          var token = getCurrentUserId();
           user.sendEmailVerification().then(function() {
             console.log("Email Verification Sent");
             // Email sent.
@@ -119,7 +121,9 @@ var app = function() {
             console.log("Error updating profile ", error);
           });
           //add their user info into the database
-          firestore.collection("users").add({
+          firestore.collection("users")
+          .doc(token)
+          .set({
               name: n,
               email: e
             })
@@ -169,8 +173,9 @@ var app = function() {
       user.updateEmail(newEmail)
       .then(function() {
         // Update successful.
-        firestore.collection("users").getCurrentUserId().update({
-          email: e
+        var token = getCurrentUserId();
+        firestore.collection("users").doc(token).update({
+          email: newEmail
         })
         .then(function(docRef) {
           console.log("Document written with ID: ", docRef.id);
@@ -234,6 +239,16 @@ var app = function() {
       // photoURL: "https://example.com/jane-q-user/profile.jpg"
     }).then(function() {
     // Update successful.
+      var token = getCurrentUserId();
+      firestore.collection("users").doc(token).update({
+        name: name
+      })
+      .then(function(docRef) {
+        console.log("Document written with ID: ", docRef.id);
+      })
+      .catch(function(error) {
+          console.error("Error adding document: ", error);
+      });
       console.log("Successfully updated profile");
       document.getElementById("profileSuccess").innerHTML = "Successfully Updated Name";
       refresh();
@@ -307,6 +322,9 @@ var app = function() {
           // No user is signed in.
         }
     });
+  }
+  var getCurrentUserId = function(){
+    return firebase.auth().currentUser.uid;
   }
   var inverse_email = function(){
     this.show_email = !this.show_email;
