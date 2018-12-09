@@ -53,7 +53,10 @@ def _():
         (T('Hub'), False, URL('default', 'hub')),
         (T('Rate a Resume'), False, URL('default', 'rateresume')),
         (T('Reviews'), False, URL('default', 'resume_reviews')),
-        (T('Profile'), False, URL('default', 'profile'))
+        (T('Profile'), False, URL('default', 'profile')),
+        (T('Log In'), False, URL('default', 'login')),
+        (T('Sign Up'), False, URL('default', 'signUp')),
+        (T('Forgot Password'), False, URL('default', 'forgotPassword')),
         # (T('Sample Menu 1'), False, '#', [
         #     (T('Entry1'), False, URL('default', 'entry1')),
         #     (T('Entry2'), False, URL('default', 'entry2')),

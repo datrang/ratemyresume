@@ -8,19 +8,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <div class="main_content">
-    <div id="vue-div" class="display:none">
-      <div class="container padded center resume_view">
-          <h1> Sign Up </h1>
-          <input type="text" id = "email" placeholder="Email">
-          <input type="text" id = "confirmEmail" placeholder="Confrim Email">
-          <input type="text" id = "password" placeholder="Password">
-          <input type="text" id = "confirmPassword" placeholder="Confirm Password">
-          <input type="text" id = "name" placeholder="Name">
-          <button type="button" name="signUp" @click = "signUp" > Sign Up</button>
-          <div id = "error">
-             <h4 id = "error_message">Error Message goes here </h4>
-          </div>
-      </div>
+  <div id="vue-div" class="display:none">
+    <div class="container padded center resume_view">
+      <h1> Sign Up </h1>
+      <input type="text" id="signEmail" placeholder="Email">
+      <input type="text" id="signConfirmEmail" placeholder="Confrim Email">
+      <input type="text" id="signPassword" placeholder="Password">
+      <input type="text" id="signConfirmPassword" placeholder="Confirm Password">
+      <input type="text" id="signName" placeholder="Name">
+      <button type="button" name="signUp" @click="signUp"> Sign Up</button>
+      <h4 id="signError">Error Message goes here </h4>
     </div>
+  </div>
 </div>
-<script src="{{=URL('static', 'js/signUp.js')}}"></script>
+<script src="{{=URL('static', 'js/login.js')}}"></script>
