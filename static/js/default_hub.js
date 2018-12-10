@@ -28,6 +28,10 @@ var app = function() {
     });
   };
 
+  self.get_latest_resume = function() {
+
+  };
+
   self.show_past_resume = function() {
       this.show_past_resumes = !this.show_past_resumes;
   };
