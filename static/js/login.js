@@ -21,6 +21,8 @@ firebase.auth().onAuthStateChanged(function(user) {
     var reviewTab = document.getElementById("reviewTab");
     var email = document.getElementById("email");;
     var name = document.getElementById("name");
+    loading.style.display = "block";
+    doneLoading.style.display = "none";
     if (user) {
       if(email != null && name != null){
         document.getElementById("email").innerHTML = user.email;
@@ -40,6 +42,8 @@ firebase.auth().onAuthStateChanged(function(user) {
       rateTab.style.display = "none";
       loginTab.style.display = "block";
     }
+    loading.style.display = "none";
+    doneLoading.style.display = "block";
 });
 
 let listing_mouseover = function(listing){

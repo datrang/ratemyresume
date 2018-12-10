@@ -219,3 +219,9 @@ textarea.review_textarea {
 #loginTab {
   display: none;
 }
+#loading {
+  display : block;
+}
+#doneLoading {
+  display : none;
+}
