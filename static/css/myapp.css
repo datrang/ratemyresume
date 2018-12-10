@@ -18,12 +18,52 @@
   font-size: 13px;
 }
 
-/*---------------- homepage -----------------*/
+/* The navigation bar */
+.navbar {
+  background: rgba(36, 48, 94, 1);
+  overflow: hidden;
+  position: fixed; /* Set the navbar to fixed position */
+  top: 0; /* Position the navbar at the top of the page */
+  width: 100%; /* Full width */
+}
+
+/* Links inside the navbar */
+.navbar a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
 
 /* Change background on mouse-over */
 .navbar a:hover {
-  background: #ddd;
-  color: black;
+  background: rgba(36, 48, 94, 0.2);
+}
+
+/* The navigation bar */
+.navbar-home {
+  background: rgba(36, 48, 94, 0);
+  overflow: hidden;
+  position: fixed; /* Set the navbar to fixed position */
+  top: 0; /* Position the navbar at the top of the page */
+  width: 100%; /* Full width */
+}
+
+/* Links inside the navbar */
+.navbar-home a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+/* Change background on mouse-over */
+.navbar-home a:hover {
+  background: rgba(36, 48, 94, 0.2);
 }
 #profileTab {
   display : none;
@@ -54,24 +94,7 @@
   color: red;
 }
 
-/* The navigation bar */
-.navbar {
-  overflow: hidden;
-  background-color: #333;
-  position: fixed; /* Set the navbar to fixed position */
-  top: 0; /* Position the navbar at the top of the page */
-  width: 100%; /* Full width */
-}
-
-/* Links inside the navbar */
-.navbar a {
-  float: left;
-  display: block;
-  color: #f2f2f2;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-}
+/*---------------- homepage -----------------*/
 
 .header-wrapper {
   background-image: linear-gradient(rgba(36, 48, 94, 0.5), rgba(36, 48, 94, 0.2)), url("https://firebasestorage.googleapis.com/v0/b/resume-rater.appspot.com/o/home-hero.jpg?alt=media&token=d1ed8c8e-cd20-4d91-8933-45bbcdb049ad");
@@ -89,6 +112,7 @@
 .header-content {
   margin: auto;
   text-align: center;
+  transform: translateY(-40px);
 }
 
 #hero-title {
@@ -130,8 +154,8 @@
 }
 
 .why-container {
+  background: rgba(168, 208, 230);
   padding: 100px;
-  background-color: lightgrey;
   column-count: 2;
 }
 
@@ -141,8 +165,9 @@
 }
 
 .footer-container {
-  background-color: lightgrey;
+  background: rgba(36, 48, 94);
   text-align: left;
+  color: white;
   padding: 30px;
   column-count: 4;
 }
