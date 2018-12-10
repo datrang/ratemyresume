@@ -169,7 +169,7 @@ let app = function() {
             .catch(function(error) {
               console.error("Error adding document: ", error);
             });
-          // location.href = 'login';
+          location.href = 'hub';
         })
         .catch(function(error) {
           // Handle Errors here.
@@ -517,7 +517,24 @@ let app = function() {
   let show_feedback = function() {
       this.show_resume_feedback = !this.show_resume_feedback;
   };
-
+  let home_upload_button = function(){
+    var user = firebase.auth().currentUser;
+     if(user != null){
+       location.href = 'hub';
+     }
+     else{
+       location.href = 'signUp';
+     }
+   };
+   let home_login_button = function(){
+     var user = firebase.auth().currentUser;
+      if(user != null){
+        location.href = 'hub';
+      }
+      else{
+        location.href = 'login';
+      }
+    };
 
   self.vue = new Vue({
     el: "#vue-div",
@@ -530,7 +547,8 @@ let app = function() {
       need_auth : false,
       authD : false,
       show_past_resumes: false,
-      show_resume_feedback: false
+      show_resume_feedback: false,
+      is_logged_in : false
     },
     methods: {
         signIn: signIn,
@@ -551,7 +569,9 @@ let app = function() {
         showResume : showResume,
         checkLogin : checkLogin,
         show_past_resume: show_past_resume,
-        show_feedback: show_feedback
+        show_feedback: show_feedback,
+        home_upload_button : home_upload_button,
+        home_login_button : home_login_button
     }
   });
 
