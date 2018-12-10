@@ -583,7 +583,8 @@ let app = function() {
         show_past_resume: show_past_resume,
         show_feedback: show_feedback,
         home_upload_button : home_upload_button,
-        home_login_button : home_login_button
+        home_login_button : home_login_button,
+        revealPassword : revealPassword
     }
   });
 
