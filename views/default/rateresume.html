@@ -6,15 +6,15 @@
 <link href="../static/css/stupid.css" rel="stylesheet" type="text/css" />
 <link href="../static/css/myapp.css" rel="stylesheet" type="text/css" />
 {{end}}
+<div class="navbar">
+  <a href="#home" onClick="location.href='index';">Home</a>
+  <a id="hubTab" onClick="location.href='hub';">Hub</a>
+  <a id="rateTab" onClick="location.href='rateresume';">Rate A Resume</a>
+  <a id="reviewTab"onClick="location.href='resume_reviews';">Review A Resume</a>
+  <a id="profileTab" onClick="location.href='profile';">Profile</a>
+  <a id="loginTab" onClick="location.href='login';" >Login</a>
+</div>
 <div id="vue-div" class="display:none">
-  <div class="navbar">
-    <a href="#home" onClick="location.href='index';">Home</a>
-    <a id="hubTab" onClick="location.href='hub';">Hub</a>
-    <a id="rateTab" onClick="location.href='rateresume';">Rate A Resume</a>
-    <a id="reviewTab"onClick="location.href='resume_reviews';">Review A Resume</a>
-    <a id="profileTab" onClick="location.href='profile';">Profile</a>
-    <a id="loginTab" onClick="location.href='login';" >Login</a>
-  </div>
   <div>
     <div style="height:10px"></div>
     <div onclick="location.href='resume_reviews';" onmouseover="listing_mouseover(this)" onmouseout="listing_mouseout(this)" class="resume_listing container">

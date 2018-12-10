@@ -381,6 +381,13 @@ var app = function() {
   var inverse_name = function(){
     this.show_name = !this.show_name;
   }
+  self.show_past_resume = function() {
+      this.show_past_resumes = !this.show_past_resumes;
+  };
+
+  self.show_feedback = function() {
+      this.show_resume_feedback = !this.show_resume_feedback;
+  };
   self.vue = new Vue({
     el: "#vue-div",
     delimiters: ['${', '}'],
@@ -390,7 +397,9 @@ var app = function() {
       show_password : false,
       show_name : false,
       need_auth : false,
-      authD : false
+      authD : false,
+      show_past_resumes: false,
+      show_resume_feedback: false
     },
     methods: {
       signIn: signIn,
@@ -407,7 +416,9 @@ var app = function() {
       updatePassword : updatePassword,
       updateProfile : updateProfile,
       deleteUser : deleteUser,
-      checkLogin : checkLogin
+      checkLogin : checkLogin,
+      show_past_resume: self.show_past_resume,
+      show_feedback: self.show_feedback
     }
   });
   return self;
