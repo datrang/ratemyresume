@@ -239,12 +239,14 @@ let app = function() {
     //get documentbyId ref to the new email in profile
     let user = firebase.auth().currentUser;
     let newEmail = document.getElementById("newEmail").value;
-    console.log(newEmail);
     if(newEmail == null){
       document.getElementById("error_message").innerHTML = "Must Type A Valid Email";
     }
     else {
       user.updateEmail(newEmail).then(function() {
+        document.getElementById("need_auth").style.display = "none";
+        document.getElementById("update_email_field").style.display = "none";
+        document.getElementById("update_email_button").style.display = "block";
           let users_ref = firestore.collection("users");
           users_ref.where("uid", "==", getCurrentUserId()).limit(1).get().then((snapshot) =>
               snapshot.docs.forEach(doc => {
@@ -264,8 +266,9 @@ let app = function() {
           );
       }).catch(function(error) {
         // An error happened.
-        console.log("Error updating email ", error)
+        console.log("Error updating email ", error);
         document.getElementById("profileError").innerHTML = error;
+        document.getElementById("need_auth").style.display = "block";
       });
     }
   };
@@ -295,14 +298,17 @@ let app = function() {
     let newPassword = document.getElementById("newPassword").value;
       if(validatePassword()){
         user.updatePassword(newPassword).then(function() {
+          document.getElementById("need_auth").style.display = "none";
+          document.getElementById("update_password_field").style.display = "none";
+          document.getElementById("update_password_button").style.display = "block";
           console.log("Successfully updated Password");
-          this.show_password = false;
           document.getElementById("profileSuccess").innerHTML = "Success Updated Password";
           // Update successful.
         }).catch(function(error) {
           // An error happened.
           console.log("Error Updating Password ", error);
           document.getElementById("profileError").innerHTML = error;
+          document.getElementById("need_auth").style.display = "block";
         });
       }
   };
@@ -314,6 +320,8 @@ let app = function() {
       user.updateProfile({
           displayName: name
       }).then(function(){
+        document.getElementById("update_name_field").style.display = "none";
+        document.getElementById("update_name_button").style.display = "block";
           users_ref.where("uid", "==", getCurrentUserId()).limit(1).get().then((snapshot) =>
               snapshot.docs.forEach(doc => {
                   console.log(doc.id);
@@ -350,7 +358,7 @@ let app = function() {
       // User re-authenticated.
       console.log("Successfully reauthenticated");
       this.edit = true;
-      this.need_auth = false;
+      document.getElementById("need_auth").style.display = "none";
       document.getElementById("profileSuccess").innerHTML = "Successfully Authorized";
     }).catch(function(error) {
       // An error happened.
@@ -368,6 +376,7 @@ let app = function() {
     }
     else{
       user.delete().then(function() {
+        document.getElementById("need_auth").style.display = "none";
         console.log("Successfully deleted account");
         location.href='login';
         // User deleted.
@@ -375,6 +384,7 @@ let app = function() {
         // An error happened.
         console.log("Error deleting account ", error);
         document.getElementById("profileError").innerHTML = error;
+        document.getElementById("need_auth").style.display = "block";
       });
     }
   };
@@ -427,7 +437,7 @@ let app = function() {
                 document.getElementById("profileSuccess").innerHTML = "Uploaded Resume!"
               })
               .catch(function(error){
-                document.getElementById("profileError").innerHTML = error;
+                document.getElementById("profileErro  r").innerHTML = error;
               });
               document.getElementById('uploader').value = "";
           });
@@ -499,21 +509,33 @@ let app = function() {
     return firebase.auth().currentUser.uid;
   };
 
-  let inverse_email = function(){
-    this.show_email = !this.show_email;
+  let show_email_fields = function(){
+    document.getElementById("update_email_field").style.display = "block";
+    document.getElementById("update_email_button").style.display = "none";
   };
 
-  let inverse_password = function(){
-    this.show_password = !this.show_password;
+  let show_email_button = function(){
+    document.getElementById("update_email_field").style.display = "none";
+    document.getElementById("update_email_button").style.display = "block";
+  }
+  let show_password_fields = function(){
+    document.getElementById("update_password_field").style.display = "block";
+    document.getElementById("update_password_button").style.display = "none";
   };
 
-  let inverse_auth = function(){
-    this.need_auth = !this.need_auth;
+  let show_password_button = function(){
+    document.getElementById("update_password_field").style.display = "none";
+    document.getElementById("update_password_button").style.display = "block";
+  }
+  let show_name_fields = function(){
+    document.getElementById("update_name_field").style.display = "block";
+    document.getElementById("update_name_button").style.display = "none";
   };
 
-  let inverse_name = function(){
-    this.show_name = !this.show_name;
-  };
+  let show_name_button = function(){
+    document.getElementById("update_name_field").style.display = "none";
+    document.getElementById("update_name_button").style.display = "block";
+  }
 
   let show_past_resume = function() {
       this.show_past_resumes = !this.show_past_resumes;
@@ -546,10 +568,6 @@ let app = function() {
     delimiters: ['${', '}'],
     unsafeDelimiters: ['!{', '}'],
     data: {
-      show_email : false,
-      show_password : false,
-      show_name : false,
-      need_auth : false,
       authD : false,
       show_past_resumes: false,
       show_resume_feedback: false,
@@ -561,10 +579,12 @@ let app = function() {
         signOut : signOut,
         validateSignUp: validateSignUp,
         resetPassword : resetPassword,
-        inverse_auth : inverse_auth,
-        inverse_email : inverse_email,
-        inverse_password : inverse_password,
-        inverse_name : inverse_name,
+        show_email_button : show_email_button,
+        show_email_fields : show_email_fields,
+        show_password_button : show_password_button,
+        show_password_fields : show_password_fields,
+        show_name_button : show_name_button,
+        show_name_fields : show_name_fields,
         reauthenticate : reauthenticate,
         updateEmail : updateEmail,
         updatePassword : updatePassword,

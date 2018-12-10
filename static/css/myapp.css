@@ -229,6 +229,27 @@ textarea.review_textarea {
   font-size: 13px;
   color: red;
 }
+#need_auth {
+  display : none;
+}
+#update_email_field {
+  display : none;
+}
+#update_email_button{
+  display : block;
+}
+#update_password_field {
+  display : none;
+}
+#update_password_button{
+  display : block;
+}
+#update_name_field {
+  display : none;
+}
+#update_name_button{
+  display : block;
+}
 .checkboxes label {
   margin-top: 10px;
   font-family: Helvetica Neue;
