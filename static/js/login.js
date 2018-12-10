@@ -209,25 +209,25 @@ let app = function() {
       document.getElementById("error_message").innerHTML = "Must Type A Valid Email";
     }
     else {
-      user.updateEmail(newEmail)
-      .then(function() {
-        // Update successful.
-        var token = getCurrentUserId();
-        firestore.collection("users").doc(token).update({
-          email: newEmail
-        })
-        .then(function(docRef) {
-          console.log("Document written with ID: ", docRef.id);
-        })
-        .catch(function(error) {
-            console.error("Error adding document: ", error);
-        });
-        console.log("Successfully Updated Email");
-        this.show_email = false;
-        refresh();
-        document.getElementById("profileSuccess").innerHTML = "Successfully Updated Email";
-      })
-      .catch(function(error) {
+      user.updateEmail(newEmail).then(function() {
+          let users_ref = firestore.collection("users");
+          users_ref.where("uid", "==", getCurrentUserId()).limit(1).get().then((snapshot) =>
+              snapshot.docs.forEach(doc => {
+                  console.log(doc.id);
+                  let user_ref = firestore.collection("users").doc(doc.id);
+                  user_ref.update({
+                      email: newEmail
+                  }).then(function(){
+                      console.log("Successfully Updated Email");
+                      this.show_email = false;
+                      refresh();
+                      document.getElementById("profileSuccess").innerHTML = "Successfully Updated Email";
+                  }).catch(function(error){
+                      console.error("Error adding document: ", error);
+                  })
+              })
+          );
+      }).catch(function(error) {
         // An error happened.
         console.log("Error updating email ", error)
         document.getElementById("profileError").innerHTML = error;
