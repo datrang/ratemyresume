@@ -162,6 +162,7 @@ let app = function() {
               name: n,
               email: e,
               uid: token
+
             })
             .then(function(docRef) {
               console.log("Document written with ID: ", docRef.id);
@@ -271,35 +272,34 @@ let app = function() {
       }
   };
 
-  var updateProfile = function(){
-    //get documentbyId here and update down below
-    var user = firebase.auth().currentUser;
-    var name = document.getElementById("newName").value;
-    user.updateProfile({
-      displayName: name,
-      // photoURL: "https://example.com/jane-q-user/profile.jpg"
-    }).then(function() {
-    // Update successful.
-      var token = getCurrentUserId();
-      firestore.collection("users").doc(token).update({
-        name: name
-      })
-      .then(function(docRef) {
-        console.log("Document written with ID: ", docRef.id);
-      })
-      .catch(function(error) {
-          console.error("Error adding document: ", error);
+  let updateProfile = function(){
+      let user = firebase.auth().currentUser;
+      let name = document.getElementById("newName").value;
+      let users_ref = firestore.collection("users");
+      user.updateProfile({
+          displayName: name
+      }).then(function(){
+          users_ref.where("uid", "==", getCurrentUserId()).limit(1).get().then((snapshot) =>
+              snapshot.docs.forEach(doc => {
+                  console.log(doc.id);
+                  let user_ref = firestore.collection("users").doc(doc.id);
+                  user_ref.update({
+                      name: name
+                  }).then(function(){
+                      console.log("User updated");
+                      document.getElementById("profileSuccess").innerHTML = "Successfully Updated Name";
+                      refresh();
+                      this.show_name = false;
+                  }).catch(function(error){
+                      console.log("Error updating user: ", error);
+                  })
+              })
+          );
+      }).catch(function(error){
+           console.log("Error updating profile ", error);
+           document.getElementById("profileError").innerHTML = error;
       });
-      console.log("Successfully updated profile");
-      document.getElementById("profileSuccess").innerHTML = "Successfully Updated Name";
-      refresh();
-      this.show_name = false;
-    }).catch(function(error) {
-    // An error happened.
-      console.log("Error updating profile ", error);
-      document.getElementById("profileError").innerHTML = error;
-    });
-  }
+  };
 
   // let updateProfile = function(){
   //   //get documentbyId here and update down below
