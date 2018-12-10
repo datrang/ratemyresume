@@ -120,10 +120,6 @@ textarea.review_textarea {
   font-size: 60px;
 }
 
-#logo {
-
-}
-
 .how-it-works-wrapper{
   margin-top: 30px;
   text-align: center;
@@ -139,12 +135,6 @@ textarea.review_textarea {
   font-weight: bold;
 
 }
-
-/*.test {
-    border-left: 1px solid grey;
-    height: 50px;
-    left: 33%;
-}*/
 
 .steps-container {
   text-align: center;
@@ -232,4 +222,15 @@ textarea.review_textarea {
 }
 #doneLoading {
   display : none;
+}
+#signError {
+  margin-top: 100px;
+  font-style: italic;
+  font-size: 13px;
+  color: red;
+}
+.checkboxes label {
+  margin-top: 10px;
+  font-family: Helvetica Neue;
+  font-size: 13px;
 }

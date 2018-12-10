@@ -1,8 +1,8 @@
-a {color:#26a69a}
-a:not(.btn):not(.noeffect):hover {color:#26a69a}
-a:not(.btn):not(.noeffect):after {background-color:#26a69a}
-.btn, button, [type=button], [type=submit] {background-color:#26a69a; color:white}
-.progress .determinate {background-color:#26a69a}
-.progress .indeterminate {background-color:#26a69a}
-.tags > span {background-color: #26a69a}
-.tags.dismissible > span.off:hover {background-color:#26a69a}
+a {color: ##5ea1ed}
+a:not(.btn):not(.noeffect):hover {color:#5ea1ed}
+a:not(.btn):not(.noeffect):after {background-color:#5ea1ed}
+.btn, button, [type=button], [type=submit] {background-color:#5ea1ed; color:white}
+.progress .determinate {background-color:#5ea1ed}
+.progress .indeterminate {background-color:#5ea1ed}
+.tags > span {background-color: #5ea1ed}
+.tags.dismissible > span.off:hover {background-color:#5ea1ed}

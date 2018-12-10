@@ -487,7 +487,19 @@ let app = function() {
             loginTab.style.display = "block";
           }
       });
-  };
+  }
+  var revealPassword = function() {
+    var x = document.getElementById("signPassword");
+    var y = document.getElementById("signConfirmPassword");
+    if (x.type && y.type === "password") {
+        x.type = "text";
+        y.type = "text";
+    }
+    else {
+        x.type = "password";
+        y.type = "password";
+    }
+  }
 
 
   let getCurrentUserId = function(){
