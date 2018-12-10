@@ -25,12 +25,16 @@ firebase.auth().onAuthStateChanged(function(user) {
     let reviewTab = document.getElementById("reviewTab");
     let email = document.getElementById("email");
     let name = document.getElementById("name");
+    let profileRating = document.getElementById("profileRating");
     loading.style.display = "block";
     doneLoading.style.display = "none";
     if (user) {
       if(email != null && name != null){
         document.getElementById("email").innerHTML = user.email;
         document.getElementById("name").innerHTML = user.displayName;
+      }
+      if(profileRating != null){
+        getUserRating();
       }
       profileTab.style.display = "block";
       hubTab.style.display = "block";
@@ -57,7 +61,37 @@ let listing_mouseover = function(listing){
 let listing_mouseout = function(listing){
     listing.style.background = "#FFFFFF"
 };
+let getCurrentUserId = function(){
+  return firebase.auth().currentUser.uid;
+};
+let setUserRating = function (newValue){
+  let user = firebase.auth().currentUser;
+  let users_ref = firestore.collection("users");
+  users_ref.where("uid", "==", getCurrentUserId()).limit(1).get().then((snapshot) =>
+      snapshot.docs.forEach(doc => {
+          console.log(doc.id);
+          let user_ref = firestore.collection("users").doc(doc.id);
+          user_ref.update({
+              avgRating : newValue
+          }).then(function(){
+              console.log("Database upated");
+              document.getElementById("profileSuccess").innerHTML = "Successfully Updated Profile";
+          }).catch(function(error){
+              console.log("Error updating user: ", error);
+          })
+      })
+  );
+};
 
+let getUserRating = function (){
+  let user = firebase.auth().currentUser;
+  let users_ref = firestore.collection("users");
+  users_ref.where("uid", "==", getCurrentUserId()).limit(1).get().then((snapshot) =>
+      snapshot.docs.forEach(doc => {
+        document.getElementById("profileRating").innerHTML = doc.data().avgRating;
+      })
+  );
+};
 let app = function() {
 
   let self = {};
@@ -161,16 +195,17 @@ let app = function() {
           firestore.collection("users").add({
               name: n,
               email: e,
-              uid: token
+              uid: token,
+              avgRating: null
 
             })
             .then(function(docRef) {
+              location.href = 'hub';
               console.log("Document written with ID: ", docRef.id);
             })
             .catch(function(error) {
               console.error("Error adding document: ", error);
             });
-          location.href = 'hub';
         })
         .catch(function(error) {
           // Handle Errors here.
@@ -301,55 +336,6 @@ let app = function() {
       });
   };
 
-  // let updateProfile = function(){
-  //   //get documentbyId here and update down below
-  //   let user = firebase.auth().currentUser;
-  //   let name = document.getElementById("newName").value;
-  //   user.updateProfile({
-  //     displayName: name,
-  //     // photoURL: "https://example.com/jane-q-user/profile.jpg"
-  //   }).then(function() {
-  //       // Update successful.
-  //       let token = getCurrentUserId();
-  //       firestore.collection("users").where("uid", "==", token).limit(1).get().then((snapshot) =>
-  //           snapshot.docs.forEach(doc => {
-  //               doc.update({
-  //                   name: name
-  //               }).then(function(doc){
-  //                   console.log("Document written with ID: ", docRef.id);
-  //               }).catch(function(error){
-  //                   console.error("Error adding document: ", error);
-  //               });
-  //               console.log("Successfully updated profile");
-  //               document.getElementById("profileSuccess").innerHTML = "Successfully Updated Name";
-  //               refresh();
-  //               this.show_name = false;
-  //           }))
-  //   }).catch(function(error) {
-  //       console.log("Error updating profile ", error);
-  //       document.getElementById("profileError").innerHTML = error;
-  //   });
-  //
-  //   //   userRef.update({
-  //   //     name: name
-  //   //   })
-  //   //   .then(function(docRef) {
-  //   //     console.log("Document written with ID: ", docRef.id);
-  //   //   })
-  //   //   .catch(function(error) {
-  //   //       console.error("Error adding document: ", error);
-  //   //   });
-  //   //   console.log("Successfully updated profile");
-  //   //   document.getElementById("profileSuccess").innerHTML = "Successfully Updated Name";
-  //   //   refresh();
-  //   //   this.show_name = false;
-  //   // }).catch(function(error) {
-  //   // // An error happened.
-  //   //   console.log("Error updating profile ", error);
-  //   //   document.getElementById("profileError").innerHTML = error;
-  //   // });
-  // };
-
   let reauthenticate = function(){
     let user = firebase.auth().currentUser;
     //get their provided ids
@@ -434,7 +420,14 @@ let app = function() {
                   name:filename,
                   url: downloadURL,
                   user: getCurrentUserId(),
-                  upload_time: firebase.firestore.FieldValue.serverTimestamp()
+                  upload_time: firebase.firestore.FieldValue.serverTimestamp(),
+                  avgRating: null
+              })
+              .then(function(){
+                document.getElementById("profileSuccess").innerHTML = "Uploaded Resume!"
+              })
+              .catch(function(error){
+                document.getElementById("profileError").innerHTML = error;
               });
               document.getElementById('uploader').value = "";
           });
