@@ -370,6 +370,18 @@ var app = function() {
           }
       });
   }
+  var revealPassword = function() {
+    var x = document.getElementById("signPassword");
+    var y = document.getElementById("signConfirmPassword");
+    if (x.type && y.type === "password") {
+        x.type = "text";
+        y.type = "text";
+    }
+    else {
+        x.type = "password";
+        y.type = "password";
+    }
+  }
   var getCurrentUserId = function(){
     return firebase.auth().currentUser.uid;
   }
@@ -422,7 +434,9 @@ var app = function() {
       deleteUser : deleteUser,
       checkLogin : checkLogin,
       show_past_resume: self.show_past_resume,
-      show_feedback: self.show_feedback
+      show_feedback: self.show_feedback,
+      revealPassword: revealPassword
+
     }
   });
   return self;

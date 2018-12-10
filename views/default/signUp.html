@@ -5,6 +5,7 @@
 <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js"></script>
 <link href="../static/css/stupid.css" rel="stylesheet" type="text/css"/>
 <link href="../static/css/myapp.css" rel="stylesheet" type="text/css"/>
+<link href="../static/css/custom.css" rel="stylesheet" type="text/css"/>
 {{end}}
 
 <!DOCTYPE html>
@@ -25,14 +26,25 @@
   <div id="vue-div" class="display:none">
     <div class="container padded center resume_view">
       <h1> Sign Up </h1>
+      <input type="text" id="signName" placeholder="Name">
+      <br>
+      <br>
       <input type="text" id="signEmail" placeholder="Email">
       <input type="text" id="signConfirmEmail" placeholder="Confrim Email">
-      <input type="text" id="signPassword" placeholder="Password">
-      <input type="text" id="signConfirmPassword" placeholder="Confirm Password">
-      <input type="text" id="signName" placeholder="Name">
-      <button type="button" name="signUp" @click="signUp"> Sign Up</button>
+      <br>
+      <br>
+      <input type="password" id="signPassword" placeholder="Password">
+      <input type="password" id="signConfirmPassword" placeholder="Confirm Password">
+      <div class="checkboxes">
+        <input type="checkbox" id="revealPassword" @click="revealPassword">
+          <label>Show Password</label>
+      </div>
+      <br>
+      <br>
+      <br>
+      <button type="button" name="signUp" @click="signUp">Sign Up</button>
       <button type="button" name="cancel" onClick = "location.href='login;'">Cancel</button>
-      <h4 id="signError">Error Message goes here </h4>
+      <h4 id="signError"></h4>
     </div>
   </div>
 </div>
