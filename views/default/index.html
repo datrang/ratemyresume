@@ -8,11 +8,25 @@
 <head>
   <meta charset="UTF-8">
   <title>Welcome to Resume Rater</title>
-  <link href="/css/stupid.css" rel="stylesheet" type="text/css"/>
-  <link href="/css/myapp.css" rel="stylesheet" type="text/css"/>
+  <link href="../static/css/stupid.css" rel="stylesheet" type="text/css"/>
+  <link href="../static/css/myapp.css" rel="stylesheet" type="text/css"/>
+  <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js"></script>
   <script src="{{=URL('static', 'js/vue.js')}}"></script>
 </head>
 <body>
+<div id = "loading">
+    <br>LOADING
+</div>
+<div id = "doneLoading">
+  <div class="navbar">
+    <a href="#home" onClick="location.href='index';">Home</a>
+    <a id="hubTab" onClick="location.href='hub';">Hub</a>
+    <a id="rateTab" onClick="location.href='rateresume';">Rate A Resume</a>
+    <a id="reviewTab"onClick="location.href='resume_reviews';">Review A Resume</a>
+    <a id="profileTab" onClick="location.href='profile';">Profile</a>
+    <a id="loginTab" onClick="location.href='login';" >Login</a>
+  </div>
+
 <div class="header-logo">
     <img id="logo" src="/images/logo.png" />
 </div>
@@ -101,6 +115,6 @@
 </div>
 <!-- <div class="test"></div>
  -->
+</div>
 
-
-<script src="{{=URL('static', 'js/default_index.js')}}"></script>
+<script src="{{=URL('static', 'js/login.js')}}"></script>

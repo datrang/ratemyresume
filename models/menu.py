@@ -49,17 +49,17 @@ def _():
     # ------------------------------------------------------------------------------------------------------------------
     # useful links to internal and external resources
     # ------------------------------------------------------------------------------------------------------------------
-    response.menu += [
-        (T('Hub'), False, URL('default', 'hub')),
-        (T('Rate a Resume'), False, URL('default', 'rateresume')),
-        (T('Reviews'), False, URL('default', 'resume_reviews')),
-        (T('Profile'), False, URL('default', 'profile')),
-        (T('Log In'), False, URL('default', 'login')),
-        # (T('Sample Menu 1'), False, '#', [
-        #     (T('Entry1'), False, URL('default', 'entry1')),
-        #     (T('Entry2'), False, URL('default', 'entry2')),
-        # ]),
-    ]
+    # response.menu += [
+    #     (T('Hub'), False, URL('default', 'hub')),
+    #     (T('Rate a Resume'), False, URL('default', 'rateresume')),
+    #     (T('Reviews'), False, URL('default', 'resume_reviews')),
+    #     (T('Profile'), False, URL('default', 'profile')),
+    #     (T('Log In'), False, URL('default', 'login')),
+    #     # (T('Sample Menu 1'), False, '#', [
+    #     #     (T('Entry1'), False, URL('default', 'entry1')),
+    #     #     (T('Entry2'), False, URL('default', 'entry2')),
+    #     # ]),
+    # ]
 
 
 if DEVELOPMENT_MENU:
