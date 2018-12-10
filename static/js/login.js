@@ -7,11 +7,15 @@ var config = {
   storageBucket: "resume-rater.appspot.com",
   messagingSenderId: "220789866717"
 };
+
 firebase.initializeApp(config);
+
+
 const firestore = firebase.firestore();
 const settings = { /* your settings... */
   timestampsInSnapshots: true
 };
+
 firestore.settings(settings);
 firebase.auth().onAuthStateChanged(function(user) {
     var profileTab = document.getElementById("profileTab");
@@ -96,7 +100,7 @@ var app = function() {
         document.getElementById("login_error").innerHTML = errorMessage;
         // ...
       });
-  }
+  };
   //makes sure the fields are filled and correct
   var validateSignUp = function() {
     //get all the input values
@@ -118,7 +122,7 @@ var app = function() {
     } else {
       return true;
     }
-  }
+  };
   //sign up through firebase
   var signUp = function() {
     //grab input data
@@ -163,7 +167,7 @@ var app = function() {
             .catch(function(error) {
               console.error("Error adding document: ", error);
             });
-          location.href = 'login';
+          // location.href = 'login';
         })
         .catch(function(error) {
           // Handle Errors here.
@@ -174,7 +178,7 @@ var app = function() {
           // ...
         });
     }
-  }
+  };
   //sends a link to reset their password
   var resetPassword = function() {
     var auth = firebase.auth();
@@ -190,7 +194,7 @@ var app = function() {
       console.log("Error sending password reset email ", error);
       document.getElementById("forgotError").innerHTML = error;
     });
-  }
+  };
   var updateEmail = function(){
     //get documentbyId ref to the new email in profile
     var user = firebase.auth().currentUser;
@@ -224,7 +228,8 @@ var app = function() {
         document.getElementById("profileError").innerHTML = error;
       });
     }
-  }
+  };
+
   var validatePassword = function(){
     var newP = document.getElementById("newPassword").value;
     var confirm = document.getElementById("confirmPassword").value;
@@ -341,7 +346,8 @@ var app = function() {
       console.log("Error signing out: ", error);
       document.getElementById("profileError").innerHTML = error;
     });
-  }
+  };
+
   var refresh = function (){
     firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
@@ -352,7 +358,66 @@ var app = function() {
           // No user is signed in.
         }
     });
-  }
+
+  let uploadResume = function(){
+      let selectedFile = document.getElementById('uploader').files[0];
+      let filename = selectedFile.name;
+      let storageRef = firebase.storage().ref('/resumes/' + filename);
+      let uploadTask = storageRef.put(selectedFile);
+
+      uploadTask.on('state_changed',
+          function progress(snapshot){},
+          function error(error){},
+          function complete(){
+          uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+              console.log('File available at', downloadURL);
+              firestore.collection('resumes').doc().set({
+                  name:filename,
+                  url: downloadURL,
+                  user: getCurrentUserId(),
+                  upload_time: firebase.firestore.FieldValue.serverTimestamp()
+              });
+              document.getElementById('uploader').value = "";
+          });
+      });
+  };
+
+  let renderResumeList = function(doc){
+      let li = document.createElement('li');
+      let name = document.createElement('span');
+      let resume = document.createElement('iframe');
+      let date = document.createElement('span');
+
+      li.setAttribute('data-id', doc.id);
+      name.textContent = doc.data().name;
+      resume.src = doc.data().url;
+      date.textContent = doc.data().upload_time.toDate();
+
+      li.appendChild(name);
+      li.appendChild(resume);
+      li.appendChild(date);
+
+      resume_list.appendChild(li);
+  };
+
+  let showResume = function(){
+    console.log("Show Resume");
+    firestore.collection("resumes").where("user", "==", getCurrentUserId()).get().then((snapshot) =>
+        snapshot.docs.forEach(doc => {
+            // console.log(doc.data().name);
+            // console.log(doc.data().upload_time.toDate());
+            // console.log(doc.data().url);
+            renderResumeList(doc);
+        })
+    );
+
+    //     .get().then((snapshot) =>
+    //     snapshot.docs.forEach(doc => {
+    //         console.log(doc.data());
+    //     })
+    // );
+  };
+
   var checkLogin = function(){
       firebase.auth().onAuthStateChanged(function(user) {
           var profileTab = document.getElementById("profileTab");
@@ -372,7 +437,7 @@ var app = function() {
   }
   var getCurrentUserId = function(){
     return firebase.auth().currentUser.uid;
-  }
+  };
   var inverse_email = function(){
     this.show_email = !this.show_email;
   }
@@ -406,25 +471,29 @@ var app = function() {
       show_resume_feedback: false
     },
     methods: {
-      signIn: signIn,
-      signUp: signUp,
-      signOut : signOut,
-      validateSignUp: validateSignUp,
-      resetPassword : resetPassword,
-      inverse_auth : inverse_auth,
-      inverse_email : inverse_email,
-      inverse_password : inverse_password,
-      inverse_name : inverse_name,
-      reauthenticate : reauthenticate,
-      updateEmail : updateEmail,
-      updatePassword : updatePassword,
-      updateProfile : updateProfile,
-      deleteUser : deleteUser,
-      checkLogin : checkLogin,
-      show_past_resume: self.show_past_resume,
-      show_feedback: self.show_feedback
+        signIn: signIn,
+        signUp: signUp,
+        signOut : signOut,
+        validateSignUp: validateSignUp,
+        resetPassword : resetPassword,
+        inverse_auth : inverse_auth,
+        inverse_email : inverse_email,
+        inverse_password : inverse_password,
+        inverse_name : inverse_name,
+        reauthenticate : reauthenticate,
+        updateEmail : updateEmail,
+        updatePassword : updatePassword,
+        updateProfile : updateProfile,
+        deleteUser : deleteUser,
+        uploadResume : uploadResume,
+        showResume : showResume
+        checkLogin : checkLogin,
+        show_past_resume: self.show_past_resume,
+        show_feedback: self.show_feedback
     }
   });
+
+  showResume();
   return self;
 };
 
