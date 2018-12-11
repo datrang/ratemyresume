@@ -24,7 +24,6 @@ firebase.auth().onAuthStateChanged(function(user) {
     let loginTab = document.getElementById("loginTab");
     let hubTab = document.getElementById("hubTab");
     let rateTab = document.getElementById("rateTab");
-    let reviewTab = document.getElementById("reviewTab");
     let email = document.getElementById("email");
     let name = document.getElementById("name");
     let profileRating = document.getElementById("profileRating");
@@ -55,14 +54,13 @@ firebase.auth().onAuthStateChanged(function(user) {
               show_current_resume(current_resume_id);
               break;
       }
-      
+
       if(profileRating != null){
         getUserRating();
       }
       homeTab.style.display = "none";
       profileTab.style.display = "block";
       hubTab.style.display = "block";
-      reviewTab.style.display = "block";
       rateTab.style.display = "block";
       loginTab.style.display = "none";
       // User is signed in.
@@ -71,7 +69,6 @@ firebase.auth().onAuthStateChanged(function(user) {
       homeTab.style.display = "block";
       profileTab.style.display = "none";
       hubTab.style.display = "none";
-      reviewTab.style.display = "none";
       rateTab.style.display = "none";
       loginTab.style.display = "block";
     }
@@ -763,7 +760,7 @@ let app = function() {
     //and go the user profile and increment numRate by 1 and
     //update the avg rating of the user
   };
-  
+
   var revealPassword = function() {
     var x = document.getElementById("signPassword");
     var y = document.getElementById("signConfirmPassword");
