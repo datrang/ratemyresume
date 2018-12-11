@@ -58,6 +58,7 @@ firebase.auth().onAuthStateChanged(function(user) {
               // console.log(vars['id']);
               let current_resume_id = vars['id'];
               show_current_resume(current_resume_id);
+              show_current_resume_replies(current_resume_id);
               break;
       }
 
@@ -276,7 +277,6 @@ let render_other_resume = function(doc){
 };
 
 let show_other_resume = function(){
-    console.log("Hello World");
     console.log("Current User = " + getCurrentUserId());
     firestore.collection("resumes").orderBy("upload_time","desc").get().then((snapshot) =>
         snapshot.docs.forEach(doc => {
@@ -314,6 +314,67 @@ let show_current_resume = function (current_resume_id){
     }).catch(function(error){
         console.log("Error getting document:", error);
     });
+};
+
+let render_current_resume_replies = function(doc){
+    let main_container = document.createElement('div');
+    main_container.classList.add("feedback_listing");
+    main_container.classList.add("container");
+
+    let left_container = document.createElement('div');
+    left_container.classList.add('third');
+    left_container.classList.add('container');
+
+    let left_container_half1 = document.createElement('div');
+    left_container_half1.classList.add('half');
+
+    let left_container_half1_profile_pic = document.createElement('i');
+    left_container_half1_profile_pic.classList.add('center');
+    left_container_half1_profile_pic.classList.add('fa');
+    left_container_half1_profile_pic.classList.add('fa-user');
+    left_container_half1_profile_pic.classList.add('fa-3x');
+
+    left_container_half1.append(left_container_half1_profile_pic);
+    left_container.append(left_container_half1);
+
+    let left_container_half2 = document.createElement('div');
+    left_container_half2.classList.add('half');
+    let left_container_half2_author = document.createElement('div');
+    left_container_half2_author.classList.add('listing_author');
+    left_container_half2_author.classList.add('listing_text');
+    left_container_half2_author.innerHTML = doc.data().author;
+    let left_container_half2_title = document.createElement('div');
+    left_container_half2_title.classList.add('listing_text');
+    left_container_half2_title.innerHTML = "Software Engineer";
+
+    left_container_half2.append(left_container_half2_author);
+    left_container_half2.append(left_container_half2_title);
+    left_container.append(left_container_half2);
+    main_container.append(left_container);
+
+    let right_container = document.createElement('div');
+    right_container.classList.add('twothirds');
+    let right_container_content = document.createElement('div');
+    right_container_content.classList.add('listing_description');
+    right_container_content.classList.add('listing_text');
+    right_container_content.innerHTML = doc.data().content;
+
+    right_container.append(right_container_content);
+    main_container.append(right_container);
+
+    resume_review_list.prepend(main_container);
+};
+
+let show_current_resume_replies = function(current_resume_id){
+    firestore.collection('resumes').doc(current_resume_id).collection('replies').get().then((snapshot) =>
+        snapshot.docs.forEach(doc => {
+            render_current_resume_replies(doc);
+            console.log(doc.data().author);
+            console.log(doc.data().content);
+            console.log(doc.data().timestamp.toDate());
+        })
+    );
+    console.log("show current reply");
 };
 
 let get_user_latest_resume = function (){
@@ -724,12 +785,33 @@ let app = function() {
   };
 
   let add_reply = function(){
-    //called from a button call from the page
-    //gets a ref to the resume that is currently being viewed/replied
-    //goes into the database for resumes and by ref finding the correct resume
-    //if there is not a collection for replies, make one, if there is then
-    //access it, Create a new docment that is the reply from the current user
-    //in the fields are : reply, user, timestamp, rating
+      console.log("Adding a reply");
+
+      let vars = {};
+      window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+          vars[key] = value;
+      });
+      let current_resume_id = vars['id'];
+      let resume_review_text = document.getElementById("review_textarea").value;
+
+      // console.log(current_resume_id);
+      // console.log(resume_review_text);
+
+      firestore.collection("resumes").doc(current_resume_id).collection("replies").add({
+          content: resume_review_text,
+          uid: getCurrentUserId(),
+          author: firebase.auth().currentUser.displayName,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      }).then((docRef) => {
+          console.log("Document written with ID: ", docRef.id);
+          docRef.get().then(doc =>{
+              render_current_resume_replies(doc);
+          });
+      }).catch(function(error){
+          console.error("Error adding document: ", error);
+      });
+
+      document.getElementById("review_textarea").value = "";
     //call the update_resume_rating function from the new rating
     //also figure out how to instantly add the reply to the screen
   };
@@ -739,19 +821,22 @@ let app = function() {
     //since we have a ref to the reply that was posted , we can just use
     //database functions to make sure this is the right user so the button
     //appears, easy database update to updatetime and message
-  }
+  };
+
   let delete_reply = function() {
     //go into the db and find their reply and delete it
     //also need to figure out how to update the resume rating
     //back to whatit was before, maybe some math involved
     //user rating will not change so they can fix their rating
-  }
+  };
+
   let update_resume_rating = function (rating){
     //need reference to the resume being rated and the rating added
     //this function should be called from add_reply
     //goes into the resume that is ref by the previous statement
     //updates the numRate by 1 and updates the avg Rating for the resume
   };
+
   let update_user_rating = function (rating){
     //in reply to rating a review given to you on helpfullness
     //given the reply ref we can know which user this was from
@@ -869,7 +954,8 @@ let app = function() {
         get_latest_resume: get_latest_resume,
         home_upload_button : home_upload_button,
         home_login_button : home_login_button,
-        revealPassword : revealPassword
+        revealPassword : revealPassword,
+        add_reply: add_reply
     }
   });
 

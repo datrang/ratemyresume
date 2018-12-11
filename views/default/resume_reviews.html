@@ -33,52 +33,11 @@
         </div>
 
         <div class="container center review_div">
-            <textarea class="review_textarea" placeholder="Type your Review"></textarea>
-            <button id="review_button">Submit</button>
+            <textarea class="review_textarea" id="review_textarea" placeholder="Type your Review"></textarea>
+            <button id="review_button" @click="add_reply">Submit</button>
         </div>
 
-        <div onmouseover="listing_mouseover(this)" onmouseout="listing_mouseout(this)" class="feedback_listing container">
-            <div class="third container">
-                <div class="half">
-                    <i class="center fa fa-user fa-3x" aria-hidden="true"></i>
-                </div>
-                <div class="half">
-                    <div class="listing_author listing_text">John Doe</div>
-                    <div class="listing_text">Software Engineer</div>
-                </div>
-            </div>
-            <div class="twothirds">
-                <div class="listing_description listing_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer turpis enim, varius nec faucibus interdum, fringilla in ante. Nunc non luctus neque, vel sagittis risus. Donec at nisi eu nisi blandit tempor vitae in ipsum. Cras et est sit amet metus.</div>
-            </div>
-        </div>
-        <div onmouseover="listing_mouseover(this)" onmouseout="listing_mouseout(this)" class="feedback_listing container">
-            <div class="third container">
-                <div class="half">
-                    <i class="center fa fa-user fa-3x" aria-hidden="true"></i>
-                </div>
-                <div class="half">
-                    <div class="listing_author listing_text">John Doe</div>
-                    <div class="listing_text">Software Engineer</div>
-                </div>
-            </div>
-            <div class="twothirds">
-                <div class="listing_description listing_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer turpis enim, varius nec faucibus interdum, fringilla in ante. Nunc non luctus neque, vel sagittis risus. Donec at nisi eu nisi blandit tempor vitae in ipsum. Cras et est sit amet metus.</div>
-            </div>
-        </div>
-        <div onmouseover="listing_mouseover(this)" onmouseout="listing_mouseout(this)" class="feedback_listing container">
-            <div class="third container">
-                <div class="half">
-                    <i class="center fa fa-user fa-3x" aria-hidden="true"></i>
-                </div>
-                <div class="half">
-                    <div class="listing_author listing_text">John Doe</div>
-                    <div class="listing_text">Software Engineer</div>
-                </div>
-            </div>
-            <div class="twothirds">
-                <div class="listing_description listing_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer turpis enim, varius nec faucibus interdum, fringilla in ante. Nunc non luctus neque, vel sagittis risus. Donec at nisi eu nisi blandit tempor vitae in ipsum. Cras et est sit amet metus.</div>
-            </div>
-        </div>
+        <div id="resume_review_list" class="resume_review_list"></div>
     </div>
 </div>
 </div>
