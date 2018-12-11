@@ -143,7 +143,7 @@ let render_user_resume_list = function(doc){
     main_container.classList.add('resume_listing');
     main_container.classList.add('container');
     main_container.onclick = function(){
-        location.href='resume_reviews';
+        location.href='resume_reviews?id=' + doc.id;
     };
     main_container.onmouseover = function(){
         main_container.style.background = "#F5F6F7";
