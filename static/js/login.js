@@ -196,8 +196,8 @@ let app = function() {
               name: n,
               email: e,
               uid: token,
-              avgRating: null
-
+              avgRating: null,
+              numRate : 0
             })
             .then(function(docRef) {
               location.href = 'hub';
@@ -431,7 +431,8 @@ let app = function() {
                   url: downloadURL,
                   user: getCurrentUserId(),
                   upload_time: firebase.firestore.FieldValue.serverTimestamp(),
-                  avgRating: null
+                  avgRating: null,
+                  numRate : 0
               })
               .then(function(){
                 document.getElementById("profileSuccess").innerHTML = "Uploaded Resume!"
@@ -491,6 +492,43 @@ let app = function() {
           }
       });
   }
+  let add_reply = function(){
+    //called from a button call from the page
+    //gets a ref to the resume that is currently being viewed/replied
+    //goes into the database for resumes and by ref finding the correct resume
+    //if there is not a collection for replies, make one, if there is then
+    //access it, Create a new docment that is the reply from the current user
+    //in the fields are : reply, user, timestamp, rating
+    //call the update_resume_rating function from the new rating
+    //also figure out how to instantly add the reply to the screen
+  };
+  let edit_reply = function(){
+    //called by a button to edit your reply after publishing
+    //since we have a ref to the reply that was posted , we can just use
+    //database functions to make sure this is the right user so the button
+    //appears, easy database update to updatetime and message
+  }
+  let delete_reply = function() {
+    //go into the db and find their reply and delete it
+    //also need to figure out how to update the resume rating
+    //back to whatit was before, maybe some math involved
+    //user rating will not change so they can fix their rating
+  }
+  let update_resume_rating = function (rating){
+    //need reference to the resume being rated and the rating added
+    //this function should be called from add_reply
+    //goes into the resume that is ref by the previous statement
+    //updates the numRate by 1 and updates the avg Rating for the resume
+  };
+  let update_user_rating = function (rating){
+    //in reply to rating a review given to you on helpfullness
+    //given the reply ref we can know which user this was from
+    //and we can find them in the database, we also pass in the
+    //rating if we need to? (not sure yet), since we know the
+    //rating the other user just gave the reply, we take that Rating
+    //and go the user profile and increment numRate by 1 and
+    //update the avg rating of the user
+  };
   var revealPassword = function() {
     var x = document.getElementById("signPassword");
     var y = document.getElementById("signConfirmPassword");
