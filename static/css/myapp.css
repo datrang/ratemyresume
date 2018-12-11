@@ -101,11 +101,9 @@
   height: 100%;
 
   background-position: center;
-  /*background-repeat: no-repeat;*/
   background-size: cover;
-  /*position: relative;*/
-
-  /*text-align: center;*/
+  background-attachment: fixed;
+  background-repeat: no-repeat;
   display: flex;
 }
 
@@ -140,8 +138,18 @@
   text-align: center;
   padding: 200px;
   column-count: 3;
-}
+  /*background-image: url("https://firebasestorage.googleapis.com/v0/b/resume-rater.appspot.com/o/click-v1.svg?alt=media&token=1f23cfeb-ead5-4b8e-933c-6a8ff504f553");
+  background-size: 10%;
+  background-repeat: no-repeat;*/
 
+}
+.step1 {
+/*  background-image: url("https://firebasestorage.googleapis.com/v0/b/resume-rater.appspot.com/o/click-v1.svg?alt=media&token=1f23cfeb-ead5-4b8e-933c-6a8ff504f553");
+*/
+background-image: url("https://firebasestorage.googleapis.com/v0/b/resume-rater.appspot.com/o/click-v1.svg?alt=media&token=1f23cfeb-ead5-4b8e-933c-6a8ff504f553");
+  background-size: 10%;
+  background-repeat: no-repeat;
+}
 .desc-container {
   padding: 15px;
   text-align: left;
@@ -154,15 +162,35 @@
 }
 
 .why-container {
-  background: rgba(168, 208, 230);
-  padding: 100px;
+/*  background: rgba(168, 208, 230);
+*/
+  background-image: url("https://firebasestorage.googleapis.com/v0/b/resume-rater.appspot.com/o/D_38-01.svg?alt=media&token=000a3835-6443-4273-8a05-4a241f4f9978");
+  background-position: right;
+  background-size: 140%;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  padding: 120px;
   column-count: 2;
 }
 
-.started {
+.started-wrapper {
+  text-align: center;
+  padding: 30px;
+  background-color: #f8e9a1;
+}
+.started-content {
+  border-width: 8px;
+  border-style: solid;
+  border-color: #a8d0e6;
+  padding: 20px;
   margin: 150px;
   text-align: center;
 }
+
+/*.started-content {
+  border: blue;
+  background-color: white;
+}*/
 
 .footer-container {
   background: rgba(36, 48, 94);
@@ -246,3 +274,18 @@
   width: 50%;
   margin-bottom: 10px;
 }
+
+/*---------------- hub -----------------*/
+#hub-wrapper {
+  margin-top: 80px;
+}
+
+.main_content {
+  background-image: linear-gradient(rgba(36, 48, 94, 0.5), rgba(36, 48, 94, 0.2)), url("https://firebasestorage.googleapis.com/v0/b/resume-rater.appspot.com/o/hub-v2.svg?alt=media&token=d415a12d-a063-4e0c-a2c8-f8ea82a5e4ab");
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-position: center;
+  background-attachment: fixed;
+
+}
+

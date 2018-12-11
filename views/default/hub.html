@@ -24,7 +24,7 @@
 </div>
 <div class="main_content">
     <div id="vue-div" class="display:none">
-        <div class="container padded center resume_view">
+        <div id="hub-wrapper" class="container padded center resume_view">
             <h4>My Resume </h4>
             Resume Image <br>
             Resume Title <br>
@@ -207,7 +207,32 @@
             </div>
         </div>
     </div>
-</div>
+    </div>
+    <div class="footer-container">
+        <div class="footer">
+          <span>
+            <img id="logo" src="/images/logo.png" alt="ResumeRater"/>
+          </span>
+          <div>
+            Created By:
+            Ryan Cho
+            Matthew Oey
+            David Trang
+            Thomas Wong
+          </div>
+          <div>
+            Contact Us:
+            rccho@ucsc.edu
+            moey@ucsc.edu
+            datrang@ucsc.edu
+            twong40@ucsc.edu
+          </div>
+          <div class="social-media-icons">
+            <a class="fa fa-facebook" href="https://www.facebook.com/sharer/sharer.php?u={url}"></a>
+            <a class="fa fa-twitter" href="https://twitter.com/home?status={url}"></a>
+            <a class="fa fa-google" href="https://plus.google.com/share?url={url}"></a>
+          </div>
+        </div>
 </div>
 
 <script src="{{=URL('static', 'js/login.js')}}"></script>
