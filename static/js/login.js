@@ -15,6 +15,7 @@ const firestore = firebase.firestore();
 const settings = { /* your settings... */
   timestampsInSnapshots: true
 };
+let current_page = window.location.pathname.split('/').pop();
 
 firestore.settings(settings);
 firebase.auth().onAuthStateChanged(function(user) {
@@ -32,15 +33,22 @@ firebase.auth().onAuthStateChanged(function(user) {
         document.getElementById("email").innerHTML = user.email;
         document.getElementById("name").innerHTML = user.displayName;
       }
-      showResume();
-      show_user_latest_resume();
-      show_user_past_resume();
 
-      profileTab.style.display = "block";
-      hubTab.style.display = "block";
-      reviewTab.style.display = "block";
-      rateTab.style.display = "block";
-      loginTab.style.display = "none";
+      switch(current_page){
+          case "hub":
+              show_user_latest_resume();
+              show_user_past_resume();
+              break;
+          case "rateresume":
+              show_other_resume();
+              break;
+      }
+
+        profileTab.style.display = "block";
+        hubTab.style.display = "block";
+        reviewTab.style.display = "block";
+        rateTab.style.display = "block";
+        loginTab.style.display = "none";
       // User is signed in.
     } else {
       // No user is signed in."
@@ -92,7 +100,7 @@ let showResume = function(){
     );
 };
 
-let render_user_past_resume = function(doc){
+let render_user_resume_list = function(doc){
     let main_container = document.createElement('div');
     main_container.classList.add('resume_listing');
     main_container.classList.add('container');
@@ -157,11 +165,93 @@ let show_user_past_resume = function (){
                 user_resume_ref.where("upload_time", "<", doc.data().upload_time).get().then((snapshot =>
                         snapshot.docs.forEach(doc => {
                             console.log(doc.data().name);
-                            render_user_past_resume(doc);
+                            render_user_resume_list(doc);
                         })
                 ))
             })
     ))
+};
+
+let render_other_resume = function(doc){
+    let main_container = document.createElement('div');
+    main_container.classList.add('resume_listing');
+    main_container.classList.add('container');
+    main_container.onclick = function(){
+        location.href='resume_reviews';
+    };
+    main_container.onmouseover = function(){
+        main_container.style.background = "#F5F6F7";
+    };
+    main_container.onmouseout = function(){
+        main_container.style.background = "#FFFFFF";
+    };
+
+    //left half
+    let left_container = document.createElement('div');
+    left_container.classList.add("half");
+    left_container.classList.add("container");
+    let left_third_1_container = document.createElement('div');
+    left_third_1_container.classList.add("third");
+    left_container.append(left_third_1_container);
+    let left_third_2_container = document.createElement('div');
+    left_third_2_container.classList.add("third");
+    left_container.append(left_third_2_container);
+    let left_third_2_span = document.createElement('span');
+    let left_third_2_file_preview = document.createElement('i');
+    left_third_2_file_preview.classList.add("fa");
+    left_third_2_file_preview.classList.add("fa-file-text");
+    left_third_2_file_preview.classList.add("fa-5x");
+    left_third_2_file_preview.setAttribute("style", "margin: 25px auto");
+    left_third_2_span.append(left_third_2_file_preview);
+    left_third_2_container.append(left_third_2_span);
+    main_container.append(left_container);
+
+    //right half
+    let right_container = document.createElement('div');
+    right_container.classList.add("half");
+    right_container.classList.add("container");
+    let right_resume_title = document.createElement('h6');
+    right_resume_title.textContent = doc.data().name;
+    right_container.append(right_resume_title);
+    let right_resume_author = document.createElement('div');
+    right_resume_author.classList.add('listing_author');
+    right_resume_author.classList.add('listing_text');
+    right_resume_author.textContent = "Author: " + doc.data().user_name;
+    right_container.append(right_resume_author);
+    let right_resume_date = document.createElement('div');
+    right_resume_date.classList.add("listing_date");
+    right_resume_date.classList.add("listing_text");
+    let timestamp = doc.data().upload_time.toDate();
+    right_resume_date.textContent = (timestamp.getMonth()+1) + "/" + timestamp.getDate() + "/" + timestamp.getFullYear();
+    right_container.append(right_resume_date);
+    let right_resume_description = document.createElement('div');
+    right_resume_description.classList.add("listing_description");
+    right_resume_description.classList.add("listing_text");
+    right_resume_description.textContent = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer turpis enim, varius nec faucibus interdum, fringilla in ante. Nunc non luctus neque, vel sagittis risus. Donec at nisi eu nisi blandit tempor vitae in ipsum. Cras et est sit amet metus.";
+    right_container.append(right_resume_description);
+    main_container.append(right_container);
+
+    other_resume_list.append(main_container);
+};
+
+let show_other_resume = function(){
+    console.log("Hello World");
+    console.log("Current User = " + getCurrentUserId());
+    firestore.collection("resumes").orderBy("upload_time","desc").get().then((snapshot) =>
+        snapshot.docs.forEach(doc => {
+            if(doc.data().user != getCurrentUserId()){
+                // console.log("Doc name = " + doc.data().name);
+                // console.log("Doc Owner = " + doc.data().user);
+                render_other_resume(doc);
+            }
+        })
+    );
+
+    // firestore.collection("resumes").where("user", "!=", getCurrentUserId()).orderBy("upload_time","desc").get().then((snapshot =>
+    //         snapshot.docs.forEach(doc => {
+    //             console.log(doc.data().name);
+    //         })
+    // ))
 };
 
 let show_user_latest_resume = function (){
@@ -173,7 +263,6 @@ let show_user_latest_resume = function (){
                 let timestamp = doc.data().upload_time.toDate();
                 let date = (timestamp.getMonth()+1) + "/" + timestamp.getDate() + "/" + timestamp.getFullYear();
                 document.getElementById("user_latest_resume_date").innerHTML = "Upload Date: " + date;
-
             })
     ))
 };
@@ -498,7 +587,8 @@ let app = function() {
                   name:filename,
                   url: downloadURL,
                   user: getCurrentUserId(),
-                  upload_time: firebase.firestore.FieldValue.serverTimestamp()
+                  upload_time: firebase.firestore.FieldValue.serverTimestamp(),
+                  user_name:  document.getElementById("name").innerHTML
               });
               document.getElementById('uploader').value = "";
           });
