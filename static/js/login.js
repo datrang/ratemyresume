@@ -733,6 +733,7 @@ let app = function() {
     //call the update_resume_rating function from the new rating
     //also figure out how to instantly add the reply to the screen
   };
+
   let edit_reply = function(){
     //called by a button to edit your reply after publishing
     //since we have a ref to the reply that was posted , we can just use

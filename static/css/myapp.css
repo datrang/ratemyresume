@@ -291,6 +291,10 @@ background-image: url("https://firebasestorage.googleapis.com/v0/b/resume-rater.
   resize: vertical;
 }
 
+.review_button {
+    align-items: center;
+}
+
 
 #uploader {
   -webkit-appearance: none;
