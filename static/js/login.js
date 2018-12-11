@@ -140,7 +140,7 @@ let render_user_resume_list = function(doc){
     main_container.classList.add('resume_listing');
     main_container.classList.add('container');
     main_container.onclick = function(){
-        location.href='resume_reviews';
+        location.href='resume_reviews?id=' + doc.id;
     };
     main_container.onmouseover = function(){
         main_container.style.background = "#F5F6F7";
@@ -281,12 +281,6 @@ let show_other_resume = function(){
             }
         })
     );
-
-    // firestore.collection("resumes").where("user", "!=", getCurrentUserId()).orderBy("upload_time","desc").get().then((snapshot =>
-    //         snapshot.docs.forEach(doc => {
-    //             console.log(doc.data().name);
-    //         })
-    // ))
 };
 
 let show_user_latest_resume = function (){
@@ -310,7 +304,7 @@ let show_current_resume = function (current_resume_id){
         let timestamp = doc.data().upload_time.toDate();
         document.getElementById("current_resume_date");
         let date = (timestamp.getMonth()+1) + "/" + timestamp.getDate() + "/" + timestamp.getFullYear();
-        document.getElementById("user_latest_resume_date").innerHTML = "Upload Date: " + date;
+        document.getElementById("current_resume_date").innerHTML = "Upload Date: " + date;
     }).catch(function(error){
         console.log("Error getting document:", error);
     });
