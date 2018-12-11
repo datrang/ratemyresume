@@ -18,6 +18,7 @@ const settings = { /* your settings... */
 
 firestore.settings(settings);
 firebase.auth().onAuthStateChanged(function(user) {
+    let homeTab = document.getElementById("homeTab");
     let profileTab = document.getElementById("profileTab");
     let loginTab = document.getElementById("loginTab");
     let hubTab = document.getElementById("hubTab");
@@ -36,6 +37,7 @@ firebase.auth().onAuthStateChanged(function(user) {
       if(profileRating != null){
         getUserRating();
       }
+      homeTab.style.display = "none";
       profileTab.style.display = "block";
       hubTab.style.display = "block";
       reviewTab.style.display = "block";
@@ -44,6 +46,7 @@ firebase.auth().onAuthStateChanged(function(user) {
       // User is signed in.
     } else {
       // No user is signed in."
+      homeTab.style.display = "block";
       profileTab.style.display = "none";
       hubTab.style.display = "none";
       reviewTab.style.display = "none";
@@ -464,7 +467,6 @@ let app = function() {
   };
 
   let showResume = function(){
-    console.log("Show Resume");
     firestore.collection("resumes").where("user", "==", getCurrentUserId()).get().then((snapshot) =>
         snapshot.docs.forEach(doc => {
             // console.log(doc.data().name);

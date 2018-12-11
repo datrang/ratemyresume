@@ -217,6 +217,9 @@ textarea.review_textarea {
 #loginTab {
   display: none;
 }
+#homeTab {
+  display : none;
+}
 #loading {
   display : block;
 }
