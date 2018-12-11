@@ -36,6 +36,12 @@ firebase.auth().onAuthStateChanged(function(user) {
       }
       console.log(current_page);
       switch(current_page){
+          case "index":
+              let user = firebase.auth().currentUser;
+              if(user){
+                  location.href='hub';
+              }
+              break;
           case "hub":
               show_user_latest_resume();
               show_user_past_resume();
