@@ -16,21 +16,20 @@
 </div>
 <div id = "doneLoading">
 <div class="navbar">
-  <a href="#home" onClick="location.href='index';">Home</a>
-  <a id="hubTab" onClick="location.href='hub';">Hub</a>
+  <a id="homeTab" onClick="location.href='index';">Home</a>
+  <a id="hubTab" onClick="location.href='hub';">Home</a>
   <a id="rateTab" onClick="location.href='rateresume';">Rate A Resume</a>
-  <a id="reviewTab"onClick="location.href='resume_reviews';">Review A Resume</a>
   <a id="profileTab" onClick="location.href='profile';">Profile</a>
   <a id="loginTab" onClick="location.href='login';" >Login</a>
 </div>
 <div class="main_content">
     <div id="vue-div" class="display:none">
         <div class="container padded center resume_view">
-            <h4>My Resume </h4>
-            Resume Image <br>
-            Resume Title <br>
-            Average Score <br>
-
+            <h4 id="current_resume_name"></h4>
+            <iframe class="current_resume_file" id="current_resume_file" type="application/pdf"></iframe> <br>
+            <span class="current_resume_author" id="current_resume_author"></span> <br>
+            <span class="current_resume_date" id="current_resume_date"></span> <br>
+            Average Score
         </div>
 
         <div class="container center review_div">

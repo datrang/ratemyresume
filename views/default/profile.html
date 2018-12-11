@@ -11,14 +11,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <div id = "loading">
-  <br>LOADING
+    <br>LOADING
 </div>
 <div id = "doneLoading">
   <div class="navbar">
-    <a href="#home" onClick="location.href='index';">Home</a>
-    <a id="hubTab" onClick="location.href='hub';">Hub</a>
+    <a id="homeTab" onClick="location.href='index';">Home</a>
+    <a id="hubTab" onClick="location.href='hub';">Home</a>
     <a id="rateTab" onClick="location.href='rateresume';">Rate A Resume</a>
-    <a id="reviewTab"onClick="location.href='resume_reviews';">Review A Resume</a>
     <a id="profileTab" onClick="location.href='profile';">Profile</a>
     <a id="loginTab" onClick="location.href='login';" >Login</a>
   </div>
@@ -35,45 +34,44 @@
             <ul id="resume_list"></ul>
           </div>
           <h1>Profile</h1>
-          <div v-show = "!need_auth">
-            Confirm Your Account To Edit Correctly<br>
-            <button type="button" name="authorize" @click = "inverse_auth">Authorize</button>
+          <div>
+            <h3 id ="profileRating"></h3>
           </div>
-          <div v-show = "need_auth">
+          <div id = "need_auth">
+            <h3>Please Authorize Your Account To Continue</h3>
             <input type="text" id = "authEmail" placeholder="Email">
             <input type="text" id = "authPassword" placeholder="Password">
             <button type="button" name="authorize" @click = reauthenticate> Authorize</button>
-            <button type="button" name="cancel" @click = "inverse_auth">Done</button>
           </div>
           <!-- change the view of the box if they press the update email button -->
           <h4 id="email"></h4>
-          <div v-show="!show_email">
-            <button type="button" name="updateEmail" @click = "inverse_email">Update Email</button>
+          <div id = "update_email_button">
+            <button type="button" name="updateEmail" @click = "show_email_fields">Update Email</button>
           </div>
           <!-- edit your main email with cancel button -->
-          <div v-show = "show_email">
+          <div id = "update_email_field">
             <input type="text" id = "newEmail" placeholder="Email">
             <button type="button" name="updateEmail" @click = "updateEmail">Update Email</button>
-            <button type="button" name="cancel" @click = "inverse_email">Done</button>
+            <button type="button" name="cancel" @click = "show_email_button">Cancel</button>
           </div>
           <!-- open field to change password -->
-          <div v-show = "!show_password">
-            <button type="button" name="updatePassword" @click = "inverse_password">Update Password</button>
+          <div id = "update_password_button">
+            <button type="button" name="updatePassword" @click = "show_password_fields">Update Password</button>
           </div>
-          <div v-show = "show_password">
+          <div id = "update_password_field">
             <input type="text" id = "newPassword" placeholder=" New Password">
             <input type="text" id = "confirmPassword" placeholder="Confirm New Password">
             <button type="button" name="updatePassword" @click = "updatePassword">Update Password</button>
-            <button type="button" name="cancel" @click = "inverse_password">Done</button>
+            <button type="button" name="cancel" @click = "show_password_fields">Cancel</button>
           </div>
           <h4 id = "name"></h4>
-          <div v-show = "!show_name">
-            <button type="button" name="updateProfile" @click = "inverse_name">Update Profile</button>
+          <div id = "update_name_button">
+            <button type="button" name="updateProfile" @click = "show_name_fields">Update Profile</button>
           </div>
-          <div v-show = "show_name">
+          <div id = "update_name_field">
             <input type="text" id = "newName" placeholder="Name">
             <button type="button" name="updateProfile" @click = "updateProfile">Update Profile</button>
-            <button type="button" name="cancel" @click = "inverse_name"> Done</button>
+            <button type="button" name="cancel" @click = "show_name_fields"> Cancel</button>
           </div>
           <button type="button" name="delete" @click = "deleteUser"> Delete Account</button>
           <button type="button" name="signOut" @click = "signOut">Sign Out</button>
