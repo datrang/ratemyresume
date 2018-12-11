@@ -306,7 +306,12 @@ let show_current_resume = function (current_resume_id){
     firestore.collection('resumes').doc(current_resume_id).get().then(doc =>{
         document.getElementById("current_resume_name").innerHTML = doc.data().name;
         document.getElementById("current_resume_file").src = doc.data().url;
-        document.getElementById("current_resume_author").innerHTML = "Author: " + doc.data().user_name;
+        firestore.collection("users").where("uid", "==", doc.data().user).limit(1).get().then((snapshot) =>
+            snapshot.docs.forEach(user => {
+                document.getElementById("current_resume_author").innerHTML = "Author: " + user.data().name;
+            })
+        );
+        // document.getElementById("current_resume_author").innerHTML = "Author: " + doc.data().user_name;
         let timestamp = doc.data().upload_time.toDate();
         document.getElementById("current_resume_date");
         let date = (timestamp.getMonth()+1) + "/" + timestamp.getDate() + "/" + timestamp.getFullYear();
@@ -342,7 +347,11 @@ let render_current_resume_replies = function(doc){
     let left_container_half2_author = document.createElement('div');
     left_container_half2_author.classList.add('listing_author');
     left_container_half2_author.classList.add('listing_text');
-    left_container_half2_author.innerHTML = doc.data().author;
+    firestore.collection("users").where("uid", "==", doc.data().uid).limit(1).get().then((snapshot) =>
+        snapshot.docs.forEach(user => {
+            left_container_half2_author.innerHTML = user.data().name;
+        })
+    );
     let left_container_half2_title = document.createElement('div');
     left_container_half2_title.classList.add('listing_text');
     left_container_half2_title.innerHTML = "Software Engineer";
@@ -800,7 +809,6 @@ let app = function() {
       firestore.collection("resumes").doc(current_resume_id).collection("replies").add({
           content: resume_review_text,
           uid: getCurrentUserId(),
-          author: firebase.auth().currentUser.displayName,
           timestamp: firebase.firestore.FieldValue.serverTimestamp()
       }).then((docRef) => {
           console.log("Document written with ID: ", docRef.id);
