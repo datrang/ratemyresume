@@ -34,7 +34,7 @@ firebase.auth().onAuthStateChanged(function(user) {
         document.getElementById("email").innerHTML = user.email;
         document.getElementById("name").innerHTML = user.displayName;
       }
-      console.log(current_page);
+      // console.log(current_page);
       switch(current_page){
           case "index":
               let user = firebase.auth().currentUser;
@@ -45,6 +45,7 @@ firebase.auth().onAuthStateChanged(function(user) {
           case "hub":
               show_user_latest_resume();
               show_user_past_resume();
+              show_user_latest_resume_reviews();
               break;
           case "rateresume":
               show_other_resume();
@@ -90,9 +91,11 @@ let listing_mouseover = function(listing){
 let listing_mouseout = function(listing){
     listing.style.background = "#FFFFFF"
 };
+
 let getCurrentUserId = function(){
   return firebase.auth().currentUser.uid;
 };
+
 let setUserRating = function (newValue){
   let user = firebase.auth().currentUser;
   let users_ref = firestore.collection("users");
@@ -258,7 +261,11 @@ let render_other_resume = function(doc){
     let right_resume_author = document.createElement('div');
     right_resume_author.classList.add('listing_author');
     right_resume_author.classList.add('listing_text');
-    right_resume_author.textContent = "Author: " + doc.data().user_name;
+    firestore.collection("users").where("uid", "==", doc.data().user).limit(1).get().then((snapshot) =>
+            snapshot.docs.forEach(user => {
+                right_resume_author.textContent = "Author: " + user.data().name;
+            })
+    );
     right_container.append(right_resume_author);
     let right_resume_date = document.createElement('div');
     right_resume_date.classList.add("listing_date");
@@ -291,15 +298,42 @@ let show_other_resume = function(){
 
 let show_user_latest_resume = function (){
     firestore.collection("resumes").where("user", "==", getCurrentUserId()).orderBy("upload_time","desc").limit(1).get().then((snapshot =>
-            snapshot.docs.forEach(doc => {
-                console.log(doc.data().name);
-                document.getElementById("user_latest_resume_name").innerHTML = doc.data().name;
-                document.getElementById("user_latest_resume_file").src = doc.data().url;
-                let timestamp = doc.data().upload_time.toDate();
-                let date = (timestamp.getMonth()+1) + "/" + timestamp.getDate() + "/" + timestamp.getFullYear();
-                document.getElementById("user_latest_resume_date").innerHTML = "Upload Date: " + date;
-            })
+        {
+            if(snapshot.empty){
+                document.getElementById("user_latest_resume_name").innerHTML = "Please Upload a Resume";
+            }else{
+                snapshot.docs.forEach(doc => {
+                    console.log(doc.data().name);
+                    document.getElementById("user_latest_resume_name").innerHTML = doc.data().name;
+                    document.getElementById("user_latest_resume_file").src = doc.data().url;
+                    let timestamp = doc.data().upload_time.toDate();
+                    let date = (timestamp.getMonth()+1) + "/" + timestamp.getDate() + "/" + timestamp.getFullYear();
+                    document.getElementById("user_latest_resume_date").innerHTML = "Upload Date: " + date;
+                    document.getElementById("user_latest_resume_score").innerHTML = "Average Score: [INSERT VALUE HERE]";
+                })
+            }
+        }
     ))
+};
+
+let show_user_latest_resume_reviews = function(){
+    firestore.collection("resumes").where("user", "==", getCurrentUserId()).orderBy("upload_time","desc").limit(1).get().then((snapshot =>
+        {
+            if(snapshot.empty){
+                console.log("No Resume");
+            }else{
+                snapshot.docs.forEach(doc => {
+                    firestore.collection('resumes').doc(doc.id).collection('replies').get().then((snapshot) =>
+                        snapshot.docs.forEach(reply => {
+                            render_current_resume_replies(reply);
+                            console.log(reply.data().content);
+                            console.log(reply.data().uid);
+                        })
+                    )
+                })
+            }
+        }
+    ));
 };
 
 let show_current_resume = function (current_resume_id){
@@ -378,16 +412,16 @@ let show_current_resume_replies = function(current_resume_id){
     firestore.collection('resumes').doc(current_resume_id).collection('replies').get().then((snapshot) =>
         snapshot.docs.forEach(doc => {
             render_current_resume_replies(doc);
-            console.log(doc.data().author);
-            console.log(doc.data().content);
-            console.log(doc.data().timestamp.toDate());
+            // console.log(doc.data().author);
+            // console.log(doc.data().content);
+            // console.log(doc.data().timestamp.toDate());
         })
     );
-    console.log("show current reply");
+    // console.log("show current reply");
 };
 
 let get_user_latest_resume = function (){
-    console.log("get_user_latest_resume");
+    // console.log("get_user_latest_resume");
 };
 
 let getUserRating = function (){
@@ -724,7 +758,6 @@ let app = function() {
                   url: downloadURL,
                   user: getCurrentUserId(),
                   upload_time: firebase.firestore.FieldValue.serverTimestamp(),
-                  user_name:  document.getElementById("name").innerHTML,
                   avgRating: null,
                   numRate : 0
               })
