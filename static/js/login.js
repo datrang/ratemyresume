@@ -32,6 +32,10 @@ firebase.auth().onAuthStateChanged(function(user) {
         document.getElementById("email").innerHTML = user.email;
         document.getElementById("name").innerHTML = user.displayName;
       }
+      showResume();
+      show_user_latest_resume();
+      show_user_past_resume();
+
       profileTab.style.display = "block";
       hubTab.style.display = "block";
       reviewTab.style.display = "block";
@@ -58,26 +62,135 @@ let listing_mouseout = function(listing){
     listing.style.background = "#FFFFFF"
 };
 
+let renderResumeList = function(doc){
+    let li = document.createElement('li');
+    let name = document.createElement('span');
+    let resume = document.createElement('iframe');
+    let date = document.createElement('span');
+
+    li.setAttribute('data-id', doc.id);
+    name.textContent = doc.data().name;
+    resume.src = doc.data().url;
+    date.textContent = doc.data().upload_time.toDate();
+
+    li.appendChild(name);
+    li.appendChild(resume);
+    li.appendChild(date);
+
+    resume_list.appendChild(li);
+};
+
+let showResume = function(){
+    console.log("Show Resume");
+    firestore.collection("resumes").where("user", "==", getCurrentUserId()).get().then((snapshot) =>
+        snapshot.docs.forEach(doc => {
+            // console.log(doc.data().name);
+            // console.log(doc.data().upload_time.toDate());
+            // console.log(doc.data().url);
+            renderResumeList(doc);
+        })
+    );
+};
+
+let render_user_past_resume = function(doc){
+    let main_container = document.createElement('div');
+    main_container.classList.add('resume_listing');
+    main_container.classList.add('container');
+    main_container.onclick = function(){
+        location.href='resume_reviews';
+    };
+    main_container.onmouseover = function(){
+        main_container.style.background = "#F5F6F7";
+    };
+    main_container.onmouseout = function(){
+        main_container.style.background = "#FFFFFF";
+    };
+
+    //left half
+    let left_container = document.createElement('div');
+    left_container.classList.add("half");
+    left_container.classList.add("container");
+    let left_third_1_container = document.createElement('div');
+    left_third_1_container.classList.add("third");
+    left_container.append(left_third_1_container);
+    let left_third_2_container = document.createElement('div');
+    left_third_2_container.classList.add("third");
+    left_container.append(left_third_2_container);
+    let left_third_2_span = document.createElement('span');
+    let left_third_2_file_preview = document.createElement('i');
+    left_third_2_file_preview.classList.add("fa");
+    left_third_2_file_preview.classList.add("fa-file-text");
+    left_third_2_file_preview.classList.add("fa-5x");
+    left_third_2_file_preview.setAttribute("style", "margin: 25px auto");
+    left_third_2_span.append(left_third_2_file_preview);
+    left_third_2_container.append(left_third_2_span);
+    main_container.append(left_container);
+
+    //right half
+    let right_container = document.createElement('div');
+    right_container.classList.add("half");
+    right_container.classList.add("container");
+    let right_resume_title = document.createElement('h6');
+    right_resume_title.textContent = doc.data().name;
+    right_container.append(right_resume_title);
+    let right_resume_date = document.createElement('div');
+    right_resume_date.classList.add("listing_date");
+    right_resume_date.classList.add("listing_text");
+    let timestamp = doc.data().upload_time.toDate();
+    right_resume_date.textContent = (timestamp.getMonth()+1) + "/" + timestamp.getDate() + "/" + timestamp.getFullYear();
+    right_container.append(right_resume_date);
+    let right_resume_description = document.createElement('div');
+    right_resume_description.classList.add("listing_description");
+    right_resume_description.classList.add("listing_text");
+    right_resume_description.textContent = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer turpis enim, varius nec faucibus interdum, fringilla in ante. Nunc non luctus neque, vel sagittis risus. Donec at nisi eu nisi blandit tempor vitae in ipsum. Cras et est sit amet metus.";
+    right_container.append(right_resume_description);
+    main_container.append(right_container);
+
+    user_past_resume_list.append(main_container);
+};
+
+let show_user_past_resume = function (){
+    let user_resume_ref = firestore.collection("resumes").where("user", "==", getCurrentUserId());
+    user_resume_ref.orderBy("upload_time","desc").limit(1).get().then((snapshot =>
+            snapshot.docs.forEach(doc => {
+                console.log(doc.data().name);
+                user_resume_ref.where("upload_time", "<", doc.data().upload_time).get().then((snapshot =>
+                        snapshot.docs.forEach(doc => {
+                            console.log(doc.data().name);
+                            render_user_past_resume(doc);
+                        })
+                ))
+            })
+    ))
+};
+
+let show_user_latest_resume = function (){
+    firestore.collection("resumes").where("user", "==", getCurrentUserId()).orderBy("upload_time","desc").limit(1).get().then((snapshot =>
+            snapshot.docs.forEach(doc => {
+                console.log(doc.data().name);
+                document.getElementById("user_latest_resume_name").innerHTML= doc.data().name;
+                document.getElementById("user_latest_resume_file").src = doc.data().url;
+                let timestamp = doc.data().upload_time.toDate();
+                let date = (timestamp.getMonth()+1) + "/" + timestamp.getDate() + "/" + timestamp.getFullYear();
+                document.getElementById("user_latest_resume_date").innerHTML = "Upload Date: " + date;
+
+            })
+    ))
+};
+
+let get_user_latest_resume = function (){
+    console.log("get_user_latest_resume");
+};
+
+let getCurrentUserId = function(){
+    return firebase.auth().currentUser.uid;
+};
+
 let app = function() {
 
   let self = {};
 
   Vue.config.silent = false; // show all warnings
-
-  // Extends an array
-  self.extend = function(a, b) {
-    for (var i = 0; i < b.length; i++) {
-      a.push(b[i]);
-    }
-  };
-
-  // Enumerates an array.
-  let enumerate = function(arr) {
-    let k = 0;
-    return arr.map(function(e) {
-      e._idx = k++;
-    });
-  };
 
   // Sign In Through Firebase
   let signIn = function() {
@@ -301,55 +414,6 @@ let app = function() {
       });
   };
 
-  // let updateProfile = function(){
-  //   //get documentbyId here and update down below
-  //   let user = firebase.auth().currentUser;
-  //   let name = document.getElementById("newName").value;
-  //   user.updateProfile({
-  //     displayName: name,
-  //     // photoURL: "https://example.com/jane-q-user/profile.jpg"
-  //   }).then(function() {
-  //       // Update successful.
-  //       let token = getCurrentUserId();
-  //       firestore.collection("users").where("uid", "==", token).limit(1).get().then((snapshot) =>
-  //           snapshot.docs.forEach(doc => {
-  //               doc.update({
-  //                   name: name
-  //               }).then(function(doc){
-  //                   console.log("Document written with ID: ", docRef.id);
-  //               }).catch(function(error){
-  //                   console.error("Error adding document: ", error);
-  //               });
-  //               console.log("Successfully updated profile");
-  //               document.getElementById("profileSuccess").innerHTML = "Successfully Updated Name";
-  //               refresh();
-  //               this.show_name = false;
-  //           }))
-  //   }).catch(function(error) {
-  //       console.log("Error updating profile ", error);
-  //       document.getElementById("profileError").innerHTML = error;
-  //   });
-  //
-  //   //   userRef.update({
-  //   //     name: name
-  //   //   })
-  //   //   .then(function(docRef) {
-  //   //     console.log("Document written with ID: ", docRef.id);
-  //   //   })
-  //   //   .catch(function(error) {
-  //   //       console.error("Error adding document: ", error);
-  //   //   });
-  //   //   console.log("Successfully updated profile");
-  //   //   document.getElementById("profileSuccess").innerHTML = "Successfully Updated Name";
-  //   //   refresh();
-  //   //   this.show_name = false;
-  //   // }).catch(function(error) {
-  //   // // An error happened.
-  //   //   console.log("Error updating profile ", error);
-  //   //   document.getElementById("profileError").innerHTML = error;
-  //   // });
-  // };
-
   let reauthenticate = function(){
     let user = firebase.auth().currentUser;
     //get their provided ids
@@ -441,34 +505,11 @@ let app = function() {
       });
   };
 
-  let renderResumeList = function(doc){
-      let li = document.createElement('li');
-      let name = document.createElement('span');
-      let resume = document.createElement('iframe');
-      let date = document.createElement('span');
-
-      li.setAttribute('data-id', doc.id);
-      name.textContent = doc.data().name;
-      resume.src = doc.data().url;
-      date.textContent = doc.data().upload_time.toDate();
-
-      li.appendChild(name);
-      li.appendChild(resume);
-      li.appendChild(date);
-
-      resume_list.appendChild(li);
-  };
-
-  let showResume = function(){
-    console.log("Show Resume");
-    firestore.collection("resumes").where("user", "==", getCurrentUserId()).get().then((snapshot) =>
-        snapshot.docs.forEach(doc => {
-            // console.log(doc.data().name);
-            // console.log(doc.data().upload_time.toDate());
-            // console.log(doc.data().url);
-            renderResumeList(doc);
-        })
-    );
+  let get_latest_resume = function(){
+      console.log("Getting latest resume");
+      let query = firestore.collection("resumes").where("user", "==", getCurrentUserId());
+      query = query.orderBy("upload_time");
+      console.log(query);
   };
 
   let checkLogin = function(){
@@ -487,10 +528,12 @@ let app = function() {
             loginTab.style.display = "block";
           }
       });
-  }
-  var revealPassword = function() {
-    var x = document.getElementById("signPassword");
-    var y = document.getElementById("signConfirmPassword");
+  };
+
+
+  let revealPassword = function() {
+    let x = document.getElementById("signPassword");
+    let y = document.getElementById("signConfirmPassword");
     if (x.type && y.type === "password") {
         x.type = "text";
         y.type = "text";
@@ -499,7 +542,7 @@ let app = function() {
         x.type = "password";
         y.type = "password";
     }
-  }
+  };
 
 
   let getCurrentUserId = function(){
@@ -582,13 +625,14 @@ let app = function() {
         checkLogin : checkLogin,
         show_past_resume: show_past_resume,
         show_feedback: show_feedback,
+        get_latest_resume: get_latest_resume,
         home_upload_button : home_upload_button,
         home_login_button : home_login_button,
         revealPassword : revealPassword
     }
   });
 
-  showResume();
+
   return self;
 };
 
