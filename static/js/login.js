@@ -311,7 +311,7 @@ let show_current_resume = function (current_resume_id){
         document.getElementById("current_resume_file").src = doc.data().url;
         document.getElementById("current_resume_author").innerHTML = "Author: " + doc.data().user_name;
         let timestamp = doc.data().upload_time.toDate();
-        document.getElementById("current_resume_date")
+        document.getElementById("current_resume_date");
         let date = (timestamp.getMonth()+1) + "/" + timestamp.getDate() + "/" + timestamp.getFullYear();
         document.getElementById("user_latest_resume_date").innerHTML = "Upload Date: " + date;
     }).catch(function(error){
@@ -323,10 +323,6 @@ let get_user_latest_resume = function (){
     console.log("get_user_latest_resume");
 };
 
-let getCurrentUserId = function(){
-    return firebase.auth().currentUser.uid;
-};
-  
 let getUserRating = function (){
   let user = firebase.auth().currentUser;
   let users_ref = firestore.collection("users");
@@ -661,7 +657,7 @@ let app = function() {
                   url: downloadURL,
                   user: getCurrentUserId(),
                   upload_time: firebase.firestore.FieldValue.serverTimestamp(),
-                  user_name:  document.getElementById("name").innerHTML
+                  user_name:  document.getElementById("name").innerHTML,
                   avgRating: null,
                   numRate : 0
               })
