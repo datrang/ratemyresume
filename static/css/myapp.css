@@ -20,7 +20,7 @@
 
 /* The navigation bar */
 .navbar {
-  background: rgba(36, 48, 94, 1);
+  background: rgba(36, 48, 94, 0);
   overflow: hidden;
   position: fixed; /* Set the navbar to fixed position */
   top: 0; /* Position the navbar at the top of the page */
