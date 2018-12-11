@@ -45,9 +45,13 @@ firebase.auth().onAuthStateChanged(function(user) {
           case "hub":
               show_user_latest_resume();
               show_user_past_resume();
+              getResumeHubRating("hubResumeRating");
               break;
           case "rateresume":
               show_other_resume();
+              break;
+          case "profile":
+              getUserRating("profileRating");
               break;
           case "resume_reviews":
               console.log("Resume Review");
@@ -61,9 +65,6 @@ firebase.auth().onAuthStateChanged(function(user) {
               break;
       }
 
-      if(profileRating != null){
-        getUserRating();
-      }
       homeTab.style.display = "none";
       profileTab.style.display = "block";
       hubTab.style.display = "block";
@@ -99,8 +100,63 @@ let setUserRating = function (newValue){
       snapshot.docs.forEach(doc => {
           console.log(doc.id);
           let user_ref = firestore.collection("users").doc(doc.id);
+          let newTotal = doc.data().totalRating + newValue;
+          let newCount = doc.data().numRate + 1;
           user_ref.update({
-              avgRating : newValue
+              totalRating : newTotal,
+              numRate : newCount
+          }).then(function(){
+              console.log("Database upated");
+          }).catch(function(error){
+              console.log("Error updating user: ", error);
+          })
+      })
+  );
+};
+let getUserRating = function (ratingField){
+  let user = firebase.auth().currentUser;
+  let users_ref = firestore.collection("users");
+  users_ref.where("uid", "==", getCurrentUserId()).limit(1).get().then((snapshot) =>
+      snapshot.docs.forEach(doc => {
+        let total = doc.data().totalRating;
+        let num = doc.data().numRate;
+        if(num == 0){
+          document.getElementById(ratingField).innerHTML = "No Ratings So Far";
+        }
+        else{
+          document.getElementById(ratingField).innerHTML = total/num;
+        }
+      })
+  );
+};
+
+let getResumeHubRating = function(ratingField){
+  let user = firebase.auth().currentUser;
+  let users_ref = firestore.collection("resumes");
+  users_ref.where("user", "==", getCurrentUserId()).orderBy("upload_time","desc").limit(1).get().then((snapshot) =>
+      snapshot.docs.forEach(doc => {
+        let total = doc.data().totalRating;
+        let num = doc.data().numRate;
+        if(num == 0){
+          document.getElementById(ratingField).innerHTML = "No Ratings So Far";
+        }
+        else{
+          document.getElementById(ratingField).innerHTML = total/num;
+        }
+      })
+  );
+}
+let setResumeRating = function(newValue){
+  let user = firebase.auth().currentUser;
+  let users_ref = firestore.collection("resumes");
+  users_ref.where("user", "==", getCurrentUserId()).limit(1).get().then((snapshot) =>
+      snapshot.docs.forEach(doc => {
+          let user_ref = firestore.collection("resumes").doc(doc.id);
+          let newTotal = doc.data().totalRating + newValue;
+          let newCount = doc.data().numRate + 1;
+          user_ref.update({
+              totalRating : newTotal,
+              numRate : newCount
           }).then(function(){
               console.log("Database upated");
               document.getElementById("profileSuccess").innerHTML = "Successfully Updated Profile";
@@ -186,12 +242,20 @@ let render_user_resume_list = function(doc){
     right_resume_date.classList.add("listing_date");
     right_resume_date.classList.add("listing_text");
     let timestamp = doc.data().upload_time.toDate();
-    right_resume_date.textContent = (timestamp.getMonth()+1) + "/" + timestamp.getDate() + "/" + timestamp.getFullYear();
+    right_resume_date.textContent = "Upload Date: " +(timestamp.getMonth()+1) + "/" + timestamp.getDate() + "/" + timestamp.getFullYear();
     right_container.append(right_resume_date);
     let right_resume_description = document.createElement('div');
     right_resume_description.classList.add("listing_description");
     right_resume_description.classList.add("listing_text");
-    right_resume_description.textContent = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer turpis enim, varius nec faucibus interdum, fringilla in ante. Nunc non luctus neque, vel sagittis risus. Donec at nisi eu nisi blandit tempor vitae in ipsum. Cras et est sit amet metus.";
+    right_resume_description.textContent = doc.data().description;
+    right_container.append(right_resume_description);
+    let right_resume_rating = document.createElement('div');
+    right_resume_description.classList.add("listing_rating");
+    right_resume_description.classList.add("listing_text");
+    let total = doc.data().totalRating;
+    let numCount = doc.data().numRate;
+    if(numCount == 0){right_resume_description.textContent = "No Ratings So Far";}
+    else {right_resume_description.textContent = total/numCount;}
     right_container.append(right_resume_description);
     main_container.append(right_container);
 
@@ -320,16 +384,6 @@ let get_user_latest_resume = function (){
     console.log("get_user_latest_resume");
 };
 
-let getUserRating = function (){
-  let user = firebase.auth().currentUser;
-  let users_ref = firestore.collection("users");
-  users_ref.where("uid", "==", getCurrentUserId()).limit(1).get().then((snapshot) =>
-      snapshot.docs.forEach(doc => {
-        document.getElementById("profileRating").innerHTML = doc.data().avgRating;
-      })
-  );
-};
-
 let app = function() {
 
   let self = {};
@@ -419,7 +473,7 @@ let app = function() {
               name: n,
               email: e,
               uid: token,
-              avgRating: null,
+              totalRating: 0,
               numRate : 0
             })
             .then(function(docRef) {
@@ -639,6 +693,7 @@ let app = function() {
 
   let uploadResume = function(){
       let selectedFile = document.getElementById('uploader').files[0];
+      let uploadDescription = document.getElementById("uploadDescription").value;
       let filename = selectedFile.name;
       let storageRef = firebase.storage().ref('/resumes/' + filename);
       let uploadTask = storageRef.put(selectedFile);
@@ -655,10 +710,13 @@ let app = function() {
                   user: getCurrentUserId(),
                   upload_time: firebase.firestore.FieldValue.serverTimestamp(),
                   user_name:  document.getElementById("name").innerHTML,
-                  avgRating: null,
-                  numRate : 0
+                  totalRating: 0,
+                  numRate : 0,
+                  description : uploadDescription
               })
               .then(function(){
+                document.getElementById("upload_button").style.display = "block";
+                document.getElementById("upload_field").style.display = "none";
                 document.getElementById("profileSuccess").innerHTML = "Uploaded Resume!"
               })
               .catch(function(error){
@@ -668,7 +726,6 @@ let app = function() {
           });
       });
   };
-
   let get_latest_resume = function(){
       console.log("Getting latest resume");
       let query = firestore.collection("resumes").where("user", "==", getCurrentUserId());
@@ -814,6 +871,16 @@ let app = function() {
   let show_feedback = function() {
       this.show_resume_feedback = !this.show_resume_feedback;
   };
+  let show_upload_fields = function(){
+    document.getElementById("upload_button").style.display = "none";
+    document.getElementById("upload_field").style.display = "block";
+  };
+
+  let show_upload_button = function(){
+    document.getElementById("upload_field").style.display = "none";
+    document.getElementById("upload_button").style.display = "block";
+  }
+
   let home_upload_button = function(){
     var user = firebase.auth().currentUser;
      if(user != null){
@@ -855,6 +922,8 @@ let app = function() {
         show_password_fields : show_password_fields,
         show_name_button : show_name_button,
         show_name_fields : show_name_fields,
+        show_upload_button : show_upload_button,
+        show_upload_fields : show_upload_fields,
         reauthenticate : reauthenticate,
         updateEmail : updateEmail,
         updatePassword : updatePassword,
