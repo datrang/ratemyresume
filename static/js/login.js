@@ -19,6 +19,7 @@ let current_page = window.location.pathname.split('/').pop();
 
 firestore.settings(settings);
 firebase.auth().onAuthStateChanged(function(user) {
+    let homeTab = document.getElementById("homeTab");
     let profileTab = document.getElementById("profileTab");
     let loginTab = document.getElementById("loginTab");
     let hubTab = document.getElementById("hubTab");
@@ -26,6 +27,7 @@ firebase.auth().onAuthStateChanged(function(user) {
     let reviewTab = document.getElementById("reviewTab");
     let email = document.getElementById("email");
     let name = document.getElementById("name");
+    let profileRating = document.getElementById("profileRating");
     loading.style.display = "block";
     doneLoading.style.display = "none";
     if (user) {
@@ -33,7 +35,6 @@ firebase.auth().onAuthStateChanged(function(user) {
         document.getElementById("email").innerHTML = user.email;
         document.getElementById("name").innerHTML = user.displayName;
       }
-
       console.log(current_page);
       switch(current_page){
           case "hub":
@@ -54,15 +55,20 @@ firebase.auth().onAuthStateChanged(function(user) {
               show_current_resume(current_resume_id);
               break;
       }
-
-        profileTab.style.display = "block";
-        hubTab.style.display = "block";
-        reviewTab.style.display = "block";
-        rateTab.style.display = "block";
-        loginTab.style.display = "none";
+      
+      if(profileRating != null){
+        getUserRating();
+      }
+      homeTab.style.display = "none";
+      profileTab.style.display = "block";
+      hubTab.style.display = "block";
+      reviewTab.style.display = "block";
+      rateTab.style.display = "block";
+      loginTab.style.display = "none";
       // User is signed in.
     } else {
       // No user is signed in."
+      homeTab.style.display = "block";
       profileTab.style.display = "none";
       hubTab.style.display = "none";
       reviewTab.style.display = "none";
@@ -79,6 +85,27 @@ let listing_mouseover = function(listing){
 
 let listing_mouseout = function(listing){
     listing.style.background = "#FFFFFF"
+};
+let getCurrentUserId = function(){
+  return firebase.auth().currentUser.uid;
+};
+let setUserRating = function (newValue){
+  let user = firebase.auth().currentUser;
+  let users_ref = firestore.collection("users");
+  users_ref.where("uid", "==", getCurrentUserId()).limit(1).get().then((snapshot) =>
+      snapshot.docs.forEach(doc => {
+          console.log(doc.id);
+          let user_ref = firestore.collection("users").doc(doc.id);
+          user_ref.update({
+              avgRating : newValue
+          }).then(function(){
+              console.log("Database upated");
+              document.getElementById("profileSuccess").innerHTML = "Successfully Updated Profile";
+          }).catch(function(error){
+              console.log("Error updating user: ", error);
+          })
+      })
+  );
 };
 
 let renderResumeList = function(doc){
@@ -299,6 +326,16 @@ let get_user_latest_resume = function (){
 let getCurrentUserId = function(){
     return firebase.auth().currentUser.uid;
 };
+  
+let getUserRating = function (){
+  let user = firebase.auth().currentUser;
+  let users_ref = firestore.collection("users");
+  users_ref.where("uid", "==", getCurrentUserId()).limit(1).get().then((snapshot) =>
+      snapshot.docs.forEach(doc => {
+        document.getElementById("profileRating").innerHTML = doc.data().avgRating;
+      })
+  );
+};
 
 let app = function() {
 
@@ -388,16 +425,17 @@ let app = function() {
           firestore.collection("users").add({
               name: n,
               email: e,
-              uid: token
-
+              uid: token,
+              avgRating: null,
+              numRate : 0
             })
             .then(function(docRef) {
+              location.href = 'hub';
               console.log("Document written with ID: ", docRef.id);
             })
             .catch(function(error) {
               console.error("Error adding document: ", error);
             });
-          location.href = 'hub';
         })
         .catch(function(error) {
           // Handle Errors here.
@@ -431,12 +469,14 @@ let app = function() {
     //get documentbyId ref to the new email in profile
     let user = firebase.auth().currentUser;
     let newEmail = document.getElementById("newEmail").value;
-    console.log(newEmail);
     if(newEmail == null){
       document.getElementById("error_message").innerHTML = "Must Type A Valid Email";
     }
     else {
       user.updateEmail(newEmail).then(function() {
+        document.getElementById("need_auth").style.display = "none";
+        document.getElementById("update_email_field").style.display = "none";
+        document.getElementById("update_email_button").style.display = "block";
           let users_ref = firestore.collection("users");
           users_ref.where("uid", "==", getCurrentUserId()).limit(1).get().then((snapshot) =>
               snapshot.docs.forEach(doc => {
@@ -456,8 +496,9 @@ let app = function() {
           );
       }).catch(function(error) {
         // An error happened.
-        console.log("Error updating email ", error)
+        console.log("Error updating email ", error);
         document.getElementById("profileError").innerHTML = error;
+        document.getElementById("need_auth").style.display = "block";
       });
     }
   };
@@ -487,14 +528,17 @@ let app = function() {
     let newPassword = document.getElementById("newPassword").value;
       if(validatePassword()){
         user.updatePassword(newPassword).then(function() {
+          document.getElementById("need_auth").style.display = "none";
+          document.getElementById("update_password_field").style.display = "none";
+          document.getElementById("update_password_button").style.display = "block";
           console.log("Successfully updated Password");
-          this.show_password = false;
           document.getElementById("profileSuccess").innerHTML = "Success Updated Password";
           // Update successful.
         }).catch(function(error) {
           // An error happened.
           console.log("Error Updating Password ", error);
           document.getElementById("profileError").innerHTML = error;
+          document.getElementById("need_auth").style.display = "block";
         });
       }
   };
@@ -506,6 +550,8 @@ let app = function() {
       user.updateProfile({
           displayName: name
       }).then(function(){
+        document.getElementById("update_name_field").style.display = "none";
+        document.getElementById("update_name_button").style.display = "block";
           users_ref.where("uid", "==", getCurrentUserId()).limit(1).get().then((snapshot) =>
               snapshot.docs.forEach(doc => {
                   console.log(doc.id);
@@ -542,7 +588,7 @@ let app = function() {
       // User re-authenticated.
       console.log("Successfully reauthenticated");
       this.edit = true;
-      this.need_auth = false;
+      document.getElementById("need_auth").style.display = "none";
       document.getElementById("profileSuccess").innerHTML = "Successfully Authorized";
     }).catch(function(error) {
       // An error happened.
@@ -560,6 +606,7 @@ let app = function() {
     }
     else{
       user.delete().then(function() {
+        document.getElementById("need_auth").style.display = "none";
         console.log("Successfully deleted account");
         location.href='login';
         // User deleted.
@@ -567,6 +614,7 @@ let app = function() {
         // An error happened.
         console.log("Error deleting account ", error);
         document.getElementById("profileError").innerHTML = error;
+        document.getElementById("need_auth").style.display = "block";
       });
     }
   };
@@ -614,6 +662,14 @@ let app = function() {
                   user: getCurrentUserId(),
                   upload_time: firebase.firestore.FieldValue.serverTimestamp(),
                   user_name:  document.getElementById("name").innerHTML
+                  avgRating: null,
+                  numRate : 0
+              })
+              .then(function(){
+                document.getElementById("profileSuccess").innerHTML = "Uploaded Resume!"
+              })
+              .catch(function(error){
+                document.getElementById("profileErro  r").innerHTML = error;
               });
               document.getElementById('uploader').value = "";
           });
@@ -625,6 +681,35 @@ let app = function() {
       let query = firestore.collection("resumes").where("user", "==", getCurrentUserId());
       query = query.orderBy("upload_time");
       console.log(query);
+  };
+
+  let renderResumeList = function(doc){
+      let li = document.createElement('li');
+      let name = document.createElement('span');
+      let resume = document.createElement('iframe');
+      let date = document.createElement('span');
+
+      li.setAttribute('data-id', doc.id);
+      name.textContent = doc.data().name;
+      resume.src = doc.data().url;
+      date.textContent = doc.data().upload_time.toDate();
+
+      li.appendChild(name);
+      li.appendChild(resume);
+      li.appendChild(date);
+
+      resume_list.appendChild(li);
+  };
+
+  let showResume = function(){
+    firestore.collection("resumes").where("user", "==", getCurrentUserId()).get().then((snapshot) =>
+        snapshot.docs.forEach(doc => {
+            // console.log(doc.data().name);
+            // console.log(doc.data().upload_time.toDate());
+            // console.log(doc.data().url);
+            renderResumeList(doc);
+        })
+    );
   };
 
   let checkLogin = function(){
@@ -645,10 +730,47 @@ let app = function() {
       });
   };
 
-
-  let revealPassword = function() {
-    let x = document.getElementById("signPassword");
-    let y = document.getElementById("signConfirmPassword");
+  let add_reply = function(){
+    //called from a button call from the page
+    //gets a ref to the resume that is currently being viewed/replied
+    //goes into the database for resumes and by ref finding the correct resume
+    //if there is not a collection for replies, make one, if there is then
+    //access it, Create a new docment that is the reply from the current user
+    //in the fields are : reply, user, timestamp, rating
+    //call the update_resume_rating function from the new rating
+    //also figure out how to instantly add the reply to the screen
+  };
+  let edit_reply = function(){
+    //called by a button to edit your reply after publishing
+    //since we have a ref to the reply that was posted , we can just use
+    //database functions to make sure this is the right user so the button
+    //appears, easy database update to updatetime and message
+  }
+  let delete_reply = function() {
+    //go into the db and find their reply and delete it
+    //also need to figure out how to update the resume rating
+    //back to whatit was before, maybe some math involved
+    //user rating will not change so they can fix their rating
+  }
+  let update_resume_rating = function (rating){
+    //need reference to the resume being rated and the rating added
+    //this function should be called from add_reply
+    //goes into the resume that is ref by the previous statement
+    //updates the numRate by 1 and updates the avg Rating for the resume
+  };
+  let update_user_rating = function (rating){
+    //in reply to rating a review given to you on helpfullness
+    //given the reply ref we can know which user this was from
+    //and we can find them in the database, we also pass in the
+    //rating if we need to? (not sure yet), since we know the
+    //rating the other user just gave the reply, we take that Rating
+    //and go the user profile and increment numRate by 1 and
+    //update the avg rating of the user
+  };
+  
+  var revealPassword = function() {
+    var x = document.getElementById("signPassword");
+    var y = document.getElementById("signConfirmPassword");
     if (x.type && y.type === "password") {
         x.type = "text";
         y.type = "text";
@@ -664,21 +786,33 @@ let app = function() {
     return firebase.auth().currentUser.uid;
   };
 
-  let inverse_email = function(){
-    this.show_email = !this.show_email;
+  let show_email_fields = function(){
+    document.getElementById("update_email_field").style.display = "block";
+    document.getElementById("update_email_button").style.display = "none";
   };
 
-  let inverse_password = function(){
-    this.show_password = !this.show_password;
+  let show_email_button = function(){
+    document.getElementById("update_email_field").style.display = "none";
+    document.getElementById("update_email_button").style.display = "block";
+  }
+  let show_password_fields = function(){
+    document.getElementById("update_password_field").style.display = "block";
+    document.getElementById("update_password_button").style.display = "none";
   };
 
-  let inverse_auth = function(){
-    this.need_auth = !this.need_auth;
+  let show_password_button = function(){
+    document.getElementById("update_password_field").style.display = "none";
+    document.getElementById("update_password_button").style.display = "block";
+  }
+  let show_name_fields = function(){
+    document.getElementById("update_name_field").style.display = "block";
+    document.getElementById("update_name_button").style.display = "none";
   };
 
-  let inverse_name = function(){
-    this.show_name = !this.show_name;
-  };
+  let show_name_button = function(){
+    document.getElementById("update_name_field").style.display = "none";
+    document.getElementById("update_name_button").style.display = "block";
+  }
 
   let show_past_resume = function() {
       this.show_past_resumes = !this.show_past_resumes;
@@ -711,10 +845,6 @@ let app = function() {
     delimiters: ['${', '}'],
     unsafeDelimiters: ['!{', '}'],
     data: {
-      show_email : false,
-      show_password : false,
-      show_name : false,
-      need_auth : false,
       authD : false,
       show_past_resumes: false,
       show_resume_feedback: false,
@@ -726,10 +856,12 @@ let app = function() {
         signOut : signOut,
         validateSignUp: validateSignUp,
         resetPassword : resetPassword,
-        inverse_auth : inverse_auth,
-        inverse_email : inverse_email,
-        inverse_password : inverse_password,
-        inverse_name : inverse_name,
+        show_email_button : show_email_button,
+        show_email_fields : show_email_fields,
+        show_password_button : show_password_button,
+        show_password_fields : show_password_fields,
+        show_name_button : show_name_button,
+        show_name_fields : show_name_fields,
         reauthenticate : reauthenticate,
         updateEmail : updateEmail,
         updatePassword : updatePassword,
