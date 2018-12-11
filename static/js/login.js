@@ -284,12 +284,6 @@ let show_other_resume = function(){
             }
         })
     );
-
-    // firestore.collection("resumes").where("user", "!=", getCurrentUserId()).orderBy("upload_time","desc").get().then((snapshot =>
-    //         snapshot.docs.forEach(doc => {
-    //             console.log(doc.data().name);
-    //         })
-    // ))
 };
 
 let show_user_latest_resume = function (){
@@ -313,7 +307,7 @@ let show_current_resume = function (current_resume_id){
         let timestamp = doc.data().upload_time.toDate();
         document.getElementById("current_resume_date");
         let date = (timestamp.getMonth()+1) + "/" + timestamp.getDate() + "/" + timestamp.getFullYear();
-        document.getElementById("user_latest_resume_date").innerHTML = "Upload Date: " + date;
+        document.getElementById("current_resume_date").innerHTML = "Upload Date: " + date;
     }).catch(function(error){
         console.log("Error getting document:", error);
     });
