@@ -1,23 +1,25 @@
 {{extend 'layout.html'}}
-
 {{block head}}
-
 {{end}}
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Welcome to Resume Rater</title>
   <link href="../static/css/stupid.css" rel="stylesheet" type="text/css"/>
   <link href="../static/css/myapp.css" rel="stylesheet" type="text/css"/>
-  <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js"></script>
   <link href="../static/css/custom.css" rel="stylesheet" type="text/css"/>
   <script src="{{=URL('static', 'js/vue.js')}}"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js"></script>
 </head>
+
 <body>
-<div id = "loading">
+  <div id = "loading">
     <br>LOADING
-</div>
+  </div>
+
   <div id = "doneLoading">
     <div class="navbar">
       <a id="homeTab" onClick="location.href='index';">Home</a>
@@ -26,94 +28,93 @@
       <a id="profileTab" onClick="location.href='profile';">Profile</a>
       <a id="loginTab" onClick="location.href='login';" >Login</a>
     </div>
-<div id="vue-div" class="display:none">
-  <div class="header-logo">
-      <img id="logo" src="/images/logo.png" />
-  </div>
 
-  <div class="header-wrapper">
-      <div class="header-content">
+    <div id="vue-div" class="display:none">
+      <div class="header-wrapper">
+        <div class="header-logo">
+          <img id="logo" src="/images/logo.png" alt="Logo"/>
+        </div>
+        <div class="header-content">
           <h1 id="hero-title">Welcome to ResumeRater</h1>
           <button @Click="home_upload_button">Upload Your Resume</button>
-          <button @Click="home_login_button">Log In</button>
+        </div>
       </div>
-  </div>
 
-  <div class="how-it-works-wrapper">
-      <div class="how-it-works-content">
+      <div class="how-it-works-wrapper">
+        <div class="how-it-works-content">
           <h2 id="how-title">How It Works</h2>
           <p>It's easy as 1, 2, 3!</p>
+        </div>
       </div>
-  </div>
 
-  <div class="steps-container">
-      <div class="steps">
-          <span>step 1 goes here</span>
+      <div class="steps-container">
+          <span class="step1">kkkk</span>
           <div>step 2 goes here</div>
           <div>step 3 goes here</div>
-      </div>
-  </div>
+        </div>
 
-  <div class="desc-container">
-      <div class="desc">
+      <div class="desc-container">
+        <div class="desc">
           <span>
-              description for step 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris turpis nulla, congue sit amet fermentum sit amet, rutrum at augue.
+            description for step 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris turpis nulla, congue sit amet fermentum sit amet, rutrum at augue.
           </span>
           <div>
-              description for step 2: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris turpis nulla, congue sit amet fermentum sit amet, rutrum at augue.
+            description for step 2: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris turpis nulla, congue sit amet fermentum sit amet, rutrum at augue.
           </div>
           <div>
-              description for step 3: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris turpis nulla, congue sit amet fermentum sit amet, rutrum at augue.
+            description for step 3: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris turpis nulla, congue sit amet fermentum sit amet, rutrum at augue.
           </div>
+        </div>
       </div>
-  </div>
 
       <div class="why-container">
-          <div class="why">
-              <span>
-                  <span>Why Choose ResumeRater</span>
-              </span>
-              <div>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris turpis nulla, congue sit amet fermentum sit amet, rutrum at augue. Donec varius ipsum et condimentum ultrices. Proin vel ullamcorper leo. Quisque in nisi tincidunt, maximus dolor in, fringilla nibh. Etiam tempor posuere massa nec porta. Vivamus volutpat blandit mauris, in imperdiet ex accumsan in. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-              </div>
-          </div>
-      </div>
-
-
-  <div class="started">
-      <h2>Get Started!</h2>
-      <br>
-      <br>
-      <button @click="home_upload_button">Upload Your Resume</button>
-  </div>
-
-  <div class="footer-container">
-      <div class="footer">
+        <div class="why">
           <span>
-             <img id="logo" src="/images/logo.png" />
+            <h2>Why Choose ResumeRater?</h2>
           </span>
           <div>
-              Created By:
-              Ryan Cho
-              Matthew Oey
-              David Trang
-              Thomas Wong
-          </div>
-          <div>
-              Contact Us:
-              rccho@ucsc.edu
-              moey@ucsc.edu
-              datrang@ucsc.edu
-              twong40@ucsc.edu
-          </div>
-          <div>
-              --Social Media Icons---
-          </div>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris turpis nulla, congue sit amet fermentum sit amet, rutrum at augue. Donec varius ipsum et condimentum ultrices. Proin vel ullamcorper leo. Quisque in nisi tincidunt, maximus dolor in, fringilla nibh. Etiam tempor posuere massa nec porta. Vivamus volutpat blandit mauris, in imperdiet ex accumsan in. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+        </div>
+        </div>
       </div>
+
+      <div class="started-wrapper">
+        <div class="started-content">
+            <h2>Get Started!</h2>
+            <br>
+            <br>
+            <button @click="home_upload_button">Upload Your Resume</button>
+        </div>
+      </div>
+      <div class="footer-container">
+        <div class="footer">
+          <span>
+            <img id="logo" src="/images/logo.png" alt="ResumeRater"/>
+          </span>
+          <div>
+            Created By:
+            Ryan Cho
+            Matthew Oey
+            David Trang
+            Thomas Wong
+          </div>
+          <div>
+            Contact Us:
+            rccho@ucsc.edu
+            moey@ucsc.edu
+            datrang@ucsc.edu
+            twong40@ucsc.edu
+          </div>
+          <div class="social-media-icons">
+            <a class="fa fa-facebook" href="https://www.facebook.com/sharer/sharer.php?u={url}"></a>
+            <a class="fa fa-twitter" href="https://twitter.com/home?status={url}"></a>
+            <a class="fa fa-google" href="https://plus.google.com/share?url={url}"></a>
+          </div>
+        </div>
+      </div>
+
+    </div>
   </div>
-  </div>
-  <!-- <div class="test"></div>
-   -->
-  </div>
+</body>
 
 <script src="{{=URL('static', 'js/login.js')}}"></script>

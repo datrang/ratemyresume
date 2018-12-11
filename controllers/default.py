@@ -13,14 +13,10 @@ def index():
     # We just want to expand the template.
     return dict()
 
-
 def hub():
     return dict()
-
-
 def rateresume():
     return dict()
-
 
 def resume_reviews():
     return dict()

@@ -1,81 +1,87 @@
-/* line 1, ../sass/_main.scss */
+/*CSS for myapp*/
+
 .colorful {
-  color: #bb8833;
-}
-
-/* line 5, ../sass/_main.scss */
-div.main_content {
-  padding: 16px;
-}
-/* line 8, ../sass/_main.scss */
-div.main_content div.form_row {
-  margin-top: 8px;
-  margin-bottom: 8px;
-}
-/* line 13, ../sass/_main.scss */
-div.main_content div.post_div {
-  margin: 4px;
-  border: 1px black solid;
-  background-color: #eeeeee;
-  padding: 4px;
-}
-/* line 18, ../sass/_main.scss */
-div.main_content div.post_div .post_title {
-  font-size: 120%;
-}
-/* line 22, ../sass/_main.scss */
-div.main_content i.changed {
-  color: #777777;
-}
-/* line 25, ../sass/_main.scss */
-div.main_content span.likers_list {
-  color: #7777cc;
-}
-
-.grayiconcolor {
-  color:slategray;
+  color: #f8e9a1;
 }
 
 .blackiconcolor {
   color:black;
 }
 
-
-div.resume_listing {
-    border-radius: 3px;
-    border: 1px #DDDFE2 solid;
-    background: #FFFFFF;
-    max-width: 75%;
-    height: 150px;
-    margin: 25px auto;
-    padding: 10px;
+.grayiconcolor {
+  color:slategray;
 }
 
-div.listing_title {
-
+.checkboxes label {
+  margin-top: 10px;
+  font-family: Helvetica Neue;
+  font-size: 13px;
 }
 
-div.listing_author {
-    font-size: 15px;
-    font-weight: bold;
+/* The navigation bar */
+.navbar {
+  background: rgba(36, 48, 94, 0);
+  overflow: hidden;
+  position: fixed; /* Set the navbar to fixed position */
+  top: 0; /* Position the navbar at the top of the page */
+  width: 100%; /* Full width */
 }
 
-div.listing_description {
-    font-size: 13px;
+/* Links inside the navbar */
+.navbar a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
 }
 
-div.listing_text {
-    margin-top: 1px;
+/* Change background on mouse-over */
+.navbar a:hover {
+  background: rgba(36, 48, 94, 0.2);
 }
 
-div.feedback_listing {
-    border-radius: 3px;
-    border: 1px #DDDFE2 solid;
-    background: #FFFFFF;
-    max-width: 75%;
-    height: 80px;
-    margin: 25px auto;
-    padding: 15px;
+/* The navigation bar */
+.navbar-home {
+  background: rgba(36, 48, 94, 0);
+  overflow: hidden;
+  position: fixed; /* Set the navbar to fixed position */
+  top: 0; /* Position the navbar at the top of the page */
+  width: 100%; /* Full width */
+}
+
+/* Links inside the navbar */
+.navbar-home a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+/* Change background on mouse-over */
+.navbar-home a:hover {
+  background: rgba(36, 48, 94, 0.2);
+}
+#profileTab {
+  display : none;
+}
+#hubTab {
+  display : none;
+}
+#rateTab {
+  display : none;
+}
+#loginTab {
+  display: none;
+}
+#loading {
+  display : block;
+}
+#doneLoading {
+  display : none;
 }
 
 div.resume_view {
@@ -111,28 +117,35 @@ div.review_div{
     border-radius: 3px;
 }
 
-textarea.review_textarea {
-    max-width: 99%;
-    min-height: 50px;
-    max-height: auto;
-    border: none;
-    resize: vertical;
+#signError {
+  margin-top: 100px;
+  font-style: italic;
+  font-size: 13px;
+  color: red;
 }
 
+/*---------------- homepage -----------------*/
+
 .header-wrapper {
-  background-color: #0a2f59;
-  height: 500px;
-  text-align: center;
+  background-image: linear-gradient(rgba(36, 48, 94, 0.5), rgba(36, 48, 94, 0.2)), url("https://firebasestorage.googleapis.com/v0/b/resume-rater.appspot.com/o/home-hero.jpg?alt=media&token=d1ed8c8e-cd20-4d91-8933-45bbcdb049ad");
+  height: 100%;
+
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
   display: flex;
 }
 
 .header-content {
   margin: auto;
+  text-align: center;
+  transform: translateY(-40px);
 }
 
 #hero-title {
   color: white;
-  font-weight: bold;
+  font-weight: normal;
   font-size: 60px;
 }
 
@@ -149,15 +162,24 @@ textarea.review_textarea {
 #how-title {
   font-size: 30px;
   font-weight: bold;
-
 }
 
 .steps-container {
   text-align: center;
   padding: 200px;
   column-count: 3;
-}
+  /*background-image: url("https://firebasestorage.googleapis.com/v0/b/resume-rater.appspot.com/o/click-v1.svg?alt=media&token=1f23cfeb-ead5-4b8e-933c-6a8ff504f553");
+  background-size: 10%;
+  background-repeat: no-repeat;*/
 
+}
+.step1 {
+/*  background-image: url("https://firebasestorage.googleapis.com/v0/b/resume-rater.appspot.com/o/click-v1.svg?alt=media&token=1f23cfeb-ead5-4b8e-933c-6a8ff504f553");
+*/
+background-image: url("https://firebasestorage.googleapis.com/v0/b/resume-rater.appspot.com/o/click-v1.svg?alt=media&token=1f23cfeb-ead5-4b8e-933c-6a8ff504f553");
+  background-size: 10%;
+  background-repeat: no-repeat;
+}
 .desc-container {
   padding: 15px;
   text-align: left;
@@ -170,81 +192,124 @@ textarea.review_textarea {
 }
 
 .why-container {
-  padding: 100px;
-  background-color: lightgrey;
+/*  background: rgba(168, 208, 230);
+*/
+  background-image: url("https://firebasestorage.googleapis.com/v0/b/resume-rater.appspot.com/o/D_38-01.svg?alt=media&token=000a3835-6443-4273-8a05-4a241f4f9978");
+  background-position: right;
+  background-size: 140%;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  padding: 120px;
   column-count: 2;
-  }
+}
 
-.started {
+.started-wrapper {
+  text-align: center;
+  padding: 30px;
+  background-color: #f8e9a1;
+}
+.started-content {
+  border-width: 8px;
+  border-style: solid;
+  border-color: #a8d0e6;
+  padding: 20px;
   margin: 150px;
   text-align: center;
 }
 
+/*.started-content {
+  border: blue;
+  background-color: white;
+}*/
+
 .footer-container {
-  background-color: lightgrey;
+  background: rgba(36, 48, 94);
   text-align: left;
+  color: white;
   padding: 30px;
   column-count: 4;
 }
 
-#uploader {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 50%;
-    margin-bottom: 10px;
+.social-media-icons {
+  color: white;
 }
 
-/* The navigation bar */
-.navbar {
-  overflow: hidden;
-  background-color: #333;
-  position: fixed; /* Set the navbar to fixed position */
-  top: 0; /* Position the navbar at the top of the page */
-  width: 100%; /* Full width */
+/*---------------------------------*/
+
+.main_content {
+  padding: 16px;
 }
 
-/* Links inside the navbar */
-.navbar a {
-  float: left;
-  display: block;
-  color: #f2f2f2;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
+.listing_author {
+  font-size: 15px;
+  font-weight: bold;
 }
 
-/* Change background on mouse-over */
-.navbar a:hover {
-  background: #ddd;
-  color: black;
-}
-#profileTab {
-  display : none;
-}
-#hubTab {
-  display : none;
-}
-#rateTab {
-  display : none;
-}
-#loginTab {
-  display: none;
-}
-#homeTab {
-  display : none;
-}
-#loading {
-  display : block;
-}
-#doneLoading {
-  display : none;
-}
-#signError {
-  margin-top: 100px;
-  font-style: italic;
+.listing_description {
   font-size: 13px;
-  color: red;
 }
+
+.listing_text {
+  margin-top: 1px;
+}
+
+.feedback_listing {
+  border-radius: 3px;
+  border: 1px #DDDFE2 solid;
+  background: #FFFFFF;
+  max-width: 75%;
+  height: 80px;
+  margin: 25px auto;
+  padding: 15px;
+}
+
+.review_div{
+  width: 70%;
+  background: #FFFFFF;
+  margin: 25px auto;
+  border-radius: 3px;
+}
+
+.resume_listing {
+  border-radius: 3px;
+  border: 1px #DDDFE2 solid;
+  background: #FFFFFF;
+  max-width: 75%;
+  height: 150px;
+  margin: 25px auto;
+  padding: 10px;
+}
+
+.review_textarea {
+  max-width: 99%;
+  min-height: 50px;
+  max-height: auto;
+  border: none;
+  resize: vertical;
+}
+
+
+#uploader {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 50%;
+  margin-bottom: 10px;
+}
+
+/*---------------- hub -----------------*/
+#hub-wrapper {
+  margin-top: 80px;
+}
+
+.main_content {
+  background-image: linear-gradient(rgba(36, 48, 94, 0.5), rgba(36, 48, 94, 0.2)), url("https://firebasestorage.googleapis.com/v0/b/resume-rater.appspot.com/o/hub-v2.svg?alt=media&token=d415a12d-a063-4e0c-a2c8-f8ea82a5e4ab");
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-position: center;
+  background-attachment: fixed;
+
+}
+
 #need_auth {
   display : none;
 }
