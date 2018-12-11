@@ -124,7 +124,7 @@ let getUserRating = function (ratingField){
           document.getElementById(ratingField).innerHTML = "No Ratings So Far";
         }
         else{
-          document.getElementById(ratingField).innerHTML = total/num;
+          document.getElementById(ratingField).innerHTML ="Rating: "+ total/num+"/5";
         }
       })
   );
@@ -141,7 +141,7 @@ let getResumeHubRating = function(ratingField){
           document.getElementById(ratingField).innerHTML = "No Ratings So Far";
         }
         else{
-          document.getElementById(ratingField).innerHTML = total/num;
+          document.getElementById(ratingField).innerHTML = "Rating: " + total/num + "/5";
         }
       })
   );
@@ -236,7 +236,7 @@ let render_user_resume_list = function(doc){
     right_container.classList.add("half");
     right_container.classList.add("container");
     let right_resume_title = document.createElement('h6');
-    right_resume_title.textContent = doc.data().name;
+    right_resume_title.textContent = doc.data().name.slice(0,-4);
     right_container.append(right_resume_title);
     let right_resume_date = document.createElement('div');
     right_resume_date.classList.add("listing_date");
@@ -250,13 +250,13 @@ let render_user_resume_list = function(doc){
     right_resume_description.textContent = doc.data().description;
     right_container.append(right_resume_description);
     let right_resume_rating = document.createElement('div');
-    right_resume_description.classList.add("listing_rating");
-    right_resume_description.classList.add("listing_text");
+    right_resume_rating.classList.add("listing_rating");
+    right_resume_rating.classList.add("listing_text");
     let total = doc.data().totalRating;
     let numCount = doc.data().numRate;
-    if(numCount == 0){right_resume_description.textContent = "No Ratings So Far";}
-    else {right_resume_description.textContent = total/numCount;}
-    right_container.append(right_resume_description);
+    if(numCount == 0){right_resume_rating.textContent = "No Ratings So Far";}
+    else {right_resume_rating.textContent = "Rating: " + total/numCount + "/5";}
+    right_container.append(right_resume_rating);
     main_container.append(right_container);
 
     user_past_resume_list.append(main_container);
@@ -316,7 +316,7 @@ let render_other_resume = function(doc){
     right_container.classList.add("half");
     right_container.classList.add("container");
     let right_resume_title = document.createElement('h6');
-    right_resume_title.textContent = doc.data().name;
+    right_resume_title.textContent = doc.data().name.slice(0,-4);
     right_container.append(right_resume_title);
     let right_resume_author = document.createElement('div');
     right_resume_author.classList.add('listing_author');
@@ -332,8 +332,16 @@ let render_other_resume = function(doc){
     let right_resume_description = document.createElement('div');
     right_resume_description.classList.add("listing_description");
     right_resume_description.classList.add("listing_text");
-    right_resume_description.textContent = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer turpis enim, varius nec faucibus interdum, fringilla in ante. Nunc non luctus neque, vel sagittis risus. Donec at nisi eu nisi blandit tempor vitae in ipsum. Cras et est sit amet metus.";
+    right_resume_description.textContent = doc.data().description;
     right_container.append(right_resume_description);
+    let right_resume_rating = document.createElement('div');
+    right_resume_rating.classList.add("listing_rating");
+    right_resume_rating.classList.add("listing_text");
+    let total = doc.data().totalRating;
+    let numCount = doc.data().numRate;
+    if(numCount == 0){right_resume_rating.textContent = "No Ratings So Far";}
+    else {right_resume_rating.textContent = "Rating: " + total/numCount + "/5";}
+    right_container.append(right_resume_rating);
     main_container.append(right_container);
 
     other_resume_list.append(main_container);
@@ -357,24 +365,30 @@ let show_user_latest_resume = function (){
     firestore.collection("resumes").where("user", "==", getCurrentUserId()).orderBy("upload_time","desc").limit(1).get().then((snapshot =>
             snapshot.docs.forEach(doc => {
                 console.log(doc.data().name);
-                document.getElementById("user_latest_resume_name").innerHTML = doc.data().name;
+                document.getElementById("user_latest_resume_name").innerHTML = doc.data().name.slice(0,-4);
                 document.getElementById("user_latest_resume_file").src = doc.data().url;
                 let timestamp = doc.data().upload_time.toDate();
                 let date = (timestamp.getMonth()+1) + "/" + timestamp.getDate() + "/" + timestamp.getFullYear();
                 document.getElementById("user_latest_resume_date").innerHTML = "Upload Date: " + date;
+                document.getElementById("user_latest_resume_description").innerHTML = doc.data().description;
             })
     ))
 };
 
 let show_current_resume = function (current_resume_id){
     firestore.collection('resumes').doc(current_resume_id).get().then(doc =>{
-        document.getElementById("current_resume_name").innerHTML = doc.data().name;
+        document.getElementById("current_resume_name").innerHTML = doc.data().name.slice(0,-4);
         document.getElementById("current_resume_file").src = doc.data().url;
         document.getElementById("current_resume_author").innerHTML = "Author: " + doc.data().user_name;
+        document.getElementById("current_resume_description").innerHTML = "Description: " + doc.data().description;
         let timestamp = doc.data().upload_time.toDate();
         document.getElementById("current_resume_date");
         let date = (timestamp.getMonth()+1) + "/" + timestamp.getDate() + "/" + timestamp.getFullYear();
         document.getElementById("current_resume_date").innerHTML = "Upload Date: " + date;
+        let total = doc.data().totalRating;
+        let numCount = doc.data().numRate;
+        if(numCount == 0){document.getElementById("current_resume_rating").innerHTML = "No Ratings So Far";}
+        else {document.getElementById("current_resume_rating").innerHTML = "Rating: " + total/numCount + "/5";}
     }).catch(function(error){
         console.log("Error getting document:", error);
     });
