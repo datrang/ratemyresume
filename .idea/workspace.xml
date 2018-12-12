@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1fc5c28d-fd26-410f-a151-23a2d193099b" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/js/login.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/login.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -34,8 +33,18 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/static/js/login.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="158">
-              <caret line="1377" column="22" selection-start-line="1377" selection-start-column="12" selection-end-line="1377" selection-end-column="22" />
+            <state relative-caret-position="947">
+              <caret line="219" column="11" lean-forward="true" selection-start-line="219" selection-start-column="11" selection-end-line="219" selection-end-column="11" />
+              <folding>
+                <element signature="e#10461#10759#0" />
+                <element signature="e#10813#11448#0" />
+                <element signature="e#11487#11963#0" />
+                <element signature="e#12450#15566#0" />
+                <element signature="e#15608#16227#0" />
+                <element signature="e#16269#19837#0" />
+                <element signature="e#19874#20324#0" />
+                <element signature="e#20368#21822#0" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -245,7 +254,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="77343000" />
+    <option name="totallyTimeSpent" value="78784000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
@@ -512,8 +521,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/static/js/login.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="158">
-          <caret line="1377" column="22" selection-start-line="1377" selection-start-column="12" selection-end-line="1377" selection-end-column="22" />
+        <state relative-caret-position="947">
+          <caret line="219" column="11" lean-forward="true" selection-start-line="219" selection-start-column="11" selection-end-line="219" selection-end-column="11" />
+          <folding>
+            <element signature="e#10461#10759#0" />
+            <element signature="e#10813#11448#0" />
+            <element signature="e#11487#11963#0" />
+            <element signature="e#12450#15566#0" />
+            <element signature="e#15608#16227#0" />
+            <element signature="e#16269#19837#0" />
+            <element signature="e#19874#20324#0" />
+            <element signature="e#20368#21822#0" />
+          </folding>
         </state>
       </provider>
     </entry>

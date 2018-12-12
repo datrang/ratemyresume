@@ -121,14 +121,18 @@ let setUserRating = function (userID, newValue){
                                 firestore.collection("users").where("uid", "==", userID).limit(1).get().then((snapshot) => {
                                     if(!snapshot.empty){
                                         snapshot.docs.forEach(user => {
+                                            console.log("doc:", doc.data().totalRating);
+                                            console.log("user:", user.data().totalRating);
+                                            console.log("newValue:", newValue);
                                             let newTotal = user.data().totalRating - doc.data().totalRating + newValue;
-                                            console.log(newTotal);
+                                            console.log("newTotal= ",  newTotal);
                                             let newCount = user.data().numRate;
                                             // console.log(doc.data().userRating);
                                             if(doc.data().totalRating == 0){
-                                            let newCount = user.data().numRate + 1;
+                                                console.log("Reached");
+                                                newCount = user.data().numRate + 1;
                                             }
-                                            console.log(newCount);
+                                            console.log("newCount=", newCount);
                                             firestore.collection("users").doc(user.id).update({
                                                 totalRating: newTotal,
                                                 numRate: newCount
@@ -137,10 +141,62 @@ let setUserRating = function (userID, newValue){
                                             }).catch(function(error){
                                                 console.log("Error updating user: ", error);
                                             })
-                                        })
+                                        });
+                                        // set and keep track of owner review of reply
+                                        firestore.collection("resumes").doc(current_resume_id).collection("replies").where("uid", "==", userID).get().then((snapshot) =>
+                                            snapshot.docs.forEach(resume => {
+                                                // console.log(resume.id);
+                                                firestore.collection("resumes").doc(current_resume_id).collection("replies").doc(resume.id).update({
+                                                    totalRating: newValue
+                                                }).then(function() {
+                                                    console.log("Document successfully updated!");
+                                                }).catch(function(error) {
+                                                    console.error("Error updating document: ", error);
+                                                });
+                                            })
+                                        );
                                     }else {
                                         console.log("IT DOESN'T EXIST");
                                     }
+                                });
+                            }
+                        })
+                    );
+                })
+        );
+    }else{
+        let vars = {};
+        window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+            vars[key] = value;
+        });
+        let current_resume_id = vars['id'];
+        firestore.collection("resumes").doc(current_resume_id).collection("replies").where("uid", "==", userID).limit(1).get().then((snapshot) =>
+                snapshot.docs.forEach(doc => {
+                    if(doc.data().totalRating != newValue){
+                        // set the user rating value
+                        firestore.collection("users").where("uid", "==", userID).limit(1).get().then((snapshot) => {
+                            if(!snapshot.empty){
+                                snapshot.docs.forEach(user => {
+                                    console.log("doc:", doc.data().totalRating);
+                                    console.log("user:", user.data().totalRating);
+                                    console.log("newValue:", newValue);
+                                    let newTotal = user.data().totalRating - doc.data().totalRating + newValue;
+                                    console.log("newTotal= ",  newTotal);
+                                    let newCount = user.data().numRate;
+                                    // console.log(doc.data().userRating);
+                                    if(doc.data().totalRating == 0){
+                                        console.log("Reached");
+                                        newCount = user.data().numRate + 1;
+                                    }
+                                    console.log("newCount=", newCount);
+                                    firestore.collection("users").doc(user.id).update({
+                                        totalRating: newTotal,
+                                        numRate: newCount
+                                    }).then(function(){
+                                        console.log("Database upated");
+                                    }).catch(function(error){
+                                        console.log("Error updating user: ", error);
+                                    })
                                 });
                                 // set and keep track of owner review of reply
                                 firestore.collection("resumes").doc(current_resume_id).collection("replies").where("uid", "==", userID).get().then((snapshot) =>
@@ -155,61 +211,13 @@ let setUserRating = function (userID, newValue){
                                         });
                                     })
                                 );
+                            }else {
+                                console.log("IT DOESN'T EXIST");
                             }
-                        })
-                    );
-                })
-        );
-    }else{
-        let vars = {};
-        window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
-            vars[key] = value;
-        });
-        let current_resume_id = vars['id'];
-        firestore.collection("resumes").doc(current_resume_id).collection("replies").where("uid", "==", userID).limit(1).get().then((snapshot) =>
-        snapshot.docs.forEach(doc => {
-            if(doc.data().totalRating != newValue){
-                // set the user rating value
-                firestore.collection("users").where("uid", "==", userID).limit(1).get().then((snapshot) => {
-                    if(!snapshot.empty){
-                        snapshot.docs.forEach(user => {
-                            let newTotal = user.data().totalRating - doc.data().totalRating + newValue;
-                            console.log(newTotal);
-                            let newCount = user.data().numRate;
-                            if(doc.data().totalRating == 0){
-                                let newCount = user.data().numRate + 1;
-                            }
-                            console.log(newCount);
-                            firestore.collection("users").doc(user.id).update({
-                                totalRating: newTotal,
-                                numRate: newCount
-                            }).then(function(){
-                                console.log("Database upated");
-                            }).catch(function(error){
-                                console.log("Error updating user: ", error);
-                            })
-                        })
-                    }else{
-                        console.log("IT DOESN'T EXIST");
-                    }
-                });
-
-                // set and keep track of owner review of reply
-                firestore.collection("resumes").doc(current_resume_id).collection("replies").where("uid", "==", userID).get().then((snapshot) =>
-                    snapshot.docs.forEach(resume => {
-                        // console.log(resume.id);
-                        firestore.collection("resumes").doc(current_resume_id).collection("replies").doc(resume.id).update({
-                            totalRating: newValue
-                        }).then(function() {
-                            console.log("Document successfully updated!");
-                        }).catch(function(error) {
-                            console.error("Error updating document: ", error);
                         });
-                    })
-                );
-            }
-        })
-    );
+                    }
+                })
+            );
     }
 };
 
@@ -237,7 +245,8 @@ let getResumeRating = function(userID, ratingField){
     let count = doc.data().numRate;
     document.getElementById(ratingField).innerHTML = "Rating: " + (Math.round(total/count *10) / 10) + "/5";
   })
-}
+};
+
 let setResumeRating = function(userID,newValue,count){
   let resume_ref = firestore.collection("resumes").doc(userID);
   let newTotal = 0;
@@ -559,6 +568,7 @@ let render_current_resume_replies = function(doc){
         left_container_half1_user_review_button1.type = "radio";
         left_container_half1_user_review_button1.name = "rating";
         left_container_half1_user_review_button1.value = "1";
+        console.log(doc.data().totalRating);
         if(doc.data().totalRating == 1){
             left_container_half1_user_review_button1.checked = true;
         }
