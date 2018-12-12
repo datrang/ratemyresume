@@ -34,8 +34,30 @@
         </div>
         <div class="container center review_div" id="current_resume_review_div">
             <textarea class="review_textarea" id="review_textarea" placeholder="Type your Review"></textarea>
+            <p>Please Give Your Overall Rating:</p>
+            <form>
+              <input type="radio" name = "rating" value=1>1
+              <input type="radio" name = "rating" value=2>2
+              <input type="radio" name = "rating"value=3>3
+              <input type="radio" name = "rating" value=4>4
+              <input type="radio" name = "rating" value=5>5<br>
+            </form>
             <button id="review_button" @click="add_reply">Submit</button>
         </div>
+        <div class="container center review_div" id="alreaady_reviewed_div">
+          <input type="text" name="user_review" id = "user_reviewed">
+          <span id = "user_rated"></span>
+          <form>
+            <input type="radio" name = "rating" value=1>1
+            <input type="radio" name = "rating" value=2>2
+            <input type="radio" name = "rating"value=3>3
+            <input type="radio" name = "rating" value=4>4
+            <input type="radio" name = "rating" value=5>5<br>
+          </form>
+          <button type="button" @click = "edit_reply">Edit</button>
+          <button type="button" @click = "delete_reply">Delete</button>
+        </div>
+        <<h2 id = "reply_error"></h2>
         <div id="resume_review_list" class="resume_review_list"></div>
     </div>
 </div>
