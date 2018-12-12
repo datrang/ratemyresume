@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1fc5c28d-fd26-410f-a151-23a2d193099b" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/views/default/resume_reviews.html" beforeDir="false" afterPath="$PROJECT_DIR$/views/default/resume_reviews.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/js/login.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/login.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -15,7 +15,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/views/default/signUp.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2">
+            <state relative-caret-position="-19">
               <caret line="19" column="16" selection-start-line="19" selection-start-column="16" selection-end-line="19" selection-end-column="16" />
             </state>
           </provider>
@@ -24,35 +24,40 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/views/default/profile.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
+            <state relative-caret-position="-240">
               <caret line="6" selection-start-line="6" selection-end-line="7" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/static/js/login.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="947">
-              <caret line="219" column="11" lean-forward="true" selection-start-line="219" selection-start-column="11" selection-end-line="219" selection-end-column="11" />
+            <state relative-caret-position="257">
+              <caret line="124" column="90" selection-start-line="124" selection-start-column="90" selection-end-line="124" selection-end-column="90" />
               <folding>
-                <element signature="e#10461#10759#0" />
-                <element signature="e#10813#11448#0" />
                 <element signature="e#11487#11963#0" />
+                <element signature="e#11966#11997#0" />
                 <element signature="e#12450#15566#0" />
                 <element signature="e#15608#16227#0" />
                 <element signature="e#16269#19837#0" />
                 <element signature="e#19874#20324#0" />
                 <element signature="e#20368#21822#0" />
+                <element signature="e#23266#23826#0" />
+                <element signature="e#23876#24624#0" />
+                <element signature="e#24681#26252#0" />
+                <element signature="e#26304#44653#0" />
+                <element signature="e#44717#45148#0" />
+                <element signature="e#45179#47362#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/views/default/resume_reviews.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="440">
+            <state relative-caret-position="644">
               <caret line="59" column="8" selection-start-line="59" selection-start-column="8" selection-end-line="59" selection-end-column="8" />
             </state>
           </provider>
@@ -69,10 +74,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>iframe</find>
-      <find>setAtt</find>
-      <find>get_latest</find>
-      <find>getCurrentUserID</find>
       <find>getele</find>
       <find>upload</find>
       <find>show_user_late</find>
@@ -98,6 +99,10 @@
       <find>setUSerRating</find>
       <find>userrating</find>
       <find>userRating</find>
+      <find>add_reply</find>
+      <find>reply</find>
+      <find>replies</find>
+      <find>totalRating</find>
       <find>rating</find>
     </findStrings>
   </component>
@@ -126,8 +131,8 @@
         <option value="$PROJECT_DIR$/views/default/signUp.html" />
         <option value="$PROJECT_DIR$/views/default/hub.html" />
         <option value="$PROJECT_DIR$/static/css/myapp.css" />
-        <option value="$PROJECT_DIR$/static/js/login.js" />
         <option value="$PROJECT_DIR$/views/default/resume_reviews.html" />
+        <option value="$PROJECT_DIR$/static/js/login.js" />
       </list>
     </option>
   </component>
@@ -263,14 +268,14 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="78947000" />
+    <option name="totallyTimeSpent" value="81248000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.30201343" />
+      <window_info content_ui="combo" id="Project" order="1" weight="0.30201343" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Database Changes" order="0" show_stripe_button="false" />
       <window_info anchor="bottom" id="Terminal" order="1" />
@@ -507,41 +512,46 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/default/signUp.html">
+    <entry file="file://$PROJECT_DIR$/views/default/resume_reviews.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2">
-          <caret line="19" column="16" selection-start-line="19" selection-start-column="16" selection-end-line="19" selection-end-column="16" />
+        <state relative-caret-position="644">
+          <caret line="59" column="8" selection-start-line="59" selection-start-column="8" selection-end-line="59" selection-end-column="8" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/views/default/profile.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
+        <state relative-caret-position="-240">
           <caret line="6" selection-start-line="6" selection-end-line="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/default/signUp.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-19">
+          <caret line="19" column="16" selection-start-line="19" selection-start-column="16" selection-end-line="19" selection-end-column="16" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/static/js/login.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="947">
-          <caret line="219" column="11" lean-forward="true" selection-start-line="219" selection-start-column="11" selection-end-line="219" selection-end-column="11" />
+        <state relative-caret-position="257">
+          <caret line="124" column="90" selection-start-line="124" selection-start-column="90" selection-end-line="124" selection-end-column="90" />
           <folding>
-            <element signature="e#10461#10759#0" />
-            <element signature="e#10813#11448#0" />
             <element signature="e#11487#11963#0" />
+            <element signature="e#11966#11997#0" />
             <element signature="e#12450#15566#0" />
             <element signature="e#15608#16227#0" />
             <element signature="e#16269#19837#0" />
             <element signature="e#19874#20324#0" />
             <element signature="e#20368#21822#0" />
+            <element signature="e#23266#23826#0" />
+            <element signature="e#23876#24624#0" />
+            <element signature="e#24681#26252#0" />
+            <element signature="e#26304#44653#0" />
+            <element signature="e#44717#45148#0" />
+            <element signature="e#45179#47362#0" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/default/resume_reviews.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="440">
-          <caret line="59" column="8" selection-start-line="59" selection-start-column="8" selection-end-line="59" selection-end-column="8" />
         </state>
       </provider>
     </entry>
