@@ -688,8 +688,13 @@ let render_current_resume_replies = function(doc){
         right_container_content.classList.add('listing_description');
         right_container_content.classList.add('listing_text');
         right_container_content.innerHTML = doc.data().content;
+        let right_container_score = document.createElement('div');
+        right_container_score.classList.add('listing_description');
+        right_container_score.classList.add('listing_text');
+        right_container_score.innerHTML = "Score:" + doc.data().totalRating;
 
         right_container.append(right_container_content);
+        right_container.append(right_container_score);
         main_container.append(right_container);
 
         resume_review_list.prepend(main_container);
@@ -822,8 +827,13 @@ let render_current_resume_replies = function(doc){
                 right_container_content.classList.add('listing_description');
                 right_container_content.classList.add('listing_text');
                 right_container_content.innerHTML = doc.data().content;
+                let right_container_score = document.createElement('div');
+                right_container_score.classList.add('listing_description');
+                right_container_score.classList.add('listing_text');
+                right_container_score.innerHTML = "Score:" + doc.data().totalRating;
 
                 right_container.append(right_container_content);
+                right_container.append(right_container_score);
                 main_container.append(right_container);
 
                 resume_review_list.prepend(main_container);
@@ -873,8 +883,13 @@ let render_current_resume_replies = function(doc){
                 right_container_content.classList.add('listing_description');
                 right_container_content.classList.add('listing_text');
                 right_container_content.innerHTML = doc.data().content;
+                let right_container_score = document.createElement('div');
+                right_container_score.classList.add('listing_description');
+                right_container_score.classList.add('listing_text');
+                right_container_score.innerHTML = "Score:" + doc.data().totalRating;
 
                 right_container.append(right_container_content);
+                right_container.append(right_container_score);
                 main_container.append(right_container);
 
                 resume_review_list.prepend(main_container);
