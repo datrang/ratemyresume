@@ -29,58 +29,59 @@
 
       <div class="container_one">
         <h2>My Profile</h2>
-        <div>
-          <img class="profile_picture" src="https://firebasestorage.googleapis.com/v0/b/resume-rater.appspot.com/o/default_icon.png?alt=media&token=37beeb29-dc21-469d-808d-901d1071a2dd" alt="Avatar">
-        </div>
+        <img class="profile_picture" src="https://firebasestorage.googleapis.com/v0/b/resume-rater.appspot.com/o/default_icon.png?alt=media&token=37beeb29-dc21-469d-808d-901d1071a2dd" alt="Avatar">
         <div class="user_info">
-          <h4 id = "name"></h4>
-          <h4 id="email"></h4>
-        </div>
-        <div id = "update_name_button">
-          <button type="button" name="updateProfile" @click = "show_name_fields">Update Profile</button>
-        </div>
-        <div id = "update_name_field">
-          <input type="text" id = "newName" placeholder="Name">
-          <button type="button" name="updateProfile" @click = "updateProfile">Update Profile</button>
-          <button type="button" name="cancel" @click = "show_name_fields">Cancel</button>
+          <div id = "name"></div>
+          <div id="email"></div>
         </div>
 
-        <!-- change the view of the box if they press the update email button -->
-        <div id = "update_email_button">
-          <button type="button" name="updateEmail" @click = "show_email_fields">Update Email</button>
-        </div>
-        <!-- edit your main email with cancel button -->
-        <div id = "update_email_field">
-          <input type="text" id = "newEmail" placeholder="Email">
-          <button type="button" name="updateEmail" @click = "updateEmail">Update Email</button>
-          <button type="button" name="cancel" @click = "show_email_button">Cancel</button>
-        </div>
-        <!-- open field to change password -->
-        <div id = "update_password_button">
-          <button type="button" name="updatePassword" @click = "show_password_fields">Update Password</button>
-        </div>
-        <div id = "update_password_field">
-          <input type="text" id = "newPassword" placeholder=" New Password">
-          <input type="text" id = "confirmPassword" placeholder="Confirm New Password">
-          <button type="button" name="updatePassword" @click = "updatePassword">Update Password</button>
-          <button type="button" name="cancel" @click = "show_password_fields">Cancel</button>
-        </div>
-        <div id = "need_auth">
-          <h3>Please Authorize Your Account To Continue</h3>
-          <input type="text" id = "authEmail" placeholder="Email">
-          <input type="text" id = "authPassword" placeholder="Password">
-          <button type="button" name="authorize" @click = reauthenticate>Authorize</button>
-        </div>
-       
+        <div class="edit_profile">
+          <div id = "update_name_button">
+            <button type="button" name="updateProfile" @click = "show_name_fields">Change Name</button>
+          </div>
+          <div id = "update_name_field">
+            <input type="text" id = "newName" placeholder="Name">
+            <button type="button" name="updateProfile" @click = "updateProfile">Save</button>
+            <button type="button" name="cancel" @click = "show_name_button">Cancel</button>
+          </div>
 
-        <button type="button" name="delete" @click = "deleteUser"> Delete Account</button>
-        <button type="button" name="signOut" @click = "signOut">Sign Out</button>
+          <!-- change the view of the box if they press the update email button -->
+          <div id = "update_email_button">
+            <button type="button" name="updateEmail" @click = "show_email_fields">Change Email</button>
+          </div>
+          <!-- edit your main email with cancel button -->
+          <div id = "update_email_field">
+            <input type="text" id = "newEmail" placeholder="Email">
+            <button type="button" name="updateEmail" @click = "updateEmail">Save</button>
+            <button type="button" name="cancel" @click = "show_email_button">Cancel</button>
+          </div>
+
+          <!-- open field to change password -->
+          <div id = "update_password_button">
+            <button type="button" name="updatePassword" @click = "show_password_fields">Change Password</button>
+          </div>
+          <div id = "update_password_field">
+            <input type="text" id = "newPassword" placeholder=" New Password">
+            <input type="text" id = "confirmPassword" placeholder="Confirm New Password">
+            <button type="button" name="updatePassword" @click = "updatePassword">Save</button>
+            <button type="button" name="cancel" @click = "show_password_button">Cancel</button>
+          </div>
+
+          <div id = "need_auth">
+            <h3>Please Authorize Your Account To Continue</h3>
+            <input type="text" id = "authEmail" placeholder="Email">
+            <input type="text" id = "authPassword" placeholder="Password">
+            <button type="button" name="authorize" @click = reauthenticate>Authorize</button>
+          </div>
+          <button type="button" name="delete" @click = "deleteUser"> Delete Account</button>
+          <button type="button" name="signOut" @click = "signOut">Sign Out</button>
+        </div>
       </div>
 
       <div class="container_two">
         <div id="resume_download">
-          <h2>My Resume</h2>
-          <button type="button" @click="showResume">Show Resume</button>
+          <h2>My Resumes</h2>
+          <button type="button" @click="showResume">Show Resumes</button>
           <ul id="resume_list"></ul>
         </div>
         
@@ -93,13 +94,11 @@
         <div>
           <h3 id ="profileRating"></h3>
         </div>
-
       </div>
+
       <div id = "profileSuccess"></div>
       <div id = "profileError"></div>
-
     </div>
-
   </div>
 </div>
 

@@ -32,7 +32,6 @@ html * {
 /*grey background*/
 .main_content {
   height: 100%;
-  /*background-attachment: fixed;*/
   background-color: #f3f3f3;
   padding: 16px;
 }
@@ -52,45 +51,25 @@ html * {
   text-align: center;
 }
 
-/*-------------------- Profile Page ---------------------*/
-
-.container_one {
-  border-radius: 3px;
-  /*border: 1px #DDDFE2 solid;*/
-  background: #FFFFFF;
-  float: left;
-  width: 25%;
-  margin-left: 80px;
-  padding: 10px;
-  height: 75%;
-  text-align: center;
+#loading {
+  display : block;
+  background-image: url("https://firebasestorage.googleapis.com/v0/b/resume-rater.appspot.com/o/luca.jpg?alt=media&token=93c171a2-5170-4912-9cf7-69d5517f7290");
+  background-size: 200%;
+  background-repeat: no-repeat;
 }
 
-.container_two {
-  border-radius: 3px;
-  /*border: 1px #DDDFE2 solid;*/
-  background: #FFFFFF;
-  margin-left: 32%;
-  margin-top: 50px;
-  margin-right: 80px;
-  padding: 30px;
-  padding-top: 10px;
-  height: 75%;
-  text-align: center;
-}
-
-.profile_picture {
-  height: 100px;
+#doneLoading {
+  display : none;
 }
 
 
-/*--------------------- Navbar -----------------------*/
+/*--------------------- Navbar ---------------------*/
 
-/* The navigation bar */
+ /*The navigation bar */
 .navbar {
   background: rgba(36, 48, 94, 1);
   overflow: hidden;
-  position: fixed; /* Set the navbar to fixed position */
+  position: fixed; /* Set the navbar to fixed position 
   top: 0; /* Position the navbar at the top of the page */
   width: 100%; /* Full width */
 }
@@ -143,47 +122,7 @@ html * {
 #loginTab {
   display: none;
 }
-/*------------------------------------------------*/
 
-#loading {
-  display : block;
-  background-image: url("https://firebasestorage.googleapis.com/v0/b/resume-rater.appspot.com/o/luca.jpg?alt=media&token=93c171a2-5170-4912-9cf7-69d5517f7290");
-  background-size: 200%;
-  background-repeat: no-repeat;
-}
-#doneLoading {
-  display : none;
-}
-
-.user_latest_resume_file {
-    frameborder:"0";
-    width: 100%;
-    height:500px;
-    overflow: auto !important;
-    outline: none;
-}
-
-.current_resume_file {
-    frameborder:"0";
-    width: 100%;
-    height:500px;
-    overflow: auto !important;
-    outline: none;
-}
-
-.review_div{
-    width: 70%;
-    background: #FFFFFF;
-    margin: 25px auto;
-    border-radius: 3px;
-}
-
-#signError {
-  margin-top: 100px;
-  font-style: italic;
-  font-size: 13px;
-  color: red;
-}
 
 /*---------------- homepage -----------------*/
 
@@ -235,9 +174,7 @@ html * {
 
 }
 .step1 {
-/*  background-image: url("https://firebasestorage.googleapis.com/v0/b/resume-rater.appspot.com/o/click-v1.svg?alt=media&token=1f23cfeb-ead5-4b8e-933c-6a8ff504f553");
-*/
-background-image: url("https://firebasestorage.googleapis.com/v0/b/resume-rater.appspot.com/o/click-v1.svg?alt=media&token=1f23cfeb-ead5-4b8e-933c-6a8ff504f553");
+  background-image: url("https://firebasestorage.googleapis.com/v0/b/resume-rater.appspot.com/o/click-v1.svg?alt=media&token=1f23cfeb-ead5-4b8e-933c-6a8ff504f553");
   background-size: 10%;
   background-repeat: no-repeat;
 }
@@ -253,8 +190,6 @@ background-image: url("https://firebasestorage.googleapis.com/v0/b/resume-rater.
 }
 
 .why-container {
-/*  background: rgba(168, 208, 230);
-*/
   background-image: url("https://firebasestorage.googleapis.com/v0/b/resume-rater.appspot.com/o/D_38-01.svg?alt=media&token=000a3835-6443-4273-8a05-4a241f4f9978");
   background-position: right;
   background-size: 140%;
@@ -295,7 +230,124 @@ background-image: url("https://firebasestorage.googleapis.com/v0/b/resume-rater.
   color: white;
 }
 
-/*---------------------------------*/
+
+/*-------------------- Profile Page ---------------------*/
+
+.container_one {
+  border-radius: 3px;
+  /*border: 1px #DDDFE2 solid;*/
+  background: #FFFFFF;
+  float: left;
+  width: 25%;
+  margin-left: 80px;
+  padding: 10px;
+  padding-left: 30px;
+  height: 75%;
+  text-align: center;
+}
+
+.container_two {
+  border-radius: 3px;
+  /*border: 1px #DDDFE2 solid;*/
+  background: #FFFFFF;
+  margin-left: 32%;
+  margin-top: 50px;
+  margin-right: 80px;
+  padding: 30px;
+  padding-top: 10px;
+  height: 75%;
+  text-align: center;
+}
+
+.profile_picture {
+  height: 200px;
+}
+
+.user_info {
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+.user_info #name {
+  /*text-align: center;*/
+  font-size: 23px;
+}
+
+.user_info #email {
+  /*text-align: center;*/
+  font-size: 18px;
+  color: grey;
+}
+
+.edit_profile {
+  margin-bottom: 10px;
+}
+
+
+/*---------------- hub -----------------*/
+
+#hub-wrapper {
+  margin-top: 80px;
+}
+#need_auth {
+  display : none;
+}
+#update_email_field {
+  display : none;
+}
+#update_email_button{
+  display : block;
+}
+#update_password_field {
+  display : none;
+}
+#update_password_button{
+  display : block;
+}
+#update_name_field {
+  display : none;
+}
+#update_name_button{
+  display : block;
+}
+.checkboxes label {
+  margin-top: 10px;
+  font-family: Helvetica Neue;
+  font-size: 13px;
+}
+
+
+/*------------------------------------------------*/
+
+.user_latest_resume_file {
+    frameborder:"0";
+    width: 100%;
+    height:500px;
+    overflow: auto !important;
+    outline: none;
+}
+
+.current_resume_file {
+    frameborder:"0";
+    width: 100%;
+    height:500px;
+    overflow: auto !important;
+    outline: none;
+}
+
+.review_div{
+    width: 70%;
+    background: #FFFFFF;
+    margin: 25px auto;
+    border-radius: 3px;
+}
+
+#signError {
+  margin-top: 100px;
+  font-style: italic;
+  font-size: 13px;
+  color: red;
+}
 
 .listing_author {
   font-size: 15px;
@@ -347,36 +399,4 @@ background-image: url("https://firebasestorage.googleapis.com/v0/b/resume-rater.
   appearance: none;
   width: 50%;
   margin-bottom: 10px;
-}
-
-/*---------------- hub -----------------*/
-
-#hub-wrapper {
-  margin-top: 80px;
-}
-#need_auth {
-  display : none;
-}
-#update_email_field {
-  display : none;
-}
-#update_email_button{
-  display : block;
-}
-#update_password_field {
-  display : none;
-}
-#update_password_button{
-  display : block;
-}
-#update_name_field {
-  display : none;
-}
-#update_name_button{
-  display : block;
-}
-.checkboxes label {
-  margin-top: 10px;
-  font-family: Helvetica Neue;
-  font-size: 13px;
 }
