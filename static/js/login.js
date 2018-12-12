@@ -45,7 +45,6 @@ firebase.auth().onAuthStateChanged(function(user) {
           case "hub":
               show_user_latest_resume();
               show_user_past_resume();
-              getResumeHubRating("hubResumeRating");
               show_user_latest_resume_reviews();
               break;
           case "rateresume":
@@ -138,46 +137,39 @@ let getUserRating = function (ratingField){
           document.getElementById(ratingField).innerHTML = "No Ratings So Far";
         }
         else{
-          document.getElementById(ratingField).innerHTML ="Rating: "+ total/num+"/5";
+          document.getElementById(ratingField).innerHTML ="Rating: "+ (Math.round(total/num *10) / 10)+"/5";
         }
       })
   );
 };
 
-let getResumeHubRating = function(ratingField){
-  let user = firebase.auth().currentUser;
-  let users_ref = firestore.collection("resumes");
-  users_ref.where("user", "==", getCurrentUserId()).orderBy("upload_time","desc").limit(1).get().then((snapshot) =>
-      snapshot.docs.forEach(doc => {
-        let total = doc.data().totalRating;
-        let num = doc.data().numRate;
-        if(num == 0){
-          document.getElementById(ratingField).innerHTML = "No Ratings So Far";
-        }
-        else{
-          document.getElementById(ratingField).innerHTML = "Rating: " + total/num + "/5";
-        }
-      })
-  );
+let getResumeRating = function(userID, ratingField){
+  let resume_ref = firestore.collection("resumes").doc((userID));
+  resume_ref.get().then(function(doc){
+    let total = doc.data().totalRating;
+    let count = doc.data().numRate;
+    document.getElementById(ratingField).innerHTML = "Rating: " + (Math.round(total/count *10) / 10) + "/5";
+  })
 }
 let setResumeRating = function(userID,newValue,count){
-  let user = firebase.auth().currentUser;
-  let users_ref = firestore.collection("resumes");
-  users_ref.where("user", "==", userID).limit(1).get().then((snapshot) =>
-      snapshot.docs.forEach(doc => {
-          let user_ref = firestore.collection("resumes").doc(doc.id);
-          let newTotal = doc.data().totalRating + newValue;
-          let newCount = doc.data().numRate + count;
-          user_ref.update({
-              totalRating : newTotal,
-              numRate : newCount
-          }).then(function(){
-              console.log("Database upated");
-          }).catch(function(error){
-              console.log("Error updating user: ", error);
-          })
-      })
-  );
+  let resume_ref = firestore.collection("resumes").doc(userID);
+  let newTotal = 0;
+  let newCount = 0;
+  resume_ref.get().then(function(doc){
+    newTotal = doc.data().totalRating + newValue;
+    newCount = doc.data().numRate + count;
+    resume_ref.update({
+        totalRating : newTotal,
+        numRate : newCount
+    }).then(function(){
+        console.log("Database upated");
+    }).catch(function(error){
+        console.log("Error updating user: ", error);
+    })
+  }).catch(function(error) {
+    console.log("Error getting document:", error);
+});
+  // console.log("called set" + userID + " " + newTotal + " " + newCount);
 };
 
 let renderResumeList = function(doc){
@@ -268,7 +260,7 @@ let render_user_resume_list = function(doc){
     let total = doc.data().totalRating;
     let numCount = doc.data().numRate;
     if(numCount == 0){right_resume_rating.textContent = "No Ratings So Far";}
-    else {right_resume_rating.textContent = "Rating: " + total/numCount + "/5";}
+    else {right_resume_rating.textContent = "Rating: " + (Math.round(total/numCount *10) / 10) + "/5";}
     right_container.append(right_resume_rating);
     main_container.append(right_container);
 
@@ -357,7 +349,7 @@ let render_other_resume = function(doc){
     let total = doc.data().totalRating;
     let numCount = doc.data().numRate;
     if(numCount == 0){right_resume_rating.textContent = "No Ratings So Far";}
-    else {right_resume_rating.textContent = "Rating: " + total/numCount + "/5";}
+    else {right_resume_rating.textContent = "Rating: " + (Math.round(total/numCount *10) / 10) + "/5";}
     right_container.append(right_resume_rating);
     main_container.append(right_container);
 
@@ -391,6 +383,10 @@ let show_user_latest_resume = function (){
                     let date = (timestamp.getMonth()+1) + "/" + timestamp.getDate() + "/" + timestamp.getFullYear();
                     document.getElementById("user_latest_resume_date").innerHTML = "Upload Date: " + date;
                     document.getElementById("user_latest_resume_description").innerHTML = doc.data().description;
+                    let total = doc.data().totalRating;
+                    let numCount = doc.data().numRate;
+                    if(numCount == 0){document.getElementById("hubResumeRating").innerHTML = "No Ratings So Far";}
+                    else {document.getElementById("hubResumeRating").innerHTML = "Rating: " + (Math.round(total/numCount *10) / 10) + "/5";}
                 })
             }
         }
@@ -436,7 +432,7 @@ let show_current_resume = function (current_resume_id){
         let total = doc.data().totalRating;
         let numCount = doc.data().numRate;
         if(numCount == 0){document.getElementById("current_resume_rating").innerHTML = "No Ratings So Far";}
-        else {document.getElementById("current_resume_rating").innerHTML = "Rating: " + total/numCount + "/5";}
+        else {document.getElementById("current_resume_rating").innerHTML = "Rating: " + (Math.round(total/numCount *10) / 10) + "/5";}
     }).catch(function(error){
         console.log("Error getting document:", error);
     });
@@ -929,18 +925,33 @@ let app = function() {
       });
       let current_resume_id = vars['id'];
       let resume_review_text = document.getElementById("review_textarea").value;
-
+      let rate = document.forms[0];
+      let rating = 0;
+      for (var i = 0; i < rate.length; i++) {
+        if (rate[i].checked) {
+            rating = parseFloat(rate[i].value);
+        }
+      }
+      if (rating == 0){
+          document.getElementById("reply_error").style.display= "block";
+          document.getElementById("reply_error").innerHTML = "Please Select A Rating";
+          return;
+      }
       // console.log(current_resume_id);
       // console.log(resume_review_text);
 
       firestore.collection("resumes").doc(current_resume_id).collection("replies").add({
           content: resume_review_text,
           uid: getCurrentUserId(),
-          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+          rating: rating
       }).then((docRef) => {
           console.log("Document written with ID: ", docRef.id);
+          setResumeRating(current_resume_id,rating,1);
           docRef.get().then(doc =>{
-              render_current_resume_replies(doc);
+            document.getElementById("reply_error").style.display= "none";
+            render_current_resume_replies(doc);
+            getResumeRating(current_resume_id,"current_resume_rating");
           });
       }).catch(function(error){
           console.error("Error adding document: ", error);
