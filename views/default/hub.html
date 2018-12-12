@@ -37,63 +37,7 @@
         </div>
         <div class="container padded center" v-show="show_resume_feedback">
             <button type="button" @click="show_feedback">Hide Feedback</button>
-            <div onmouseover="listing_mouseover(this)" onmouseout="listing_mouseout(this)"
-                 class="feedback_listing container">
-                <div class="third container">
-                    <div class="half">
-                        <i class="center fa fa-user fa-3x" aria-hidden="true"></i>
-                    </div>
-                    <div class="half">
-                        <div class="listing_author listing_text">John Doe</div>
-                        <div class="listing_text">Software Engineer</div>
-                    </div>
-                </div>
-                <div class="twothirds">
-                    <div class="listing_description listing_text">Lorem ipsum dolor sit amet, consectetur adipiscing
-                        elit. Integer turpis enim, varius nec faucibus interdum, fringilla in ante. Nunc non luctus
-                        neque, vel sagittis risus. Donec at nisi eu nisi blandit tempor vitae in ipsum. Cras et est sit
-                        amet metus.
-                    </div>
-                </div>
-            </div>
-            <div onmouseover="listing_mouseover(this)" onmouseout="listing_mouseout(this)"
-                 class="feedback_listing container">
-                <div class="third container">
-                    <div class="half">
-                        <i class="center fa fa-user fa-3x" aria-hidden="true"></i>
-                    </div>
-                    <div class="half">
-                        <div class="listing_author listing_text">John Doe</div>
-                        <div class="listing_text">Software Engineer</div>
-                    </div>
-                </div>
-                <div class="twothirds">
-                    <div class="listing_description listing_text">Lorem ipsum dolor sit amet, consectetur adipiscing
-                        elit. Integer turpis enim, varius nec faucibus interdum, fringilla in ante. Nunc non luctus
-                        neque, vel sagittis risus. Donec at nisi eu nisi blandit tempor vitae in ipsum. Cras et est sit
-                        amet metus.
-                    </div>
-                </div>
-            </div>
-            <div onmouseover="listing_mouseover(this)" onmouseout="listing_mouseout(this)"
-                 class="feedback_listing container">
-                <div class="third container">
-                    <div class="half">
-                        <i class="center fa fa-user fa-3x" aria-hidden="true"></i>
-                    </div>
-                    <div class="half">
-                        <div class="listing_author listing_text">John Doe</div>
-                        <div class="listing_text">Software Engineer</div>
-                    </div>
-                </div>
-                <div class="twothirds">
-                    <div class="listing_description listing_text">Lorem ipsum dolor sit amet, consectetur adipiscing
-                        elit. Integer turpis enim, varius nec faucibus interdum, fringilla in ante. Nunc non luctus
-                        neque, vel sagittis risus. Donec at nisi eu nisi blandit tempor vitae in ipsum. Cras et est sit
-                        amet metus.
-                    </div>
-                </div>
-            </div>
+            <div class="resume_review_list" id="resume_review_list"></div>
         </div>
 
         <div class="container padded center" v-show="!show_past_resumes">

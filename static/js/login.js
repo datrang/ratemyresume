@@ -34,7 +34,7 @@ firebase.auth().onAuthStateChanged(function(user) {
         document.getElementById("email").innerHTML = user.email;
         document.getElementById("name").innerHTML = user.displayName;
       }
-      console.log(current_page);
+      // console.log(current_page);
       switch(current_page){
           case "index":
               let user = firebase.auth().currentUser;
@@ -46,6 +46,7 @@ firebase.auth().onAuthStateChanged(function(user) {
               show_user_latest_resume();
               show_user_past_resume();
               getResumeHubRating("hubResumeRating");
+              show_user_latest_resume_reviews();
               break;
           case "rateresume":
               show_other_resume();
@@ -63,6 +64,7 @@ firebase.auth().onAuthStateChanged(function(user) {
               // console.log(vars['id']);
               let current_resume_id = vars['id'];
               show_current_resume(current_resume_id);
+              show_current_resume_replies(current_resume_id);
               break;
       }
 
@@ -91,6 +93,17 @@ let listing_mouseover = function(listing){
 let listing_mouseout = function(listing){
     listing.style.background = "#FFFFFF"
 };
+
+let set_current_user_rating = function(current_resume_id){
+        firestore.collection('resumes').doc(current_resume_id).collection('rating').where("uid", "==",getCurrentUserId()).limit(1).get().then((snapshot) => {
+        if(!snapshot.empty){
+            snapshot.docs.forEach(doc => {
+                document.getElementById('current_user_rating').innerHTML = doc.data().rating;
+            })
+        }
+    })
+}
+
 let getCurrentUserId = function(){
   return firebase.auth().currentUser.uid;
 };
@@ -321,7 +334,11 @@ let render_other_resume = function(doc){
     let right_resume_author = document.createElement('div');
     right_resume_author.classList.add('listing_author');
     right_resume_author.classList.add('listing_text');
-    right_resume_author.textContent = "Author: " + doc.data().user_name;
+    firestore.collection("users").where("uid", "==", doc.data().user).limit(1).get().then((snapshot) =>
+            snapshot.docs.forEach(user => {
+                right_resume_author.textContent = "Author: " + user.data().name;
+            })
+    );
     right_container.append(right_resume_author);
     let right_resume_date = document.createElement('div');
     right_resume_date.classList.add("listing_date");
@@ -348,7 +365,6 @@ let render_other_resume = function(doc){
 };
 
 let show_other_resume = function(){
-    console.log("Hello World");
     console.log("Current User = " + getCurrentUserId());
     firestore.collection("resumes").orderBy("upload_time","desc").get().then((snapshot) =>
         snapshot.docs.forEach(doc => {
@@ -363,24 +379,56 @@ let show_other_resume = function(){
 
 let show_user_latest_resume = function (){
     firestore.collection("resumes").where("user", "==", getCurrentUserId()).orderBy("upload_time","desc").limit(1).get().then((snapshot =>
-            snapshot.docs.forEach(doc => {
-                console.log(doc.data().name);
-                document.getElementById("user_latest_resume_name").innerHTML = doc.data().name.slice(0,-4);
-                document.getElementById("user_latest_resume_file").src = doc.data().url;
-                let timestamp = doc.data().upload_time.toDate();
-                let date = (timestamp.getMonth()+1) + "/" + timestamp.getDate() + "/" + timestamp.getFullYear();
-                document.getElementById("user_latest_resume_date").innerHTML = "Upload Date: " + date;
-                document.getElementById("user_latest_resume_description").innerHTML = doc.data().description;
-            })
+        {
+            if(snapshot.empty){
+                document.getElementById("user_latest_resume_name").innerHTML = "Please Upload a Resume";
+            }else{
+                snapshot.docs.forEach(doc => {
+                    console.log(doc.data().name);
+                    document.getElementById("user_latest_resume_name").innerHTML = doc.data().name.slice(0,-4);
+                    document.getElementById("user_latest_resume_file").src = doc.data().url;
+                    let timestamp = doc.data().upload_time.toDate();
+                    let date = (timestamp.getMonth()+1) + "/" + timestamp.getDate() + "/" + timestamp.getFullYear();
+                    document.getElementById("user_latest_resume_date").innerHTML = "Upload Date: " + date;
+                    document.getElementById("user_latest_resume_description").innerHTML = doc.data().description;
+                })
+            }
+        }
     ))
+};
+
+let show_user_latest_resume_reviews = function(){
+    firestore.collection("resumes").where("user", "==", getCurrentUserId()).orderBy("upload_time","desc").limit(1).get().then((snapshot =>
+        {
+            if(snapshot.empty){
+                console.log("No Resume");
+            }else{
+                snapshot.docs.forEach(doc => {
+                    firestore.collection('resumes').doc(doc.id).collection('replies').get().then((snapshot) =>
+                        snapshot.docs.forEach(reply => {
+                            render_current_resume_replies(reply);
+                            console.log(reply.data().content);
+                            console.log(reply.data().uid);
+                        })
+                    )
+                })
+            }
+        }
+    ));
 };
 
 let show_current_resume = function (current_resume_id){
     firestore.collection('resumes').doc(current_resume_id).get().then(doc =>{
         document.getElementById("current_resume_name").innerHTML = doc.data().name.slice(0,-4);
         document.getElementById("current_resume_file").src = doc.data().url;
-        document.getElementById("current_resume_author").innerHTML = "Author: " + doc.data().user_name;
-        document.getElementById("current_resume_description").innerHTML = "Description: " + doc.data().description;
+        document.getElementById("current_resume_file").src = doc.data().url;
+        firestore.collection("users").where("uid", "==", doc.data().user).limit(1).get().then((snapshot) =>
+            snapshot.docs.forEach(user => {
+                document.getElementById("current_resume_author").innerHTML = "Author: " + user.data().name;
+            })
+        );
+      document.getElementById("current_resume_description").innerHTML = "Description: " + doc.data().description;
+        // document.getElementById("current_resume_author").innerHTML = "Author: " + doc.data().user_name;
         let timestamp = doc.data().upload_time.toDate();
         document.getElementById("current_resume_date");
         let date = (timestamp.getMonth()+1) + "/" + timestamp.getDate() + "/" + timestamp.getFullYear();
@@ -394,8 +442,80 @@ let show_current_resume = function (current_resume_id){
     });
 };
 
-let get_user_latest_resume = function (){
-    console.log("get_user_latest_resume");
+let render_current_resume_replies = function(doc){
+    let main_container = document.createElement('div');
+    main_container.classList.add("feedback_listing");
+    main_container.classList.add("container");
+
+    let left_container = document.createElement('div');
+    left_container.classList.add('third');
+    left_container.classList.add('container');
+
+    let left_container_half1 = document.createElement('div');
+    left_container_half1.classList.add('half');
+
+    let left_container_half1_profile_pic = document.createElement('i');
+    left_container_half1_profile_pic.classList.add('center');
+    left_container_half1_profile_pic.classList.add('fa');
+    left_container_half1_profile_pic.classList.add('fa-user');
+    left_container_half1_profile_pic.classList.add('fa-3x');
+
+    left_container_half1.append(left_container_half1_profile_pic);
+    left_container.append(left_container_half1);
+
+    let left_container_half2 = document.createElement('div');
+    left_container_half2.classList.add('half');
+    let left_container_half2_author = document.createElement('div');
+    left_container_half2_author.classList.add('listing_author');
+    left_container_half2_author.classList.add('listing_text');
+    let left_container_half2_title = document.createElement('div');
+    left_container_half2_title.classList.add('listing_text');
+    firestore.collection("users").where("uid", "==", doc.data().uid).limit(1).get().then((snapshot) =>
+        snapshot.docs.forEach(user => {
+            left_container_half2_author.innerHTML = user.data().name;
+            left_container_half2_title.innerHTML = user.data().occupation;
+        })
+    );
+
+    left_container_half2.append(left_container_half2_author);
+    left_container_half2.append(left_container_half2_title);
+    left_container.append(left_container_half2);
+    main_container.append(left_container);
+
+    let right_container = document.createElement('div');
+    right_container.classList.add('twothirds');
+    let right_container_content = document.createElement('div');
+    right_container_content.classList.add('listing_description');
+    right_container_content.classList.add('listing_text');
+    right_container_content.innerHTML = doc.data().content;
+
+    right_container.append(right_container_content);
+    main_container.append(right_container);
+
+    resume_review_list.prepend(main_container);
+};
+
+let show_current_resume_replies = function(current_resume_id){
+    firestore.collection('resumes').doc(current_resume_id).collection('replies').orderBy("timestamp").get().then((snapshot) =>
+        snapshot.docs.forEach(doc => {
+            render_current_resume_replies(doc);
+            // console.log(doc.data().author);
+            // console.log(doc.data().content);
+            // console.log(doc.data().timestamp.toDate());
+        })
+    );
+    // console.log("show current reply");
+};
+
+
+let getUserRating = function (){
+  let user = firebase.auth().currentUser;
+  let users_ref = firestore.collection("users");
+  users_ref.where("uid", "==", getCurrentUserId()).limit(1).get().then((snapshot) =>
+      snapshot.docs.forEach(doc => {
+        document.getElementById("profileRating").innerHTML = doc.data().avgRating;
+      })
+  );
 };
 
 let app = function() {
@@ -436,6 +556,8 @@ let app = function() {
     let password = document.getElementById("signPassword").value;
     let confirmPassword = document.getElementById("signConfirmPassword").value;
     let name = document.getElementById("signName").value;
+    let occupation = document.getElementById("signOccupation").value;
+    // console.log(occupation);
     //if the emails do not match send an error
     if (!(email === confirmEmail)) {
       document.getElementById("signError").innerHTML = "Error: Emails Do Not Match";
@@ -443,10 +565,13 @@ let app = function() {
     } else if (!(password === confirmPassword)) {
       document.getElementById("signError").innerHTML = "Error: Passwords Do Not Match";
       return false;
+    }else if (occupation === null || occupation === '') {
+      document.getElementById("signError").innerHTML = "Error: Occupation field cannot be empty";
+      return false;
     } else if (name === null || name === '') {
       document.getElementById("signError").innerHTML = "Error: Name field cannot be empty";
       return false;
-    } else {
+    }else {
       return true;
     }
   };
@@ -457,6 +582,7 @@ let app = function() {
     let e = document.getElementById("signEmail").value;
     let p = document.getElementById("signPassword").value;
     let n = document.getElementById("signName").value;
+    let o = document.getElementById("signOccupation").value;
     if (validateSignUp()) {
       //firebase call to make the account
       firebase.auth().createUserWithEmailAndPassword(e, p)
@@ -488,6 +614,7 @@ let app = function() {
               email: e,
               uid: token,
               totalRating: 0,
+              occupation: o,
               numRate : 0
             })
             .then(function(docRef) {
@@ -723,7 +850,6 @@ let app = function() {
                   url: downloadURL,
                   user: getCurrentUserId(),
                   upload_time: firebase.firestore.FieldValue.serverTimestamp(),
-                  user_name:  document.getElementById("name").innerHTML,
                   totalRating: 0,
                   numRate : 0,
                   description : uploadDescription
@@ -795,35 +921,59 @@ let app = function() {
   };
 
   let add_reply = function(){
-    //called from a button call from the page
-    //gets a ref to the resume that is currently being viewed/replied
-    //goes into the database for resumes and by ref finding the correct resume
-    //if there is not a collection for replies, make one, if there is then
-    //access it, Create a new docment that is the reply from the current user
-    //in the fields are : reply, user, timestamp, rating
+      console.log("Adding a reply");
+
+      let vars = {};
+      window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+          vars[key] = value;
+      });
+      let current_resume_id = vars['id'];
+      let resume_review_text = document.getElementById("review_textarea").value;
+
+      // console.log(current_resume_id);
+      // console.log(resume_review_text);
+
+      firestore.collection("resumes").doc(current_resume_id).collection("replies").add({
+          content: resume_review_text,
+          uid: getCurrentUserId(),
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      }).then((docRef) => {
+          console.log("Document written with ID: ", docRef.id);
+          docRef.get().then(doc =>{
+              render_current_resume_replies(doc);
+          });
+      }).catch(function(error){
+          console.error("Error adding document: ", error);
+      });
+
+      document.getElementById("review_textarea").value = "";
     //call the update_resume_rating function from the new rating
     //also figure out how to instantly add the reply to the screen
   };
+
   let edit_reply = function(){
     //called by a button to edit your reply after publishing
     //since we have a ref to the reply that was posted , we can just use
     //database functions to make sure this is the right user so the button
     //appears, easy database update to updatetime and message
-  }
+  };
+
   let delete_reply = function() {
     //go into the db and find their reply and delete it
     //also need to figure out how to update the resume rating
     //back to whatit was before, maybe some math involved
     //user rating will not change so they can fix their rating
-  }
+  };
+
   let update_resume_rating = function (rating){
     //need reference to the resume being rated and the rating added
     //this function should be called from add_reply
     //goes into the resume that is ref by the previous statement
     //updates the numRate by 1 and updates the avg Rating for the resume
   };
+
   let update_user_rating = function (rating){
-    //in reply to rating a review given to you on helpfullness
+    //in reply to rating a review given to you on helpfulness
     //given the reply ref we can know which user this was from
     //and we can find them in the database, we also pass in the
     //rating if we need to? (not sure yet), since we know the
@@ -919,10 +1069,11 @@ let app = function() {
     delimiters: ['${', '}'],
     unsafeDelimiters: ['!{', '}'],
     data: {
-      authD : false,
-      show_past_resumes: false,
-      show_resume_feedback: false,
-      is_logged_in : false
+        authD : false,
+        show_past_resumes: false,
+        show_resume_feedback: false,
+        is_logged_in : false,
+        is_user_resume: false
     },
     methods: {
         signIn: signIn,
@@ -951,7 +1102,8 @@ let app = function() {
         get_latest_resume: get_latest_resume,
         home_upload_button : home_upload_button,
         home_login_button : home_login_button,
-        revealPassword : revealPassword
+        revealPassword : revealPassword,
+        add_reply: add_reply
     }
   });
 
