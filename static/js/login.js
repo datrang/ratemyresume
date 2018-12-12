@@ -56,7 +56,7 @@ firebase.auth().onAuthStateChanged(function(user) {
               getUserRating("profileRating");
               break;
           case "resume_reviews":
-              console.log("Resume Review");
+              // console.log("Resume Review");
               let vars = {};
               window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
                   vars[key] = value;
@@ -129,18 +129,18 @@ let setUserRating = function (userID, newValue){
                                             let newCount = user.data().numRate;
                                             // console.log(doc.data().userRating);
                                             if(doc.data().userRating == 0){
-                                                console.log("Reached");
+                                                // console.log("Reached");
                                                 newCount = user.data().numRate + 1;
                                             }
-                                            console.log("newTotal=", newTotal);
-                                            console.log("newCount=", newCount);
+                                            // console.log("newTotal=", newTotal);
+                                            // console.log("newCount=", newCount);
                                             firestore.collection("users").doc(user.id).update({
                                                 totalRating: newTotal,
                                                 numRate: newCount
                                             }).then(function(){
-                                                console.log("Database upated");
+                                                // console.log("Database upated");
                                             }).catch(function(error){
-                                                console.log("Error updating user: ", error);
+                                                // console.log("Error updating user: ", error);
                                             })
                                         });
                                         // set and keep track of owner review of reply
@@ -150,14 +150,14 @@ let setUserRating = function (userID, newValue){
                                                 firestore.collection("resumes").doc(current_resume_id).collection("replies").doc(resume.id).update({
                                                     userRating: newValue
                                                 }).then(function() {
-                                                    console.log("Document successfully updated!");
+                                                    // console.log("Document successfully updated!");
                                                 }).catch(function(error) {
-                                                    console.error("Error updating document: ", error);
+                                                    // console.error("Error updating document: ", error);
                                                 });
                                             })
                                         );
                                     }else {
-                                        console.log("IT DOESN'T EXIST");
+                                        // console.log("IT DOESN'T EXIST");
                                     }
                                 });
                             }
@@ -178,25 +178,25 @@ let setUserRating = function (userID, newValue){
                         firestore.collection("users").where("uid", "==", userID).limit(1).get().then((snapshot) => {
                             if(!snapshot.empty){
                                 snapshot.docs.forEach(user => {
-                                    console.log("doc:", doc.data().userRating);
-                                    console.log("user:", user.data().totalRating);
-                                    console.log("newValue:", newValue);
+                                    // console.log("doc:", doc.data().userRating);
+                                    // console.log("user:", user.data().totalRating);
+                                    // console.log("newValue:", newValue);
                                     let newTotal = user.data().totalRating - doc.data().userRating + newValue;
-                                    console.log("newTotal= ",  newTotal);
+                                    // console.log("newTotal= ",  newTotal);
                                     let newCount = user.data().numRate;
                                     // console.log(doc.data().userRating);
                                     if(doc.data().userRating == 0){
-                                        console.log("Reached");
+                                        // console.log("Reached");
                                         newCount = user.data().numRate + 1;
                                     }
-                                    console.log("newCount=", newCount);
+                                    // console.log("newCount=", newCount);
                                     firestore.collection("users").doc(user.id).update({
                                         totalRating: newTotal,
                                         numRate: newCount
                                     }).then(function(){
-                                        console.log("Database upated");
+                                        // console.log("Database upated");
                                     }).catch(function(error){
-                                        console.log("Error updating user: ", error);
+                                        // console.log("Error updating user: ", error);
                                     })
                                 });
                                 // set and keep track of owner review of reply
@@ -206,14 +206,14 @@ let setUserRating = function (userID, newValue){
                                         firestore.collection("resumes").doc(current_resume_id).collection("replies").doc(resume.id).update({
                                             userRating: newValue
                                         }).then(function() {
-                                            console.log("Document successfully updated!");
+                                            // console.log("Document successfully updated!");
                                         }).catch(function(error) {
-                                            console.error("Error updating document: ", error);
+                                            // console.error("Error updating document: ", error);
                                         });
                                     })
                                 );
                             }else {
-                                console.log("IT DOESN'T EXIST");
+                                // console.log("IT DOESN'T EXIST");
                             }
                         });
                     }
@@ -259,9 +259,9 @@ let setResumeRating = function(userID,newValue,count){
         totalRating : newTotal,
         numRate : newCount
     }).then(function(){
-        console.log("Database upated");
+        // console.log("Database upated");
     }).catch(function(error){
-        console.log("Error updating user: ", error);
+        // console.log("Error updating user: ", error);
     })
   }).catch(function(error) {
     console.log("Error getting document:", error);
@@ -368,10 +368,10 @@ let show_user_past_resume = function (){
     let user_resume_ref = firestore.collection("resumes").where("user", "==", getCurrentUserId());
     user_resume_ref.orderBy("upload_time","desc").limit(1).get().then((snapshot =>
             snapshot.docs.forEach(doc => {
-                console.log(doc.data().name);
+                // console.log(doc.data().name);
                 user_resume_ref.where("upload_time", "<", doc.data().upload_time).get().then((snapshot =>
                         snapshot.docs.forEach(doc => {
-                            console.log(doc.data().name);
+                            // console.log(doc.data().name);
                             render_user_resume_list(doc);
                         })
                 ))
@@ -454,7 +454,7 @@ let render_other_resume = function(doc){
 };
 
 let show_other_resume = function(){
-    console.log("Current User = " + getCurrentUserId());
+    // console.log("Current User = " + getCurrentUserId());
     firestore.collection("resumes").orderBy("upload_time","desc").get().then((snapshot) =>
         snapshot.docs.forEach(doc => {
             if(doc.data().user != getCurrentUserId()){
@@ -473,7 +473,7 @@ let show_user_latest_resume = function (){
                 document.getElementById("user_latest_resume_name").innerHTML = "Please Upload a Resume";
             }else{
                 snapshot.docs.forEach(doc => {
-                    console.log(doc.data().name);
+                    // console.log(doc.data().name);
                     document.getElementById("user_latest_resume_name").innerHTML = doc.data().name.slice(0,-4);
                     document.getElementById("user_latest_resume_file").src = doc.data().url;
                     let timestamp = doc.data().upload_time.toDate();
@@ -507,14 +507,14 @@ let show_user_latest_resume_reviews = function(){
     firestore.collection("resumes").where("user", "==", getCurrentUserId()).orderBy("upload_time","desc").limit(1).get().then((snapshot =>
         {
             if(snapshot.empty){
-                console.log("No Resume");
+                // console.log("No Resume");
             }else{
                 snapshot.docs.forEach(doc => {
                     firestore.collection('resumes').doc(doc.id).collection('replies').get().then((snapshot) =>
                         snapshot.docs.forEach(reply => {
                             render_current_resume_replies(reply);
-                            console.log(reply.data().content);
-                            console.log(reply.data().uid);
+                            // console.log(reply.data().content);
+                            // console.log(reply.data().uid);
                         })
                     )
                 })
@@ -544,12 +544,12 @@ let show_current_resume = function (current_resume_id){
         if(numCount == 0){document.getElementById("current_resume_rating").innerHTML = "No Ratings So Far";}
         else {document.getElementById("current_resume_rating").innerHTML = "Rating: " + (Math.round(total/numCount *10) / 10) + "/5";}
     }).catch(function(error){
-        console.log("Error getting document:", error);
+        // console.log("Error getting document:", error);
     });
 };
 
 let render_current_resume_replies = function(doc){
-    console.log("REACHED");
+    // console.log("REACHED");
     let vars = {};
     window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
         vars[key] = value;
@@ -913,7 +913,7 @@ let check_reply = function(){
                 }
             })
           ).then(function(){
-            console.log(status);
+            // console.log(status);
             if(status){
               document.getElementById("current_resume_review_div").style.display= "block";
               document.getElementById("alreaady_reviewed_div").style.display = "none";
@@ -927,7 +927,7 @@ let check_reply = function(){
               firestore.collection("resumes").doc(current_resume_id).collection("replies")
                 .where("uid","==",getCurrentUserId()).limit(1).get().then((snapshot) =>
                   snapshot.docs.forEach(doc => {
-                    console.log(doc.data().content);
+                    // console.log(doc.data().content);
                       document.getElementById("user_reviewed").value = doc.data().content;
                       document.getElementById("user_rated").innerHTML = "You gave this review a " +doc.data().totalRating + "/5";
                 })
@@ -940,7 +940,7 @@ let check_reply = function(){
     }
   })
   .catch(function(error){
-    console.log(error);
+    // console.log(error);
   })
 };
 let check_user_reply = function(){
@@ -956,7 +956,7 @@ let check_user_reply = function(){
       }
     })
     .catch(function(error){
-      console.log(error);
+      // console.log(error);
     })
 }
 // let getUserRating = function (){
@@ -984,16 +984,16 @@ let app = function() {
     firebase.auth().signInWithEmailAndPassword(e, p)
       .then(function() {
         //if it succeeds then do this
-        console.log("signed in");
+        // console.log("signed in");
         let user = firebase.auth().currentUser;
-        console.log(user.displayName, user.email, user.uid);
+        // console.log(user.displayName, user.email, user.uid);
         location.href = 'profile';
       })
       .catch(function(error) {
         // Handle Errors here.
         let errorCode = error.code;
         let errorMessage = error.message;
-        console.log("Error Signing In ", errorMessage);
+        // console.log("Error Signing In ", errorMessage);
         document.getElementById("login_error").innerHTML = errorMessage;
         // ...
       });
@@ -1042,11 +1042,11 @@ let app = function() {
           let user = firebase.auth().currentUser;
           let token = getCurrentUserId();
           user.sendEmailVerification().then(function() {
-            console.log("Email Verification Sent");
+            // console.log("Email Verification Sent");
             // Email sent.
           }).catch(function(error) {
             // An error happened.
-            console.log("Error sending Verification Email");
+            // console.log("Error sending Verification Email");
           });
           //update their display name in their user property
           user.updateProfile({
@@ -1054,10 +1054,10 @@ let app = function() {
             displayName: n
           }).then(function() {
             // Update successful.
-            console.log("Successfully updated profile");
+            // console.log("Successfully updated profile");
           }).catch(function(error) {
             // An error happened.
-            console.log("Error updating profile ", error);
+            // console.log("Error updating profile ", error);
           });
           //add their user info into the database
           firestore.collection("users").add({
@@ -1070,17 +1070,17 @@ let app = function() {
             })
             .then(function(docRef) {
               location.href = 'hub';
-              console.log("Document written with ID: ", docRef.id);
+              // console.log("Document written with ID: ", docRef.id);
             })
             .catch(function(error) {
-              console.error("Error adding document: ", error);
+              // console.error("Error adding document: ", error);
             });
         })
         .catch(function(error) {
           // Handle Errors here.
           let errorCode = error.code;
           let errorMessage = error.message;
-          console.log("Error making account", errorMessage);
+          // console.log("Error making account", errorMessage);
           document.getElementById("signError").innerHTML = errorMessage;
           // ...
         });
@@ -1094,12 +1094,12 @@ let app = function() {
     let emailAddress = document.getElementById("forgotEmail").value;
     //firebasecall to send the email
     auth.sendPasswordResetEmail(emailAddress).then(function() {
-      console.log("Send Password Reset Link to Email");
+      // console.log("Send Password Reset Link to Email");
       document.getElementById("forgotSuccess").innerHTML = "Email Sent!";
       // Email sent.
     }).catch(function(error) {
       // An error happened.
-      console.log("Error sending password reset email ", error);
+      // console.log("Error sending password reset email ", error);
       document.getElementById("forgotError").innerHTML = error;
     });
   };
@@ -1119,23 +1119,23 @@ let app = function() {
           let users_ref = firestore.collection("users");
           users_ref.where("uid", "==", getCurrentUserId()).limit(1).get().then((snapshot) =>
               snapshot.docs.forEach(doc => {
-                  console.log(doc.id);
+                  // console.log(doc.id);
                   let user_ref = firestore.collection("users").doc(doc.id);
                   user_ref.update({
                       email: newEmail
                   }).then(function(){
-                      console.log("Successfully Updated Email");
+                      // console.log("Successfully Updated Email");
                       this.show_email = false;
                       refresh();
                       document.getElementById("profileSuccess").innerHTML = "Successfully Updated Email";
                   }).catch(function(error){
-                      console.error("Error adding document: ", error);
+                      // console.error("Error adding document: ", error);
                   })
               })
           );
       }).catch(function(error) {
         // An error happened.
-        console.log("Error updating email ", error);
+        // console.log("Error updating email ", error);
         document.getElementById("profileError").innerHTML = error;
         document.getElementById("need_auth").style.display = "block";
       });
@@ -1170,12 +1170,12 @@ let app = function() {
           document.getElementById("need_auth").style.display = "none";
           document.getElementById("update_password_field").style.display = "none";
           document.getElementById("update_password_button").style.display = "block";
-          console.log("Successfully updated Password");
+          // console.log("Successfully updated Password");
           document.getElementById("profileSuccess").innerHTML = "Success Updated Password";
           // Update successful.
         }).catch(function(error) {
           // An error happened.
-          console.log("Error Updating Password ", error);
+          // console.log("Error Updating Password ", error);
           document.getElementById("profileError").innerHTML = error;
           document.getElementById("need_auth").style.display = "block";
         });
@@ -1193,22 +1193,22 @@ let app = function() {
         document.getElementById("update_name_button").style.display = "block";
           users_ref.where("uid", "==", getCurrentUserId()).limit(1).get().then((snapshot) =>
               snapshot.docs.forEach(doc => {
-                  console.log(doc.id);
+                  // console.log(doc.id);
                   let user_ref = firestore.collection("users").doc(doc.id);
                   user_ref.update({
                       name: name
                   }).then(function(){
-                      console.log("User updated");
+                      // console.log("User updated");
                       document.getElementById("profileSuccess").innerHTML = "Successfully Updated Name";
                       refresh();
                       this.show_name = false;
                   }).catch(function(error){
-                      console.log("Error updating user: ", error);
+                      // console.log("Error updating user: ", error);
                   })
               })
           );
       }).catch(function(error){
-           console.log("Error updating profile ", error);
+           // console.log("Error updating profile ", error);
            document.getElementById("profileError").innerHTML = error;
       });
   };
@@ -1220,18 +1220,18 @@ let app = function() {
         document.getElementById("authEmail").value,
         document.getElementById("authPassword").value
     );
-    console.log(credential);
+    // console.log(credential);
     // Prompt the user to re-provide their sign-in credentials
     user.reauthenticateAndRetrieveDataWithCredential(credential)
     .then(function() {
       // User re-authenticated.
-      console.log("Successfully reauthenticated");
+      // console.log("Successfully reauthenticated");
       this.edit = true;
       document.getElementById("need_auth").style.display = "none";
       document.getElementById("profileSuccess").innerHTML = "Successfully Authorized";
     }).catch(function(error) {
       // An error happened.
-      console.log("Error reauthenticating user ", error);
+      // console.log("Error reauthenticating user ", error);
       document.getElementById("profileError").innerHTML = error;
     });
   };
@@ -1246,12 +1246,12 @@ let app = function() {
     else{
       user.delete().then(function() {
         document.getElementById("need_auth").style.display = "none";
-        console.log("Successfully deleted account");
+        // console.log("Successfully deleted account");
         location.href='login';
         // User deleted.
       }).catch(function(error) {
         // An error happened.
-        console.log("Error deleting account ", error);
+        // console.log("Error deleting account ", error);
         document.getElementById("profileError").innerHTML = error;
         document.getElementById("need_auth").style.display = "block";
       });
@@ -1261,12 +1261,12 @@ let app = function() {
   let signOut = function(){
     firebase.auth().signOut()
     .then(function() {
-      console.log("Signed Out");
+      // console.log("Signed Out");
       location.href='login';
     // Sign-out successful.
     }).catch(function(error) {
       // An error happened.
-      console.log("Error signing out: ", error);
+      // console.log("Error signing out: ", error);
       document.getElementById("profileError").innerHTML = error;
     });
   };
@@ -1295,7 +1295,7 @@ let app = function() {
           function error(error){},
           function complete(){
           uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-              console.log('File available at', downloadURL);
+              // console.log('File available at', downloadURL);
               firestore.collection('resumes').doc().set({
                   name:filename,
                   url: downloadURL,
@@ -1318,10 +1318,10 @@ let app = function() {
       });
   };
   let get_latest_resume = function(){
-      console.log("Getting latest resume");
+      // console.log("Getting latest resume");
       let query = firestore.collection("resumes").where("user", "==", getCurrentUserId());
       query = query.orderBy("upload_time");
-      console.log(query);
+      // console.log(query);
   };
 
   let renderResumeList = function(doc){
@@ -1371,7 +1371,7 @@ let app = function() {
   };
 
   let add_reply = function(){
-      console.log("Adding a reply");
+      // console.log("Adding a reply");
         let vars = {};
         window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
             vars[key] = value;
@@ -1400,7 +1400,7 @@ let app = function() {
             totalRating: rating,
             userRating: 0
         }).then((docRef) => {
-            console.log("Document written with ID: ", docRef.id);
+            // console.log("Document written with ID: ", docRef.id);
             setResumeRating(current_resume_id,rating,1);
             check_reply();
             docRef.get().then(doc =>{
@@ -1409,7 +1409,7 @@ let app = function() {
               getResumeRating(current_resume_id,"current_resume_rating");
             });
         }).catch(function(error){
-            console.error("Error adding document: ", error);
+            // console.error("Error adding document: ", error);
         });
 
         document.getElementById("review_textarea").value = "";
@@ -1436,7 +1436,7 @@ let app = function() {
         document.getElementById("reply_error").innerHTML = "Please Select A Rating";
         return;
     }
-    console.log(rating);
+    // console.log(rating);
     firestore.collection("resumes").doc(current_resume_id).get().then(function(doc){
       //set a new subtract variable
       let new_total = doc.data().totalRating;
@@ -1456,7 +1456,7 @@ let app = function() {
               getResumeRating(current_resume_id,"current_resume_rating");
             })
             .catch(function(error){
-              console.log(error);
+              // console.log(error);
             })
           })
         )
@@ -1476,11 +1476,11 @@ let app = function() {
           let prevRating = doc.data().totalRating;
           setResumeRating(current_resume_id,-prevRating,-1);
           firestore.collection("resumes").doc(current_resume_id).collection("replies").doc(doc.id).delete().then(function(){
-            console.log("Delete Success")
+            // console.log("Delete Success")
             check_reply();
             refresh_user_latest_rating();
           }).catch(function(error){
-            console.log("Error Deleting: ", error);
+            // console.log("Error Deleting: ", error);
           });
         })
       });
