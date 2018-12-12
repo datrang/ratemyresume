@@ -11,101 +11,77 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <div id = "loading">
       <img src="https://firebasestorage.googleapis.com/v0/b/resume-rater.appspot.com/o/luca.jpg?alt=media&token=93c171a2-5170-4912-9cf7-69d5517f7290" alt="">
 </div>
+
 <div id = "doneLoading">
-<div class="navbar">
-  <a id="homeTab" onClick="location.href='index';">Home</a>
-  <a id="hubTab" onClick="location.href='hub';">Home</a>
-  <a id="rateTab" onClick="location.href='rateresume';">Rate A Resume</a>
-  <a id="profileTab" onClick="location.href='profile';">Profile</a>
-  <a id="loginTab" onClick="location.href='login';" >Login</a>
-</div>
-<div class="main_content">
-    <div id="vue-div" class="display:none">
-        <div class="main_container">
-            <h4 id="current_resume_name"></h4>
-            <iframe class="current_resume_file" id="current_resume_file" type="application/pdf"></iframe> <br>
-            <span class="current_resume_author" id="current_resume_author"></span> <br>
-            <span class="current_resume_date" id="current_resume_date"></span> <br>
-            Average Score
-        </div>
+    <div class="navbar">
+      <a id="homeTab" onClick="location.href='index';">Home</a>
+      <a id="hubTab" onClick="location.href='hub';">Home</a>
+      <a id="rateTab" onClick="location.href='rateresume';">Rate A Resume</a>
+      <a id="profileTab" onClick="location.href='profile';">Profile</a>
+      <a id="loginTab" onClick="location.href='login';" >Login</a>
+    </div>
+    <div class="main_content">
+        <div id="vue-div" class="display:none">
+            <div class="main_container">
+                <h4 id="current_resume_name"></h4>
+                <iframe class="current_resume_file" id="current_resume_file" type="application/pdf"></iframe> <br>
+                <span class="current_resume_author" id="current_resume_author"></span> <br>
+                <span class="current_resume_date" id="current_resume_date"></span> <br>
+                Average Score
+            </div>
 
-        <div class="container center review_div">
-            <textarea class="review_textarea" placeholder="Type your Review"></textarea>
-            <button id="review_button">Submit</button>
-        </div>
+            <div class="container center review_div">
+                <textarea class="review_textarea" placeholder="Type your Review"></textarea>
+                <button id="review_button">Submit</button>
+            </div>
 
-        <div onmouseover="listing_mouseover(this)" onmouseout="listing_mouseout(this)" class="feedback_listing container">
-            <div class="third container">
-                <div class="half">
-                    <i class="center fa fa-user fa-3x" aria-hidden="true"></i>
+            <div onmouseover="listing_mouseover(this)" onmouseout="listing_mouseout(this)" class="feedback_listing container">
+                <div class="third container">
+                    <div class="half">
+                        <i class="center fa fa-user fa-3x" aria-hidden="true"></i>
+                    </div>
+                    <div class="half">
+                        <div class="listing_author listing_text">John Doe</div>
+                        <div class="listing_text">Software Engineer</div>
+                    </div>
                 </div>
-                <div class="half">
-                    <div class="listing_author listing_text">John Doe</div>
-                    <div class="listing_text">Software Engineer</div>
-                </div>
-            </div>
-            <div class="twothirds">
-                <div class="listing_description listing_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer turpis enim, varius nec faucibus interdum, fringilla in ante. Nunc non luctus neque, vel sagittis risus. Donec at nisi eu nisi blandit tempor vitae in ipsum. Cras et est sit amet metus.</div>
-            </div>
-        </div>
-        <div onmouseover="listing_mouseover(this)" onmouseout="listing_mouseout(this)" class="feedback_listing container">
-            <div class="third container">
-                <div class="half">
-                    <i class="center fa fa-user fa-3x" aria-hidden="true"></i>
-                </div>
-                <div class="half">
-                    <div class="listing_author listing_text">John Doe</div>
-                    <div class="listing_text">Software Engineer</div>
+                <div class="twothirds">
+                    <div class="listing_description listing_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer turpis enim, varius nec faucibus interdum, fringilla in ante. Nunc non luctus neque, vel sagittis risus. Donec at nisi eu nisi blandit tempor vitae in ipsum. Cras et est sit amet metus.</div>
                 </div>
             </div>
-            <div class="twothirds">
-                <div class="listing_description listing_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer turpis enim, varius nec faucibus interdum, fringilla in ante. Nunc non luctus neque, vel sagittis risus. Donec at nisi eu nisi blandit tempor vitae in ipsum. Cras et est sit amet metus.</div>
-            </div>
-        </div>
-        <div onmouseover="listing_mouseover(this)" onmouseout="listing_mouseout(this)" class="feedback_listing container">
-            <div class="third container">
-                <div class="half">
-                    <i class="center fa fa-user fa-3x" aria-hidden="true"></i>
+            <div onmouseover="listing_mouseover(this)" onmouseout="listing_mouseout(this)" class="feedback_listing container">
+                <div class="third container">
+                    <div class="half">
+                        <i class="center fa fa-user fa-3x" aria-hidden="true"></i>
+                    </div>
+                    <div class="half">
+                        <div class="listing_author listing_text">John Doe</div>
+                        <div class="listing_text">Software Engineer</div>
+                    </div>
                 </div>
-                <div class="half">
-                    <div class="listing_author listing_text">John Doe</div>
-                    <div class="listing_text">Software Engineer</div>
+                <div class="twothirds">
+                    <div class="listing_description listing_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer turpis enim, varius nec faucibus interdum, fringilla in ante. Nunc non luctus neque, vel sagittis risus. Donec at nisi eu nisi blandit tempor vitae in ipsum. Cras et est sit amet metus.</div>
                 </div>
             </div>
-            <div class="twothirds">
-                <div class="listing_description listing_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer turpis enim, varius nec faucibus interdum, fringilla in ante. Nunc non luctus neque, vel sagittis risus. Donec at nisi eu nisi blandit tempor vitae in ipsum. Cras et est sit amet metus.</div>
+            <div onmouseover="listing_mouseover(this)" onmouseout="listing_mouseout(this)" class="feedback_listing container">
+                <div class="third container">
+                    <div class="half">
+                        <i class="center fa fa-user fa-3x" aria-hidden="true"></i>
+                    </div>
+                    <div class="half">
+                        <div class="listing_author listing_text">John Doe</div>
+                        <div class="listing_text">Software Engineer</div>
+                    </div>
+                </div>
+                <div class="twothirds">
+                    <div class="listing_description listing_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer turpis enim, varius nec faucibus interdum, fringilla in ante. Nunc non luctus neque, vel sagittis risus. Donec at nisi eu nisi blandit tempor vitae in ipsum. Cras et est sit amet metus.</div>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<div class="footer-container">
-        <div class="footer">
-          <span>
-            <img id="logo" src="/images/logo.png" alt="ResumeRater"/>
-          </span>
-          <div>
-            Created By:
-            Ryan Cho
-            Matthew Oey
-            David Trang
-            Thomas Wong
-          </div>
-          <div>
-            Contact Us:
-            rccho@ucsc.edu
-            moey@ucsc.edu
-            datrang@ucsc.edu
-            twong40@ucsc.edu
-          </div>
-          <div class="social-media-icons">
-            <a class="fa fa-facebook" href="https://www.facebook.com/sharer/sharer.php?u={url}"></a>
-            <a class="fa fa-twitter" href="https://twitter.com/home?status={url}"></a>
-            <a class="fa fa-google" href="https://plus.google.com/share?url={url}"></a>
-          </div>
-        </div>
-      </div>
 </div>
 <script src="{{=URL('static', 'js/login.js')}}"></script>

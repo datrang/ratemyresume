@@ -56,7 +56,7 @@ h2 {
 .navbar {
   background: rgba(36, 48, 94, 1);
   overflow: hidden;
-  position: fixed; /* Set the navbar to fixed position 
+  position: fixed; /* Set the navbar to fixed position */
   top: 0; /* Position the navbar at the top of the page */
   width: 100%; /* Full width */
 }
@@ -162,11 +162,15 @@ h2 {
 #easy {
     padding-bottom: 60px;
 }
+
 .steps-container {
-  background-color: white;
+  /*background-color: white;*/
   text-align: center;
   padding: 180px;
   column-count: 3;
+  background-image: url("https://firebasestorage.googleapis.com/v0/b/resume-rater.appspot.com/o/steps%20v7.png?alt=media&token=9fd27a72-5dad-4a8f-8c13-1b2b9dc3aa14");
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .desc-container, #dstep1, #dstep2, #dstep3 {
@@ -233,6 +237,11 @@ h2 {
   color: white;
   padding: 30px;
 }
+
+.footer-container img {
+  height: 100px;
+}
+
 #creators, #emails {
   list-style-type: none;
 }
@@ -446,9 +455,4 @@ h2 {
 }
 #update_name_button{
   display : block;
-}
-.checkboxes label {
-  margin-top: 10px;
-  font-family: Helvetica Neue;
-  font-size: 13px;
 }
