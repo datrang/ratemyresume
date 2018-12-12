@@ -264,7 +264,7 @@ let setResumeRating = function(userID,newValue,count){
         // console.log("Error updating user: ", error);
     })
   }).catch(function(error) {
-    console.log("Error getting document:", error);
+    // console.log("Error getting document:", error);
 });
   // console.log("called set" + userID + " " + newTotal + " " + newCount);
 };
@@ -496,8 +496,14 @@ let refresh_user_latest_rating = function(){
         snapshot.docs.forEach(doc => {
             let total = doc.data().totalRating;
             let numCount = doc.data().numRate;
-            if(numCount == 0){document.getElementById("current_resume_rating").innerHTML = "No Ratings So Far"; console.log("HERE")}
-            else {document.getElementById("current_resume_rating").innerHTML = "Rating: " + (Math.round(total/numCount *10) / 10) + "/5"; console.log("THIS")}
+            if(numCount == 0){
+                document.getElementById("current_resume_rating").innerHTML = "No Ratings So Far";
+                // console.log("HERE")
+            }
+            else {
+                document.getElementById("current_resume_rating").innerHTML = "Rating: " + (Math.round(total/numCount *10) / 10) + "/5";
+                // console.log("THIS")
+            }
           })
       }
   ))
