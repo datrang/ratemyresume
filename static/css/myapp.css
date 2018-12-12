@@ -338,6 +338,12 @@ background-image: url("https://firebasestorage.googleapis.com/v0/b/resume-rater.
 #update_name_button{
   display : block;
 }
+#upload_button {
+  display : block;
+}
+#upload_field {
+  display : none;
+}
 .checkboxes label {
   margin-top: 10px;
   font-family: Helvetica Neue;
