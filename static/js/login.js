@@ -116,19 +116,23 @@ let setUserRating = function (userID, newValue){
                     let current_resume_id = current_resume.id;
                     firestore.collection("resumes").doc(current_resume_id).collection("replies").where("uid", "==", userID).limit(1).get().then((snapshot) =>
                         snapshot.docs.forEach(doc => {
-                            if(doc.data().totalRating != newValue){
+                            if(doc.data().userRating != newValue){
                                 // set the user rating value
                                 firestore.collection("users").where("uid", "==", userID).limit(1).get().then((snapshot) => {
                                     if(!snapshot.empty){
                                         snapshot.docs.forEach(user => {
-                                            let newTotal = user.data().totalRating - doc.data().totalRating + newValue;
-                                            console.log(newTotal);
+                                            console.log(doc.data().userRating);
+                                            console.log("user:", user.data().totalRating);
+                                            console.log("newValue:", newValue);
+                                            let newTotal = user.data().totalRating - doc.data().userRating + newValue;
+                                            console.log("newTotal= ",  newTotal);
                                             let newCount = user.data().numRate;
                                             // console.log(doc.data().userRating);
-                                            if(doc.data().totalRating == 0){
-                                            let newCount = user.data().numRate + 1;
+                                            if(doc.data().userRating == 0){
+                                                console.log("Reached");
+                                                newCount = user.data().numRate + 1;
                                             }
-                                            console.log(newCount);
+                                            console.log("newCount=", newCount);
                                             firestore.collection("users").doc(user.id).update({
                                                 totalRating: newTotal,
                                                 numRate: newCount
@@ -137,24 +141,24 @@ let setUserRating = function (userID, newValue){
                                             }).catch(function(error){
                                                 console.log("Error updating user: ", error);
                                             })
-                                        })
+                                        });
+                                        // set and keep track of owner review of reply
+                                        firestore.collection("resumes").doc(current_resume_id).collection("replies").where("uid", "==", userID).get().then((snapshot) =>
+                                            snapshot.docs.forEach(resume => {
+                                                // console.log(resume.id);
+                                                firestore.collection("resumes").doc(current_resume_id).collection("replies").doc(resume.id).update({
+                                                    userRating: newValue
+                                                }).then(function() {
+                                                    console.log("Document successfully updated!");
+                                                }).catch(function(error) {
+                                                    console.error("Error updating document: ", error);
+                                                });
+                                            })
+                                        );
                                     }else {
                                         console.log("IT DOESN'T EXIST");
                                     }
                                 });
-                                // set and keep track of owner review of reply
-                                firestore.collection("resumes").doc(current_resume_id).collection("replies").where("uid", "==", userID).get().then((snapshot) =>
-                                    snapshot.docs.forEach(resume => {
-                                        // console.log(resume.id);
-                                        firestore.collection("resumes").doc(current_resume_id).collection("replies").doc(resume.id).update({
-                                            totalRating: newValue
-                                        }).then(function() {
-                                            console.log("Document successfully updated!");
-                                        }).catch(function(error) {
-                                            console.error("Error updating document: ", error);
-                                        });
-                                    })
-                                );
                             }
                         })
                     );
@@ -167,49 +171,53 @@ let setUserRating = function (userID, newValue){
         });
         let current_resume_id = vars['id'];
         firestore.collection("resumes").doc(current_resume_id).collection("replies").where("uid", "==", userID).limit(1).get().then((snapshot) =>
-        snapshot.docs.forEach(doc => {
-            if(doc.data().totalRating != newValue){
-                // set the user rating value
-                firestore.collection("users").where("uid", "==", userID).limit(1).get().then((snapshot) => {
-                    if(!snapshot.empty){
-                        snapshot.docs.forEach(user => {
-                            let newTotal = user.data().totalRating - doc.data().totalRating + newValue;
-                            console.log(newTotal);
-                            let newCount = user.data().numRate;
-                            if(doc.data().totalRating == 0){
-                                let newCount = user.data().numRate + 1;
+                snapshot.docs.forEach(doc => {
+                    if(doc.data().userRating != newValue){
+                        // set the user rating value
+                        firestore.collection("users").where("uid", "==", userID).limit(1).get().then((snapshot) => {
+                            if(!snapshot.empty){
+                                snapshot.docs.forEach(user => {
+                                    console.log("doc:", doc.data().userRating);
+                                    console.log("user:", user.data().totalRating);
+                                    console.log("newValue:", newValue);
+                                    let newTotal = user.data().totalRating - doc.data().userRating + newValue;
+                                    console.log("newTotal= ",  newTotal);
+                                    let newCount = user.data().numRate;
+                                    // console.log(doc.data().userRating);
+                                    if(doc.data().userRating == 0){
+                                        console.log("Reached");
+                                        newCount = user.data().numRate + 1;
+                                    }
+                                    console.log("newCount=", newCount);
+                                    firestore.collection("users").doc(user.id).update({
+                                        totalRating: newTotal,
+                                        numRate: newCount
+                                    }).then(function(){
+                                        console.log("Database upated");
+                                    }).catch(function(error){
+                                        console.log("Error updating user: ", error);
+                                    })
+                                });
+                                // set and keep track of owner review of reply
+                                firestore.collection("resumes").doc(current_resume_id).collection("replies").where("uid", "==", userID).get().then((snapshot) =>
+                                    snapshot.docs.forEach(resume => {
+                                        // console.log(resume.id);
+                                        firestore.collection("resumes").doc(current_resume_id).collection("replies").doc(resume.id).update({
+                                            userRating: newValue
+                                        }).then(function() {
+                                            console.log("Document successfully updated!");
+                                        }).catch(function(error) {
+                                            console.error("Error updating document: ", error);
+                                        });
+                                    })
+                                );
+                            }else {
+                                console.log("IT DOESN'T EXIST");
                             }
-                            console.log(newCount);
-                            firestore.collection("users").doc(user.id).update({
-                                totalRating: newTotal,
-                                numRate: newCount
-                            }).then(function(){
-                                console.log("Database upated");
-                            }).catch(function(error){
-                                console.log("Error updating user: ", error);
-                            })
-                        })
-                    }else{
-                        console.log("IT DOESN'T EXIST");
-                    }
-                });
-
-                // set and keep track of owner review of reply
-                firestore.collection("resumes").doc(current_resume_id).collection("replies").where("uid", "==", userID).get().then((snapshot) =>
-                    snapshot.docs.forEach(resume => {
-                        // console.log(resume.id);
-                        firestore.collection("resumes").doc(current_resume_id).collection("replies").doc(resume.id).update({
-                            totalRating: newValue
-                        }).then(function() {
-                            console.log("Document successfully updated!");
-                        }).catch(function(error) {
-                            console.error("Error updating document: ", error);
                         });
-                    })
-                );
-            }
-        })
-    );
+                    }
+                })
+            );
     }
 };
 
@@ -237,7 +245,8 @@ let getResumeRating = function(userID, ratingField){
     let count = doc.data().numRate;
     document.getElementById(ratingField).innerHTML = "Rating: " + (Math.round(total/count *10) / 10) + "/5";
   })
-}
+};
+
 let setResumeRating = function(userID,newValue,count){
   let resume_ref = firestore.collection("resumes").doc(userID);
   let newTotal = 0;
@@ -492,6 +501,7 @@ let refresh_user_latest_rating = function(){
       }
   ))
 };
+
 let show_user_latest_resume_reviews = function(){
     firestore.collection("resumes").where("user", "==", getCurrentUserId()).orderBy("upload_time","desc").limit(1).get().then((snapshot =>
         {
@@ -571,7 +581,7 @@ let render_current_resume_replies = function(doc){
         left_container_half1_user_review_button1.type = "radio";
         left_container_half1_user_review_button1.name = "rating";
         left_container_half1_user_review_button1.value = "1";
-        if(doc.data().totalRating == 1){
+        if(doc.data().userRating == 1){
             left_container_half1_user_review_button1.checked = true;
         }
         left_container_half1_user_review_button1.onclick = function(){
@@ -586,7 +596,7 @@ let render_current_resume_replies = function(doc){
         left_container_half1_user_review_button2.type = "radio";
         left_container_half1_user_review_button2.name = "rating";
         left_container_half1_user_review_button2.value = "2";
-        if(doc.data().totalRating == 2){
+        if(doc.data().userRating == 2){
             left_container_half1_user_review_button2.checked = true;
         }
         left_container_half1_user_review_button2.onclick = function(){
@@ -601,7 +611,7 @@ let render_current_resume_replies = function(doc){
         left_container_half1_user_review_button3.type = "radio";
         left_container_half1_user_review_button3.name = "rating";
         left_container_half1_user_review_button3.value = "3";
-        if(doc.data().totalRating == 3){
+        if(doc.data().userRating == 3){
             left_container_half1_user_review_button3.checked = true;
         }
         left_container_half1_user_review_button3.onclick = function(){
@@ -616,7 +626,7 @@ let render_current_resume_replies = function(doc){
         left_container_half1_user_review_button4.type = "radio";
         left_container_half1_user_review_button4.name = "rating";
         left_container_half1_user_review_button4.value = "4";
-        if(doc.data().totalRating == 4){
+        if(doc.data().userRating == 4){
             left_container_half1_user_review_button4.checked = true;
         }
         left_container_half1_user_review_button4.onclick = function(){
@@ -631,7 +641,7 @@ let render_current_resume_replies = function(doc){
         left_container_half1_user_review_button5.type = "radio";
         left_container_half1_user_review_button5.name = "rating";
         left_container_half1_user_review_button5.value = "5";
-        if(doc.data().totalRating == 5){
+        if(doc.data().userRating == 5){
             left_container_half1_user_review_button5.checked = true;
         }
         left_container_half1_user_review_button5.onclick = function(){
@@ -705,7 +715,7 @@ let render_current_resume_replies = function(doc){
                 left_container_half1_user_review_button1.type = "radio";
                 left_container_half1_user_review_button1.name = "rating";
                 left_container_half1_user_review_button1.value = "1";
-                if(doc.data().totalRating == 1){
+                if(doc.data().userRating == 1){
                     left_container_half1_user_review_button1.checked = true;
                 }
                 left_container_half1_user_review_button1.onclick = function(){
@@ -720,7 +730,7 @@ let render_current_resume_replies = function(doc){
                 left_container_half1_user_review_button2.type = "radio";
                 left_container_half1_user_review_button2.name = "rating";
                 left_container_half1_user_review_button2.value = "2";
-                if(doc.data().totalRating == 2){
+                if(doc.data().userRating == 2){
                     left_container_half1_user_review_button2.checked = true;
                 }
                 left_container_half1_user_review_button2.onclick = function(){
@@ -735,7 +745,7 @@ let render_current_resume_replies = function(doc){
                 left_container_half1_user_review_button3.type = "radio";
                 left_container_half1_user_review_button3.name = "rating";
                 left_container_half1_user_review_button3.value = "3";
-                if(doc.data().totalRating == 3){
+                if(doc.data().userRating == 3){
                     left_container_half1_user_review_button3.checked = true;
                 }
                 left_container_half1_user_review_button3.onclick = function(){
@@ -750,7 +760,7 @@ let render_current_resume_replies = function(doc){
                 left_container_half1_user_review_button4.type = "radio";
                 left_container_half1_user_review_button4.name = "rating";
                 left_container_half1_user_review_button4.value = "4";
-                if(doc.data().totalRating == 4){
+                if(doc.data().userRating == 4){
                     left_container_half1_user_review_button4.checked = true;
                 }
                 left_container_half1_user_review_button4.onclick = function(){
@@ -765,7 +775,7 @@ let render_current_resume_replies = function(doc){
                 left_container_half1_user_review_button5.type = "radio";
                 left_container_half1_user_review_button5.name = "rating";
                 left_container_half1_user_review_button5.value = "5";
-                if(doc.data().totalRating == 5){
+                if(doc.data().userRating == 5){
                     left_container_half1_user_review_button5.checked = true;
                 }
                 left_container_half1_user_review_button5.onclick = function(){
@@ -1387,6 +1397,7 @@ let app = function() {
             uid: getCurrentUserId(),
             timestamp: firebase.firestore.FieldValue.serverTimestamp(),
             totalRating: rating,
+            userRating: 0
         }).then((docRef) => {
             console.log("Document written with ID: ", docRef.id);
             setResumeRating(current_resume_id,rating,1);
