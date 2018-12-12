@@ -480,6 +480,18 @@ let show_user_latest_resume = function (){
     ))
 };
 
+let refresh_user_latest_rating = function(){
+  firestore.collection("resumes").where("user", "==", getCurrentUserId()).orderBy("upload_time","desc").limit(1).get().then((snapshot =>
+      {
+        snapshot.docs.forEach(doc => {
+            let total = doc.data().totalRating;
+            let numCount = doc.data().numRate;
+            if(numCount == 0){document.getElementById("current_resume_rating").innerHTML = "No Ratings So Far";}
+            else {document.getElementById("current_resume_rating").innerHTML = "Rating: " + (Math.round(total/numCount *10) / 10) + "/5";}
+          })
+      }
+  ))
+};
 let show_user_latest_resume_reviews = function(){
     firestore.collection("resumes").where("user", "==", getCurrentUserId()).orderBy("upload_time","desc").limit(1).get().then((snapshot =>
         {
@@ -906,7 +918,7 @@ let check_reply = function(){
                   snapshot.docs.forEach(doc => {
                     console.log(doc.data().content);
                       document.getElementById("user_reviewed").value = doc.data().content;
-                      document.getElementById("user_rated").innerHTML = "You gave this review a " +doc.data().rating + "/5";
+                      document.getElementById("user_rated").innerHTML = "You gave this review a " +doc.data().totalRating + "/5";
                 })
               ).then(function(){
                 document.getElementById("current_resume_review_div").style.display= "none";
@@ -1421,6 +1433,7 @@ let app = function() {
           .then(function(){
             console.log("Update Success")
             check_reply();
+            refresh_user_latest_rating();
           }).catch(function(error){
             console.log("Error Deleting: ", error);
           });
