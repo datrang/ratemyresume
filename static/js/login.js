@@ -510,40 +510,67 @@ let check_reply = function(){
       vars[key] = value;
   });
   let current_resume_id = vars['id'];
-  let status =true;
-  firestore.collection("resumes").doc(current_resume_id).collection("replies")
-        .where("uid","==",getCurrentUserId()).limit(1).get().then((snapshot) =>
-          snapshot.docs.forEach(doc => {
-            if(doc.exists){
-              status = false;
-            }
-        })
-      ).then(function(){
-        console.log(status);
-        if(status){
-          document.getElementById("current_resume_review_div").style.display= "block";
-          document.getElementById("alreaady_reviewed_div").style.display = "none";
-        }
-        else{
-          let vars = {};
-          window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
-              vars[key] = value;
-          });
-          let current_resume_id = vars['id'];
-          firestore.collection("resumes").doc(current_resume_id).collection("replies")
+  firestore.collection("resumes").doc(current_resume_id).get().then(function(doc){
+    if(doc.data().user == getCurrentUserId()){
+      document.getElementById("current_resume_review_div").style.display= "none";
+      document.getElementById("alreaady_reviewed_div").style.display = "none";
+    }
+    else{
+      let status =true;
+      firestore.collection("resumes").doc(current_resume_id).collection("replies")
             .where("uid","==",getCurrentUserId()).limit(1).get().then((snapshot) =>
               snapshot.docs.forEach(doc => {
-                console.log(doc.data().content);
-                  document.getElementById("user_reviewed").value = doc.data().content;
-                  document.getElementById("user_rated").innerHTML = "You gave this review a " +doc.data().rating + "/5";
+                if(doc.exists){
+                  status = false;
+                }
             })
           ).then(function(){
-            document.getElementById("current_resume_review_div").style.display= "none";
-            document.getElementById("alreaady_reviewed_div").style.display = "block";
+            console.log(status);
+            if(status){
+              document.getElementById("current_resume_review_div").style.display= "block";
+              document.getElementById("alreaady_reviewed_div").style.display = "none";
+            }
+            else{
+              let vars = {};
+              window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+                  vars[key] = value;
+              });
+              let current_resume_id = vars['id'];
+              firestore.collection("resumes").doc(current_resume_id).collection("replies")
+                .where("uid","==",getCurrentUserId()).limit(1).get().then((snapshot) =>
+                  snapshot.docs.forEach(doc => {
+                    console.log(doc.data().content);
+                      document.getElementById("user_reviewed").value = doc.data().content;
+                      document.getElementById("user_rated").innerHTML = "You gave this review a " +doc.data().rating + "/5";
+                })
+              ).then(function(){
+                document.getElementById("current_resume_review_div").style.display= "none";
+                document.getElementById("alreaady_reviewed_div").style.display = "block";
+              })
+            }
           })
-        }
-      })
+    }
+  })
+  .catch(function(error){
+    console.log(error);
+  })
 };
+let check_user_reply = function(){
+    let vars = {};
+    window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+        vars[key] = value;
+    });
+    let current_resume_id = vars['id'];
+    firestore.collection("resumes").doc(current_resume_id).get().then(function(doc){
+      if(doc.data().user == getCurrentUserId()){
+        document.getElementById("current_resume_review_div").style.display= "none";
+        document.getElementById("alreaady_reviewed_div").style.display = "none";
+      }
+    })
+    .catch(function(error){
+      console.log(error);
+    })
+}
 // let getUserRating = function (){
 //   let user = firebase.auth().currentUser;
 //   let users_ref = firestore.collection("users");
