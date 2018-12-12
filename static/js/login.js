@@ -51,6 +51,7 @@ firebase.auth().onAuthStateChanged(function(user) {
               show_other_resume();
               break;
           case "profile":
+              //setUserRating(getCurrentUserId(),5,1);
               getUserRating("profileRating");
               break;
           case "resume_reviews":
@@ -93,15 +94,15 @@ let listing_mouseout = function(listing){
 let getCurrentUserId = function(){
   return firebase.auth().currentUser.uid;
 };
-let setUserRating = function (newValue){
+let setUserRating = function (userID,newValue,count){
   let user = firebase.auth().currentUser;
   let users_ref = firestore.collection("users");
-  users_ref.where("uid", "==", getCurrentUserId()).limit(1).get().then((snapshot) =>
+  users_ref.where("uid", "==", userID).limit(1).get().then((snapshot) =>
       snapshot.docs.forEach(doc => {
           console.log(doc.id);
           let user_ref = firestore.collection("users").doc(doc.id);
           let newTotal = doc.data().totalRating + newValue;
-          let newCount = doc.data().numRate + 1;
+          let newCount = doc.data().numRate + count;
           user_ref.update({
               totalRating : newTotal,
               numRate : newCount
@@ -146,20 +147,19 @@ let getResumeHubRating = function(ratingField){
       })
   );
 }
-let setResumeRating = function(newValue){
+let setResumeRating = function(userID,newValue,count){
   let user = firebase.auth().currentUser;
   let users_ref = firestore.collection("resumes");
-  users_ref.where("user", "==", getCurrentUserId()).limit(1).get().then((snapshot) =>
+  users_ref.where("user", "==", userID).limit(1).get().then((snapshot) =>
       snapshot.docs.forEach(doc => {
           let user_ref = firestore.collection("resumes").doc(doc.id);
           let newTotal = doc.data().totalRating + newValue;
-          let newCount = doc.data().numRate + 1;
+          let newCount = doc.data().numRate + count;
           user_ref.update({
               totalRating : newTotal,
               numRate : newCount
           }).then(function(){
               console.log("Database upated");
-              document.getElementById("profileSuccess").innerHTML = "Successfully Updated Profile";
           }).catch(function(error){
               console.log("Error updating user: ", error);
           })
