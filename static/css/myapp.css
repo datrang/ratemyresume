@@ -306,15 +306,32 @@ h2 {
   margin-bottom: 10px;
 }
 
+#profileSuccess {
+  padding: 10px;
+  background-color: #88D874;
+  color: white;
+  border-radius: 5px;
+  margin-top: 30px;
+  margin-left: 80px;
+  margin-right: 80px;
+  opacity: 1;
+  transition: opacity 1s;
+}
+
+#profileSuccess:empty {
+  display: none;
+}
+
 #profileError {
   padding: 10px;
   background-color: #f76c6c;
   color: white;
   border-radius: 5px;
-  border: 1px #f76c6c solid;
   margin-top: 30px;
   margin-left: 80px;
   margin-right: 80px;
+  opacity: 1;
+  transition: opacity 1s;
 }
 
 #profileError:empty {
