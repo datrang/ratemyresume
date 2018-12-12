@@ -64,6 +64,7 @@ firebase.auth().onAuthStateChanged(function(user) {
               let current_resume_id = vars['id'];
               show_current_resume(current_resume_id);
               show_current_resume_replies(current_resume_id);
+              change_current_resume_review_area();
               break;
       }
 
@@ -503,7 +504,52 @@ let show_current_resume_replies = function(current_resume_id){
     // console.log("show current reply");
 };
 
-
+let check_reply = function(){
+  console.log("Checking If User has already replied to this Resume");
+  let vars = {};
+  window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+      vars[key] = value;
+  });
+  let current_resume_id = vars['id'];
+  let status = true;
+  firestore.collection("resumes").doc(current_resume_id).collection("replies")
+        .where("uid","==",getCurrentUserId()).limit(1).get().then((snapshot) =>
+          snapshot.docs.forEach(doc => {
+            if(doc.exists){
+              status = false;
+            }
+        })
+      ).then(function(){
+        if(!status){
+          document.getElementById("reply_error").innerHTML = "You have already reviewed this resume!";
+        }
+        return status;
+      })
+};
+let change_current_resume_review_area = function(){
+  if(check_reply()){
+    document.getElementById("current_resume_review_div").style.display= "block";
+    document.getElementById("alreaady_reviewed_div").style.display = "none";
+  }
+  else{
+    let vars = {};
+    window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+        vars[key] = value;
+    });
+    let current_resume_id = vars['id'];
+    firestore.collection("resumes").doc(current_resume_id).collection("replies")
+      .where("uid","==",getCurrentUserId()).limit(1).get().then((snapshot) =>
+        snapshot.docs.forEach(doc => {
+          console.log(doc.data().content);
+            document.getElementById("user_reviewed").value = doc.data().content;
+            document.getElementById("user_rated").innerHTML = "You gave this review a " +doc.data().rating + "/5";
+      })
+    ).then(function(){
+      document.getElementById("current_resume_review_div").style.display= "none";
+      document.getElementById("alreaady_reviewed_div").style.display = "block";
+    })
+  }
+}
 // let getUserRating = function (){
 //   let user = firebase.auth().currentUser;
 //   let users_ref = firestore.collection("users");
@@ -897,7 +943,6 @@ let app = function() {
         })
     );
   };
-
   let checkLogin = function(){
       firebase.auth().onAuthStateChanged(function(user) {
           let profileTab = document.getElementById("profileTab");
@@ -916,28 +961,6 @@ let app = function() {
       });
   };
 
-  let check_reply = function(){
-    console.log("Checking If User has already replied to this Resume");
-    let vars = {};
-    window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
-        vars[key] = value;
-    });
-    let current_resume_id = vars['id'];
-    let status = true;
-    firestore.collection("resumes").doc(current_resume_id).collection("replies")
-          .where("uid","==",getCurrentUserId()).limit(1).get().then((snapshot) =>
-            snapshot.docs.forEach(doc => {
-              if(doc.exists){
-                status = false;
-              }
-          })
-        ).then(function(){
-          if(!status){
-            document.getElementById("reply_error").innerHTML = "You have already reviewed this resume!";
-          }
-          return status;
-        })
-  }
   let add_reply = function(){
       console.log("Adding a reply");
       if(check_reply()){
@@ -984,37 +1007,6 @@ let app = function() {
       }
     //call the update_resume_rating function from the new rating
     //also figure out how to instantly add the reply to the screen
-  };
-
-  let edit_reply = function(){
-    //called by a button to edit your reply after publishing
-    //since we have a ref to the reply that was posted , we can just use
-    //database functions to make sure this is the right user so the button
-    //appears, easy database update to updatetime and message
-  };
-
-  let delete_reply = function() {
-    //go into the db and find their reply and delete it
-    //also need to figure out how to update the resume rating
-    //back to whatit was before, maybe some math involved
-    //user rating will not change so they can fix their rating
-  };
-
-  let update_resume_rating = function (rating){
-    //need reference to the resume being rated and the rating added
-    //this function should be called from add_reply
-    //goes into the resume that is ref by the previous statement
-    //updates the numRate by 1 and updates the avg Rating for the resume
-  };
-
-  let update_user_rating = function (rating){
-    //in reply to rating a review given to you on helpfulness
-    //given the reply ref we can know which user this was from
-    //and we can find them in the database, we also pass in the
-    //rating if we need to? (not sure yet), since we know the
-    //rating the other user just gave the reply, we take that Rating
-    //and go the user profile and increment numRate by 1 and
-    //update the avg rating of the user
   };
 
   var revealPassword = function() {
