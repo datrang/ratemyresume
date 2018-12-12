@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1fc5c28d-fd26-410f-a151-23a2d193099b" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/js/login.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/login.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -33,8 +34,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/static/js/login.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="257">
-              <caret line="124" column="90" selection-start-line="124" selection-start-column="90" selection-end-line="124" selection-end-column="90" />
+            <state relative-caret-position="240">
+              <caret line="183" column="98" selection-start-line="183" selection-start-column="88" selection-end-line="183" selection-end-column="98" />
               <folding>
                 <element signature="e#11487#11963#0" />
                 <element signature="e#11966#11997#0" />
@@ -43,12 +44,7 @@
                 <element signature="e#16269#19837#0" />
                 <element signature="e#19874#20324#0" />
                 <element signature="e#20368#21822#0" />
-                <element signature="e#23266#23826#0" />
-                <element signature="e#23876#24624#0" />
-                <element signature="e#24681#26252#0" />
-                <element signature="e#26304#44653#0" />
-                <element signature="e#44717#45148#0" />
-                <element signature="e#45179#47362#0" />
+                <element signature="e#23248#23848#0" />
               </folding>
             </state>
           </provider>
@@ -268,7 +264,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="81248000" />
+    <option name="totallyTimeSpent" value="82134000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
@@ -535,8 +531,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/static/js/login.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="257">
-          <caret line="124" column="90" selection-start-line="124" selection-start-column="90" selection-end-line="124" selection-end-column="90" />
+        <state relative-caret-position="240">
+          <caret line="183" column="98" selection-start-line="183" selection-start-column="88" selection-end-line="183" selection-end-column="98" />
           <folding>
             <element signature="e#11487#11963#0" />
             <element signature="e#11966#11997#0" />
@@ -545,12 +541,7 @@
             <element signature="e#16269#19837#0" />
             <element signature="e#19874#20324#0" />
             <element signature="e#20368#21822#0" />
-            <element signature="e#23266#23826#0" />
-            <element signature="e#23876#24624#0" />
-            <element signature="e#24681#26252#0" />
-            <element signature="e#26304#44653#0" />
-            <element signature="e#44717#45148#0" />
-            <element signature="e#45179#47362#0" />
+            <element signature="e#23248#23848#0" />
           </folding>
         </state>
       </provider>

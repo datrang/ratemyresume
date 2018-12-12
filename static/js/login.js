@@ -121,17 +121,18 @@ let setUserRating = function (userID, newValue){
                                 firestore.collection("users").where("uid", "==", userID).limit(1).get().then((snapshot) => {
                                     if(!snapshot.empty){
                                         snapshot.docs.forEach(user => {
-                                            console.log(doc.data().userRating);
-                                            console.log("user:", user.data().totalRating);
-                                            console.log("newValue:", newValue);
+                                            // console.log(doc.data().userRating);
+                                            // console.log("user:", user.data().totalRating);
+                                            // console.log("newValue:", newValue);
                                             let newTotal = user.data().totalRating - doc.data().userRating + newValue;
-                                            console.log("newTotal= ",  newTotal);
+                                            // console.log("newTotal= ",  newTotal);
                                             let newCount = user.data().numRate;
                                             // console.log(doc.data().userRating);
                                             if(doc.data().userRating == 0){
                                                 console.log("Reached");
                                                 newCount = user.data().numRate + 1;
                                             }
+                                            console.log("newTotal=", newTotal);
                                             console.log("newCount=", newCount);
                                             firestore.collection("users").doc(user.id).update({
                                                 totalRating: newTotal,
