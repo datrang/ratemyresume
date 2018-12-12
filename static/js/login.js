@@ -916,48 +916,72 @@ let app = function() {
       });
   };
 
+  let check_reply = function(){
+    console.log("Checking If User has already replied to this Resume");
+    let vars = {};
+    window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+        vars[key] = value;
+    });
+    let current_resume_id = vars['id'];
+    let status = true;
+    firestore.collection("resumes").doc(current_resume_id).collection("replies")
+          .where("uid","==",getCurrentUserId()).limit(1).get().then((snapshot) =>
+            snapshot.docs.forEach(doc => {
+              if(doc.exists){
+                status = false;
+              }
+          })
+        ).then(function(){
+          if(!status){
+            document.getElementById("reply_error").innerHTML = "You have already reviewed this resume!";
+          }
+          return status;
+        })
+  }
   let add_reply = function(){
       console.log("Adding a reply");
-
-      let vars = {};
-      window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
-          vars[key] = value;
-      });
-      let current_resume_id = vars['id'];
-      let resume_review_text = document.getElementById("review_textarea").value;
-      let rate = document.forms[0];
-      let rating = 0;
-      for (var i = 0; i < rate.length; i++) {
-        if (rate[i].checked) {
-            rating = parseFloat(rate[i].value);
+      if(check_reply()){
+        let vars = {};
+        window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+            vars[key] = value;
+        });
+        let current_resume_id = vars['id'];
+        let resume_review_text = document.getElementById("review_textarea").value;
+        let rate = document.forms[0];
+        let rating = 0;
+        for (var i = 0; i < rate.length; i++) {
+          if (rate[i].checked) {
+              rating = parseFloat(rate[i].value);
+          }
         }
-      }
-      if (rating == 0){
-          document.getElementById("reply_error").style.display= "block";
-          document.getElementById("reply_error").innerHTML = "Please Select A Rating";
-          return;
-      }
-      // console.log(current_resume_id);
-      // console.log(resume_review_text);
+        if (rating == 0){
+            document.getElementById("reply_error").style.display= "block";
+            document.getElementById("reply_error").innerHTML = "Please Select A Rating";
+            return;
+        }
+        // console.log(current_resume_id);
+        // console.log(resume_review_text);
 
-      firestore.collection("resumes").doc(current_resume_id).collection("replies").add({
-          content: resume_review_text,
-          uid: getCurrentUserId(),
-          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-          rating: rating
-      }).then((docRef) => {
-          console.log("Document written with ID: ", docRef.id);
-          setResumeRating(current_resume_id,rating,1);
-          docRef.get().then(doc =>{
-            document.getElementById("reply_error").style.display= "none";
-            render_current_resume_replies(doc);
-            getResumeRating(current_resume_id,"current_resume_rating");
-          });
-      }).catch(function(error){
-          console.error("Error adding document: ", error);
-      });
+        firestore.collection("resumes").doc(current_resume_id).collection("replies").add({
+            content: resume_review_text,
+            uid: getCurrentUserId(),
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+            rating: rating,
+            userRating: 0
+        }).then((docRef) => {
+            console.log("Document written with ID: ", docRef.id);
+            setResumeRating(current_resume_id,rating,1);
+            docRef.get().then(doc =>{
+              document.getElementById("reply_error").style.display= "none";
+              render_current_resume_replies(doc);
+              getResumeRating(current_resume_id,"current_resume_rating");
+            });
+        }).catch(function(error){
+            console.error("Error adding document: ", error);
+        });
 
-      document.getElementById("review_textarea").value = "";
+        document.getElementById("review_textarea").value = "";
+      }
     //call the update_resume_rating function from the new rating
     //also figure out how to instantly add the reply to the screen
   };
