@@ -34,24 +34,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/static/js/login.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="464">
-              <caret line="771" column="51" lean-forward="true" selection-start-line="771" selection-start-column="51" selection-end-line="771" selection-end-column="51" />
-              <folding>
-                <element signature="e#3239#3300#0" />
-                <element signature="e#4543#5077#0" />
-                <element signature="e#5083#5133#0" />
-                <element signature="e#5752#5809#0" />
-                <element signature="e#6477#6953#0" />
-                <element signature="e#7067#7098#0" />
-                <element signature="e#7407#10500#0" />
-                <element signature="e#10542#11161#0" />
-                <element signature="e#11203#14748#0" />
-                <element signature="e#11504#11564#0" />
-                <element signature="e#11608#11668#0" />
-                <element signature="e#14785#15235#0" />
-                <element signature="e#15282#16777#0" />
-                <element signature="e#17202#18750#0" />
-              </folding>
+            <state relative-caret-position="158">
+              <caret line="1377" column="22" selection-start-line="1377" selection-start-column="12" selection-end-line="1377" selection-end-column="22" />
             </state>
           </provider>
         </entry>
@@ -67,10 +51,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>var</find>
-      <find>getcurrent</find>
-      <find>loading</find>
-      <find>user</find>
       <find>iframe</find>
       <find>setAtt</find>
       <find>get_latest</find>
@@ -97,6 +77,10 @@
       <find>firebase.auth().curre</find>
       <find>show_user_latest</find>
       <find>setUSer</find>
+      <find>setUSerRating</find>
+      <find>userrating</find>
+      <find>userRating</find>
+      <find>rating</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -261,7 +245,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="76098000" />
+    <option name="totallyTimeSpent" value="77343000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
@@ -512,13 +496,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/default/profile.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="6" selection-start-line="6" selection-end-line="7" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/views/default/signUp.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-2">
@@ -526,26 +503,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/views/default/profile.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="6" selection-start-line="6" selection-end-line="7" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/static/js/login.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="464">
-          <caret line="771" column="51" lean-forward="true" selection-start-line="771" selection-start-column="51" selection-end-line="771" selection-end-column="51" />
-          <folding>
-            <element signature="e#3239#3300#0" />
-            <element signature="e#4543#5077#0" />
-            <element signature="e#5083#5133#0" />
-            <element signature="e#5752#5809#0" />
-            <element signature="e#6477#6953#0" />
-            <element signature="e#7067#7098#0" />
-            <element signature="e#7407#10500#0" />
-            <element signature="e#10542#11161#0" />
-            <element signature="e#11203#14748#0" />
-            <element signature="e#11504#11564#0" />
-            <element signature="e#11608#11668#0" />
-            <element signature="e#14785#15235#0" />
-            <element signature="e#15282#16777#0" />
-            <element signature="e#17202#18750#0" />
-          </folding>
+        <state relative-caret-position="158">
+          <caret line="1377" column="22" selection-start-line="1377" selection-start-column="12" selection-end-line="1377" selection-end-column="22" />
         </state>
       </provider>
     </entry>
