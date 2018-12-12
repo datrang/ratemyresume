@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="1fc5c28d-fd26-410f-a151-23a2d193099b" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/static/js/login.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/login.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/default/resume_reviews.html" beforeDir="false" afterPath="$PROJECT_DIR$/views/default/resume_reviews.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -36,8 +35,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/static/js/login.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="375">
-                  <caret line="403" column="87" selection-start-line="403" selection-start-column="87" selection-end-line="403" selection-end-column="87" />
+                <state relative-caret-position="392">
+                  <caret line="448" selection-start-line="448" selection-start-column="3" selection-end-line="450" selection-end-column="5" />
                   <folding>
                     <element signature="e#3936#4412#0" />
                     <element signature="e#4866#7700#0" />
@@ -48,8 +47,6 @@
                     <element signature="e#13351#14099#0" />
                     <element signature="e#14156#15193#0" />
                     <element signature="e#17814#17856#0" />
-                    <element signature="e#19527#19571#0" />
-                    <element signature="e#19619#19654#0" />
                     <element signature="e#26893#28220#0" />
                     <element signature="e#29175#29903#0" />
                     <element signature="e#29932#30261#0" />
@@ -80,7 +77,7 @@
             <entry file="file://$PROJECT_DIR$/static/css/myapp.css">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="528">
-                  <caret line="291" column="24" selection-start-line="291" selection-start-column="24" selection-end-line="291" selection-end-column="24" />
+                  <caret line="294" column="24" selection-start-line="294" selection-start-column="24" selection-end-line="294" selection-end-column="24" />
                 </state>
               </provider>
             </entry>
@@ -341,7 +338,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="60135000" />
+    <option name="totallyTimeSpent" value="60337000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
@@ -578,7 +575,7 @@
     <entry file="file://$PROJECT_DIR$/static/css/myapp.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="528">
-          <caret line="291" column="24" selection-start-line="291" selection-start-column="24" selection-end-line="291" selection-end-column="24" />
+          <caret line="294" column="24" selection-start-line="294" selection-start-column="24" selection-end-line="294" selection-end-column="24" />
         </state>
       </provider>
     </entry>
@@ -605,8 +602,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/static/js/login.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="403" column="87" selection-start-line="403" selection-start-column="87" selection-end-line="403" selection-end-column="87" />
+        <state relative-caret-position="392">
+          <caret line="448" selection-start-line="448" selection-start-column="3" selection-end-line="450" selection-end-column="5" />
           <folding>
             <element signature="e#3936#4412#0" />
             <element signature="e#4866#7700#0" />
@@ -617,8 +614,6 @@
             <element signature="e#13351#14099#0" />
             <element signature="e#14156#15193#0" />
             <element signature="e#17814#17856#0" />
-            <element signature="e#19527#19571#0" />
-            <element signature="e#19619#19654#0" />
             <element signature="e#26893#28220#0" />
             <element signature="e#29175#29903#0" />
             <element signature="e#29932#30261#0" />
