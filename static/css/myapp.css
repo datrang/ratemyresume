@@ -10,8 +10,12 @@ h2 {
   font-weight: normal;
 }
 
-.checkboxes label {
+.checkboxes {
   margin-top: 10px;
+  float: left;
+}
+
+.checkboxes label {
   font-family: Tahoma, Geneva, sans-serif;
   font-size: 13px;
 }
@@ -302,6 +306,21 @@ h2 {
   margin-bottom: 10px;
 }
 
+#profileError {
+  padding: 10px;
+  background-color: #f76c6c;
+  color: white;
+  border-radius: 5px;
+  border: 1px #f76c6c solid;
+  margin-top: 30px;
+  margin-left: 80px;
+  margin-right: 80px;
+}
+
+#profileError:empty {
+  display: none;
+}
+
 
 /*---------------- hub -----------------*/
 
@@ -431,6 +450,7 @@ h2 {
 }
 #forgot-password {
   color: black;
+  font-size: 15px;
 }
 #forgot-password:hover {
   color: #f76c6c;
