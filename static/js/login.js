@@ -60,7 +60,6 @@ firebase.auth().onAuthStateChanged(function(user) {
               let current_resume_id = vars['id'];
               show_current_resume(current_resume_id);
               show_current_resume_replies(current_resume_id);
-              set_current_user_rating(current_resume_id);
               break;
       }
 
@@ -402,7 +401,7 @@ let render_current_resume_replies = function(doc){
 };
 
 let show_current_resume_replies = function(current_resume_id){
-    firestore.collection('resumes').doc(current_resume_id).collection('replies').get().then((snapshot) =>
+    firestore.collection('resumes').doc(current_resume_id).collection('replies').orderBy("timestamp").get().then((snapshot) =>
         snapshot.docs.forEach(doc => {
             render_current_resume_replies(doc);
             // console.log(doc.data().author);
@@ -413,53 +412,53 @@ let show_current_resume_replies = function(current_resume_id){
     // console.log("show current reply");
 };
 
-let set_user_rating = function(rating){
-    let vars = {};
-    window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
-        vars[key] = value;
-    });
-    let current_resume_id = vars['id'];
-    firestore.collection('resumes').doc(current_resume_id).collection('rating').where("uid", "==",getCurrentUserId()).limit(1).get().then((snapshot) => {
-        if(!snapshot.empty){
-            console.log("snapshot exists: current user rating:", rating);
-            snapshot.docs.forEach(doc => {
-                firestore.collection('resumes').doc(current_resume_id).collection('rating').doc(doc.id).update({
-                    rating: rating
-                }).then(function(){
-                    console.log("Document successfully updated!");
-                    document.getElementById('current_user_rating').innerHTML = rating;
-                }).catch(function(error){
-                    console.error("Error updating document: ", error);
-                });
-            })
-        }else{
-            console.log("snapshot doesn't exist: current user rating:", rating);
-            firestore.collection('resumes').doc(current_resume_id).collection('rating').add({
-                rating: rating,
-                uid: getCurrentUserId()
-            }).then(function(docRef){
-                console.log("Document written with ID: ", docRef.id)
-                document.getElementById('current_user_rating').innerHTML = rating;
-            }).catch(function(error){
-                console.error("Error adding document: ", error);
-            });
-        }
-    })
-};
+// let set_user_rating = function(rating){
+//     let vars = {};
+//     window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+//         vars[key] = value;
+//     });
+//     let current_resume_id = vars['id'];
+//     firestore.collection('resumes').doc(current_resume_id).collection('rating').where("uid", "==",getCurrentUserId()).limit(1).get().then((snapshot) => {
+//         if(!snapshot.empty){
+//             // console.log("snapshot exists: current user rating:", rating);
+//             snapshot.docs.forEach(doc => {
+//                 firestore.collection('resumes').doc(current_resume_id).collection('rating').doc(doc.id).update({
+//                     rating: rating
+//                 }).then(function(){
+//                     // console.log("Document successfully updated!");
+//                     document.getElementById('current_user_rating').innerHTML = rating;
+//                 }).catch(function(error){
+//                     // console.error("Error updating document: ", error);
+//                 });
+//             })
+//         }else{
+//             // console.log("snapshot doesn't exist: current user rating:", rating);
+//             firestore.collection('resumes').doc(current_resume_id).collection('rating').add({
+//                 rating: rating,
+//                 uid: getCurrentUserId()
+//             }).then(function(docRef){
+//                 // console.log("Document written with ID: ", docRef.id)
+//                 document.getElementById('current_user_rating').innerHTML = rating;
+//             }).catch(function(error){
+//                 // console.error("Error adding document: ", error);
+//             });
+//         }
+//     })
+// };
 
-let get_user_latest_resume = function (){
-    // console.log("get_user_latest_resume");
-};
+// let get_user_latest_resume = function (){
+//     // console.log("get_user_latest_resume");
+// };
 
-let getUserRating = function (){
-  let user = firebase.auth().currentUser;
-  let users_ref = firestore.collection("users");
-  users_ref.where("uid", "==", getCurrentUserId()).limit(1).get().then((snapshot) =>
-      snapshot.docs.forEach(doc => {
-        document.getElementById("profileRating").innerHTML = doc.data().avgRating;
-      })
-  );
-};
+// let getUserRating = function (){
+//   let user = firebase.auth().currentUser;
+//   let users_ref = firestore.collection("users");
+//   users_ref.where("uid", "==", getCurrentUserId()).limit(1).get().then((snapshot) =>
+//       snapshot.docs.forEach(doc => {
+//         document.getElementById("profileRating").innerHTML = doc.data().avgRating;
+//       })
+//   );
+// };
 
 let app = function() {
 
