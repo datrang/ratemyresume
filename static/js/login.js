@@ -471,8 +471,8 @@ let show_user_latest_resume = function (){
                     document.getElementById("user_latest_resume_description").innerHTML = doc.data().description;
                     let total = doc.data().totalRating;
                     let numCount = doc.data().numRate;
-                    if(numCount == 0){document.getElementById("hubResumeRating").innerHTML = "No Ratings So Far";}
-                    else {document.getElementById("hubResumeRating").innerHTML = "Rating: " + (Math.round(total/numCount *10) / 10) + "/5";}
+                    if(numCount == 0){document.getElementById("user_latest_resume_rating").innerHTML = "No Ratings So Far";}
+                    else {document.getElementById("user_latest_resume_rating").innerHTML = "Rating: " + (Math.round(total/numCount *10) / 10) + "/5";}
                 })
             }
         }
