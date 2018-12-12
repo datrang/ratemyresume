@@ -486,8 +486,8 @@ let refresh_user_latest_rating = function(){
         snapshot.docs.forEach(doc => {
             let total = doc.data().totalRating;
             let numCount = doc.data().numRate;
-            if(numCount == 0){document.getElementById("current_resume_rating").innerHTML = "No Ratings So Far";}
-            else {document.getElementById("current_resume_rating").innerHTML = "Rating: " + (Math.round(total/numCount *10) / 10) + "/5";}
+            if(numCount == 0){document.getElementById("current_resume_rating").innerHTML = "No Ratings So Far"; console.log("HERE")}
+            else {document.getElementById("current_resume_rating").innerHTML = "Rating: " + (Math.round(total/numCount *10) / 10) + "/5"; console.log("THIS")}
           })
       }
   ))
@@ -941,7 +941,7 @@ let check_user_reply = function(){
     firestore.collection("resumes").doc(current_resume_id).get().then(function(doc){
       if(doc.data().user == getCurrentUserId()){
         document.getElementById("current_resume_review_div").style.display= "none";
-        document.getElementById("alreaady_reviewed_div").style.display = "none";
+        document.getElementById("already_reviewed_div").style.display = "none";
       }
     })
     .catch(function(error){
@@ -1413,6 +1413,7 @@ let app = function() {
     let current_resume_id = vars['id'];
     let rate = document.forms[1];
     let rating = 0;
+    let resume_ref = firestore.collection("resumes").doc(current_resume_id);
     for (var i = 0; i < rate.length; i++) {
       if (rate[i].checked) {
           rating = parseFloat(rate[i].value);
@@ -1423,22 +1424,32 @@ let app = function() {
         document.getElementById("reply_error").innerHTML = "Please Select A Rating";
         return;
     }
-    firestore.collection("resumes").doc(current_resume_id).collection("replies")
-      .where("uid","==",getCurrentUserId()).limit(1).get().then((snapshot) => {
-        snapshot.docs.forEach(doc => {
-          firestore.collection("resumes").doc(current_resume_id).collection("replies").doc(doc.id).update({
-            content: document.getElementById("user_reviewed").value,
-            totalRating: rating
+    console.log(rating);
+    firestore.collection("resumes").doc(current_resume_id).get().then(function(doc){
+      //set a new subtract variable
+      let new_total = doc.data().totalRating;
+        firestore.collection("resumes").doc(current_resume_id).collection("replies")
+          .where("uid","==",getCurrentUserId()).limit(1).get().then((snapshot) =>
+          snapshot.docs.forEach(doc => {
+            let old_rating = doc.data().totalRating;
+            firestore.collection("resumes").doc(current_resume_id).collection("replies").doc(doc.id).update({
+              totalRating : rating
+            })
+            .then(function(){
+              new_total = new_total + rating - old_rating;
+              resume_ref.update({
+                totalRating : new_total
+              })
+              check_reply();
+              getResumeRating(current_resume_id,"current_resume_rating");
+            })
+            .catch(function(error){
+              console.log(error);
+            })
           })
-          .then(function(){
-            console.log("Update Success")
-            check_reply();
-            refresh_user_latest_rating();
-          }).catch(function(error){
-            console.log("Error Deleting: ", error);
-          });
-        })
-      });
+        )
+    })
+
   }
   let delete_reply = function(){
     let vars = {};
@@ -1449,9 +1460,13 @@ let app = function() {
     firestore.collection("resumes").doc(current_resume_id).collection("replies")
       .where("uid","==",getCurrentUserId()).limit(1).get().then((snapshot) => {
         snapshot.docs.forEach(doc => {
+          //the rate that the user gave in the review
+          let prevRating = doc.data().totalRating;
+          setResumeRating(current_resume_id,-prevRating,-1);
           firestore.collection("resumes").doc(current_resume_id).collection("replies").doc(doc.id).delete().then(function(){
             console.log("Delete Success")
             check_reply();
+            refresh_user_latest_rating();
           }).catch(function(error){
             console.log("Error Deleting: ", error);
           });
