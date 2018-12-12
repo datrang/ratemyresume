@@ -23,7 +23,7 @@
 </div>
 <div class="main_content">
   <div id="vue-div" class="display:none">
-    <div class="main_container">
+    <div id="login-wrapper" class="main_container">
       <h1> Log In </h1>
       <input type="text" id="loginEmail" placeholder="Email">
       <br>
@@ -34,12 +34,15 @@
       <br>
       <button type="button" name="Sign Up" onClick="location.href='signUp';">Sign Up</button>
       <button type="button" name="Log In" @click="signIn">Log In</button><br>
-      <a onClick="location.href='forgotPassword';"> Forgot Your Password? <a>
+      <br>
+      <a id="forgot-password" onClick="location.href='forgotPassword';"> Forgot Your Password?</a>
+      <br>
+      <br>
           <div>
             <h3 id="login_error"></h3>
           </div>
     </div>
   </div>
 </div>
-<div>
+
 <script src="{{=URL('static', 'js/login.js')}}"></script>
