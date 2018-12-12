@@ -60,6 +60,7 @@ firebase.auth().onAuthStateChanged(function(user) {
               let current_resume_id = vars['id'];
               show_current_resume(current_resume_id);
               show_current_resume_replies(current_resume_id);
+
               break;
       }
 
@@ -94,25 +95,6 @@ let listing_mouseout = function(listing){
 
 let getCurrentUserId = function(){
   return firebase.auth().currentUser.uid;
-};
-
-let setUserRating = function (newValue){
-  let user = firebase.auth().currentUser;
-  let users_ref = firestore.collection("users");
-  users_ref.where("uid", "==", getCurrentUserId()).limit(1).get().then((snapshot) =>
-      snapshot.docs.forEach(doc => {
-          console.log(doc.id);
-          let user_ref = firestore.collection("users").doc(doc.id);
-          user_ref.update({
-              avgRating : newValue
-          }).then(function(){
-              console.log("Database upated");
-              document.getElementById("profileSuccess").innerHTML = "Successfully Updated Profile";
-          }).catch(function(error){
-              console.log("Error updating user: ", error);
-          })
-      })
-  );
 };
 
 let renderResumeList = function(doc){
@@ -340,6 +322,7 @@ let show_current_resume = function (current_resume_id){
     firestore.collection('resumes').doc(current_resume_id).get().then(doc =>{
         document.getElementById("current_resume_name").innerHTML = doc.data().name;
         document.getElementById("current_resume_file").src = doc.data().url;
+        document.getElementById("current_resume_file").src = doc.data().url;
         firestore.collection("users").where("uid", "==", doc.data().user).limit(1).get().then((snapshot) =>
             snapshot.docs.forEach(user => {
                 document.getElementById("current_resume_author").innerHTML = "Author: " + user.data().name;
@@ -381,14 +364,14 @@ let render_current_resume_replies = function(doc){
     let left_container_half2_author = document.createElement('div');
     left_container_half2_author.classList.add('listing_author');
     left_container_half2_author.classList.add('listing_text');
+    let left_container_half2_title = document.createElement('div');
+    left_container_half2_title.classList.add('listing_text');
     firestore.collection("users").where("uid", "==", doc.data().uid).limit(1).get().then((snapshot) =>
         snapshot.docs.forEach(user => {
             left_container_half2_author.innerHTML = user.data().name;
+            left_container_half2_title.innerHTML = user.data().occupation;
         })
     );
-    let left_container_half2_title = document.createElement('div');
-    left_container_half2_title.classList.add('listing_text');
-    left_container_half2_title.innerHTML = "Software Engineer";
 
     left_container_half2.append(left_container_half2_author);
     left_container_half2.append(left_container_half2_title);
@@ -418,6 +401,38 @@ let show_current_resume_replies = function(current_resume_id){
         })
     );
     // console.log("show current reply");
+};
+
+let set_user_rating = function(rating){
+    let vars = {};
+    window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+        vars[key] = value;
+    });
+    let current_resume_id = vars['id'];
+    firestore.collection('resumes').doc(current_resume_id).collection('rating').where("uid", "==",getCurrentUserId()).limit(1).get().then((snapshot) => {
+        if(!snapshot.empty){
+            console.log("snapshot exists: current user rating:", rating);
+            snapshot.docs.forEach(doc => {
+                firestore.collection('resumes').doc(current_resume_id).collection('rating').doc(doc.id).update({
+                    rating: rating
+                }).then(function(){
+                    console.log("Document successfully updated!");
+                }).catch(function(error){
+                    console.error("Error updating document: ", error);
+                });
+            })
+        }else{
+            console.log("snapshot doesn't exist: current user rating:", rating);
+            firestore.collection('resumes').doc(current_resume_id).collection('rating').add({
+                rating: rating,
+                uid: getCurrentUserId()
+            }).then(function(docRef){
+                console.log("Document written with ID: ", docRef.id)
+            }).catch(function(error){
+                console.error("Error adding document: ", error);
+            });
+        }
+    })
 };
 
 let get_user_latest_resume = function (){
@@ -472,6 +487,8 @@ let app = function() {
     let password = document.getElementById("signPassword").value;
     let confirmPassword = document.getElementById("signConfirmPassword").value;
     let name = document.getElementById("signName").value;
+    let occupation = document.getElementById("signOccupation").value;
+    // console.log(occupation);
     //if the emails do not match send an error
     if (!(email === confirmEmail)) {
       document.getElementById("signError").innerHTML = "Error: Emails Do Not Match";
@@ -479,10 +496,13 @@ let app = function() {
     } else if (!(password === confirmPassword)) {
       document.getElementById("signError").innerHTML = "Error: Passwords Do Not Match";
       return false;
+    }else if (occupation === null || occupation === '') {
+      document.getElementById("signError").innerHTML = "Error: Occupation field cannot be empty";
+      return false;
     } else if (name === null || name === '') {
       document.getElementById("signError").innerHTML = "Error: Name field cannot be empty";
       return false;
-    } else {
+    }else {
       return true;
     }
   };
@@ -493,6 +513,7 @@ let app = function() {
     let e = document.getElementById("signEmail").value;
     let p = document.getElementById("signPassword").value;
     let n = document.getElementById("signName").value;
+    let o = document.getElementById("signOccupation").value;
     if (validateSignUp()) {
       //firebase call to make the account
       firebase.auth().createUserWithEmailAndPassword(e, p)
@@ -523,6 +544,7 @@ let app = function() {
               name: n,
               email: e,
               uid: token,
+              occupation: o,
               avgRating: null,
               numRate : 0
             })
@@ -879,7 +901,7 @@ let app = function() {
   };
 
   let update_user_rating = function (rating){
-    //in reply to rating a review given to you on helpfullness
+    //in reply to rating a review given to you on helpfulness
     //given the reply ref we can know which user this was from
     //and we can find them in the database, we also pass in the
     //rating if we need to? (not sure yet), since we know the
@@ -965,10 +987,11 @@ let app = function() {
     delimiters: ['${', '}'],
     unsafeDelimiters: ['!{', '}'],
     data: {
-      authD : false,
-      show_past_resumes: false,
-      show_resume_feedback: false,
-      is_logged_in : false
+        authD : false,
+        show_past_resumes: false,
+        show_resume_feedback: false,
+        is_logged_in : false,
+        is_user_resume: false
     },
     methods: {
         signIn: signIn,
