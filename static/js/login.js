@@ -508,15 +508,15 @@ let show_current_resume_replies = function(current_resume_id){
 };
 
 
-let getUserRating = function (){
-  let user = firebase.auth().currentUser;
-  let users_ref = firestore.collection("users");
-  users_ref.where("uid", "==", getCurrentUserId()).limit(1).get().then((snapshot) =>
-      snapshot.docs.forEach(doc => {
-        document.getElementById("profileRating").innerHTML = doc.data().avgRating;
-      })
-  );
-};
+// let getUserRating = function (){
+//   let user = firebase.auth().currentUser;
+//   let users_ref = firestore.collection("users");
+//   users_ref.where("uid", "==", getCurrentUserId()).limit(1).get().then((snapshot) =>
+//       snapshot.docs.forEach(doc => {
+//         document.getElementById("profileRating").innerHTML = doc.data().avgRating;
+//       })
+//   );
+// };
 
 let app = function() {
 
