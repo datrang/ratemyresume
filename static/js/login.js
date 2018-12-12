@@ -1327,12 +1327,13 @@ let app = function() {
                   description : uploadDescription
               })
               .then(function(){
-                document.getElementById("upload_button").style.display = "block";
-                document.getElementById("upload_field").style.display = "none";
+                // document.getElementById("upload_button").style.display = "block";
+                document.getElementById("uploadDescription").value = "";
+                // document.getElementById("upload_field").style.display = "none";
                 document.getElementById("profileSuccess").innerHTML = "Uploaded Resume!"
               })
               .catch(function(error){
-                document.getElementById("profileErro  r").innerHTML = error;
+                document.getElementById("profileError").innerHTML = error;
               });
               document.getElementById('uploader').value = "";
           });

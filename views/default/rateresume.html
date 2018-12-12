@@ -8,22 +8,25 @@
 <link href="../static/css/custom.css" rel="stylesheet" type="text/css"/>
 {{end}}
 <div id = "loading">
-      <img src="https://firebasestorage.googleapis.com/v0/b/resume-rater.appspot.com/o/luca.jpg?alt=media&token=93c171a2-5170-4912-9cf7-69d5517f7290" alt="">
+  <img src="https://firebasestorage.googleapis.com/v0/b/resume-rater.appspot.com/o/luca.jpg?alt=media&token=93c171a2-5170-4912-9cf7-69d5517f7290" alt="">
 </div>
 <div id = "doneLoading">
-<div class="navbar">
-  <a id="homeTab" onClick="location.href='index';">Home</a>
-  <a id="hubTab" onClick="location.href='hub';">Home</a>
-  <a id="rateTab" onClick="location.href='rateresume';">Rate A Resume</a>
-  <a id="profileTab" onClick="location.href='profile';">Profile</a>
-  <a id="loginTab" onClick="location.href='login';" >Login</a>
-</div>
-<div id="vue-div" class="display:none">
-    <div>
+  <div>
+    <div class="navbar">
+      <a id="homeTab" onClick="location.href='index';">Home</a>
+      <a id="hubTab" onClick="location.href='hub';">Home</a>
+      <a id="rateTab" onClick="location.href='rateresume';">Rate A Resume</a>
+      <a id="profileTab" onClick="location.href='profile';">Profile</a>
+      <a id="loginTab" onClick="location.href='login';" >Login</a>
+    </div>
+    <div id="vue-div" class="display:none">
+      <div style="height: 50px"></div>
+      <div>
         <div style="height:10px"></div>
         <div id="other_resume_list" class="other_resume_list"></div>
         <div style="height:10px"></div>
+      </div>
     </div>
-</div>
+  </div>
 </div>
 <script src="{{=URL('static', 'js/login.js')}}"></script>
