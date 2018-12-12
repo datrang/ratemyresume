@@ -44,8 +44,9 @@ firebase.auth().onAuthStateChanged(function(user) {
               break;
           case "hub":
               show_user_latest_resume();
-              show_user_past_resume();
               show_user_latest_resume_reviews();
+              show_user_past_resume();
+              // getResumeHubRating("hubResumeRating");
               break;
           case "rateresume":
               show_other_resume();
@@ -94,39 +95,123 @@ let listing_mouseout = function(listing){
     listing.style.background = "#FFFFFF"
 };
 
-let set_current_user_rating = function(current_resume_id){
-        firestore.collection('resumes').doc(current_resume_id).collection('rating').where("uid", "==",getCurrentUserId()).limit(1).get().then((snapshot) => {
-        if(!snapshot.empty){
-            snapshot.docs.forEach(doc => {
-                document.getElementById('current_user_rating').innerHTML = doc.data().rating;
-            })
-        }
-    })
-}
+// let set_current_user_rating = function(current_resume_id){
+//         firestore.collection('resumes').doc(current_resume_id).collection('rating').where("uid", "==",getCurrentUserId()).limit(1).get().then((snapshot) => {
+//         if(!snapshot.empty){
+//             snapshot.docs.forEach(doc => {
+//                 document.getElementById('current_user_rating').innerHTML = doc.data().rating;
+//             })
+//         }
+//     })
+// }
 
 let getCurrentUserId = function(){
   return firebase.auth().currentUser.uid;
 };
-let setUserRating = function (userID,newValue,count){
-  let user = firebase.auth().currentUser;
-  let users_ref = firestore.collection("users");
-  users_ref.where("uid", "==", userID).limit(1).get().then((snapshot) =>
-      snapshot.docs.forEach(doc => {
-          console.log(doc.id);
-          let user_ref = firestore.collection("users").doc(doc.id);
-          let newTotal = doc.data().totalRating + newValue;
-          let newCount = doc.data().numRate + count;
-          user_ref.update({
-              totalRating : newTotal,
-              numRate : newCount
-          }).then(function(){
-              console.log("Database upated");
-          }).catch(function(error){
-              console.log("Error updating user: ", error);
-          })
-      })
-  );
+
+let setUserRating = function (userID, newValue){
+    if(current_page == "hub"){
+        firestore.collection("resumes").where("user", "==", getCurrentUserId()).orderBy("upload_time","desc").limit(1).get().then((snapshot) =>
+                snapshot.docs.forEach(current_resume => {
+                    let current_resume_id = current_resume.id;
+                    firestore.collection("resumes").doc(current_resume_id).collection("replies").where("uid", "==", userID).limit(1).get().then((snapshot) =>
+                        snapshot.docs.forEach(doc => {
+                            if(doc.data().userRating != newValue){
+                                // set the user rating value
+                                firestore.collection("users").where("uid", "==", userID).limit(1).get().then((snapshot) => {
+                                    if(!snapshot.empty){
+                                        snapshot.docs.forEach(user => {
+                                            let newTotal = user.data().totalRating - doc.data().userRating + newValue;
+                                            console.log(newTotal);
+                                            let newCount = user.data().numRate;
+                                            if(doc.data().userRating == 0){
+                                            let newCount = user.data().numRate + 1;
+                                            }
+                                            console.log(newCount);
+                                            firestore.collection("users").doc(user.id).update({
+                                                totalRating: newTotal,
+                                                numRate: newCount
+                                            }).then(function(){
+                                                console.log("Database upated");
+                                            }).catch(function(error){
+                                                console.log("Error updating user: ", error);
+                                            })
+                                        })
+                                    }else {
+                                        console.log("IT DOESN'T EXIST");
+                                    }
+                                });
+                                // set and keep track of owner review of reply
+                                firestore.collection("resumes").doc(current_resume_id).collection("replies").where("uid", "==", userID).get().then((snapshot) =>
+                                    snapshot.docs.forEach(resume => {
+                                        // console.log(resume.id);
+                                        firestore.collection("resumes").doc(current_resume_id).collection("replies").doc(resume.id).update({
+                                            userRating: newValue
+                                        }).then(function() {
+                                            console.log("Document successfully updated!");
+                                        }).catch(function(error) {
+                                            console.error("Error updating document: ", error);
+                                        });
+                                    })
+                                );
+                            }
+                        })
+                    );
+                })
+        );
+    }else{
+        let vars = {};
+        window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+            vars[key] = value;
+        });
+        let current_resume_id = vars['id'];
+        firestore.collection("resumes").doc(current_resume_id).collection("replies").where("uid", "==", userID).limit(1).get().then((snapshot) =>
+        snapshot.docs.forEach(doc => {
+            if(doc.data().userRating != newValue){
+                // set the user rating value
+                firestore.collection("users").where("uid", "==", userID).limit(1).get().then((snapshot) => {
+                    if(!snapshot.empty){
+                        snapshot.docs.forEach(user => {
+                            let newTotal = user.data().totalRating - doc.data().userRating + newValue;
+                            console.log(newTotal);
+                            let newCount = user.data().numRate;
+                            if(doc.data().userRating == 0){
+                                let newCount = user.data().numRate + 1;
+                            }
+                            console.log(newCount);
+                            firestore.collection("users").doc(user.id).update({
+                                totalRating: newTotal,
+                                numRate: newCount
+                            }).then(function(){
+                                console.log("Database upated");
+                            }).catch(function(error){
+                                console.log("Error updating user: ", error);
+                            })
+                        })
+                    }else{
+                        console.log("IT DOESN'T EXIST");
+                    }
+                });
+
+                // set and keep track of owner review of reply
+                firestore.collection("resumes").doc(current_resume_id).collection("replies").where("uid", "==", userID).get().then((snapshot) =>
+                    snapshot.docs.forEach(resume => {
+                        // console.log(resume.id);
+                        firestore.collection("resumes").doc(current_resume_id).collection("replies").doc(resume.id).update({
+                            userRating: newValue
+                        }).then(function() {
+                            console.log("Document successfully updated!");
+                        }).catch(function(error) {
+                            console.error("Error updating document: ", error);
+                        });
+                    })
+                );
+            }
+        })
+    );
+    }
 };
+
 let getUserRating = function (ratingField){
   let user = firebase.auth().currentUser;
   let users_ref = firestore.collection("users");
@@ -191,17 +276,17 @@ let renderResumeList = function(doc){
     resume_list.appendChild(li);
 };
 
-let showResume = function(){
-    console.log("Show Resume");
-    firestore.collection("resumes").where("user", "==", getCurrentUserId()).get().then((snapshot) =>
-        snapshot.docs.forEach(doc => {
-            // console.log(doc.data().name);
-            // console.log(doc.data().upload_time.toDate());
-            // console.log(doc.data().url);
-            renderResumeList(doc);
-        })
-    );
-};
+// let showResume = function(){
+//     console.log("Show Resume");
+//     firestore.collection("resumes").where("user", "==", getCurrentUserId()).get().then((snapshot) =>
+//         snapshot.docs.forEach(doc => {
+//             // console.log(doc.data().name);
+//             // console.log(doc.data().upload_time.toDate());
+//             // console.log(doc.data().url);
+//             renderResumeList(doc);
+//         })
+//     );
+// };
 
 let render_user_resume_list = function(doc){
     let main_container = document.createElement('div');
@@ -440,56 +525,335 @@ let show_current_resume = function (current_resume_id){
 };
 
 let render_current_resume_replies = function(doc){
-    let main_container = document.createElement('div');
-    main_container.classList.add("feedback_listing");
-    main_container.classList.add("container");
+    console.log("REACHED");
+    let vars = {};
+    window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+        vars[key] = value;
+    });
+    let current_resume_id = vars['id'];
 
-    let left_container = document.createElement('div');
-    left_container.classList.add('third');
-    left_container.classList.add('container');
+    if(current_page == 'hub'){
+        let main_container = document.createElement('div');
+        main_container.classList.add("feedback_listing");
+        main_container.classList.add("container");
 
-    let left_container_half1 = document.createElement('div');
-    left_container_half1.classList.add('half');
+        let left_container = document.createElement('div');
+        left_container.classList.add('third');
+        left_container.classList.add('container');
 
-    let left_container_half1_profile_pic = document.createElement('i');
-    left_container_half1_profile_pic.classList.add('center');
-    left_container_half1_profile_pic.classList.add('fa');
-    left_container_half1_profile_pic.classList.add('fa-user');
-    left_container_half1_profile_pic.classList.add('fa-3x');
+        let left_container_half1 = document.createElement('div');
+        left_container_half1.classList.add('half');
 
-    left_container_half1.append(left_container_half1_profile_pic);
-    left_container.append(left_container_half1);
+        let left_container_half1_profile_pic = document.createElement('i');
+        left_container_half1_profile_pic.classList.add('center');
+        left_container_half1_profile_pic.classList.add('fa');
+        left_container_half1_profile_pic.classList.add('fa-user');
+        left_container_half1_profile_pic.classList.add('fa-3x');
 
-    let left_container_half2 = document.createElement('div');
-    left_container_half2.classList.add('half');
-    let left_container_half2_author = document.createElement('div');
-    left_container_half2_author.classList.add('listing_author');
-    left_container_half2_author.classList.add('listing_text');
-    let left_container_half2_title = document.createElement('div');
-    left_container_half2_title.classList.add('listing_text');
-    firestore.collection("users").where("uid", "==", doc.data().uid).limit(1).get().then((snapshot) =>
-        snapshot.docs.forEach(user => {
-            left_container_half2_author.innerHTML = user.data().name;
-            left_container_half2_title.innerHTML = user.data().occupation;
-        })
-    );
+        left_container_half1.append(left_container_half1_profile_pic);
 
-    left_container_half2.append(left_container_half2_author);
-    left_container_half2.append(left_container_half2_title);
-    left_container.append(left_container_half2);
-    main_container.append(left_container);
+        let left_container_half1_user_review = document.createElement('form');
 
-    let right_container = document.createElement('div');
-    right_container.classList.add('twothirds');
-    let right_container_content = document.createElement('div');
-    right_container_content.classList.add('listing_description');
-    right_container_content.classList.add('listing_text');
-    right_container_content.innerHTML = doc.data().content;
+        let left_container_half1_user_review_button1 = document.createElement('input');
+        left_container_half1_user_review_button1.type = "radio";
+        left_container_half1_user_review_button1.name = "rating";
+        left_container_half1_user_review_button1.value = "1";
+        if(doc.data().userRating == 1){
+            left_container_half1_user_review_button1.checked = true;
+        }
+        left_container_half1_user_review_button1.onclick = function(){
+            setUserRating(doc.data().uid, 1);
+        };
+        left_container_half1_user_review.append(left_container_half1_user_review_button1);
+        let left_container_half1_user_review_button1_span = document.createElement('span');
+        left_container_half1_user_review_button1_span.innerHTML = "1 ";
+        left_container_half1_user_review.append(left_container_half1_user_review_button1_span);
 
-    right_container.append(right_container_content);
-    main_container.append(right_container);
+        let left_container_half1_user_review_button2 = document.createElement('input');
+        left_container_half1_user_review_button2.type = "radio";
+        left_container_half1_user_review_button2.name = "rating";
+        left_container_half1_user_review_button2.value = "2";
+        if(doc.data().userRating == 2){
+            left_container_half1_user_review_button2.checked = true;
+        }
+        left_container_half1_user_review_button2.onclick = function(){
+            setUserRating(doc.data().uid, 2);
+        };
+        left_container_half1_user_review.append(left_container_half1_user_review_button2);
+        let left_container_half1_user_review_button2_span = document.createElement('span');
+        left_container_half1_user_review_button2_span.innerHTML = " 2 ";
+        left_container_half1_user_review.append(left_container_half1_user_review_button2_span);
 
-    resume_review_list.prepend(main_container);
+        let left_container_half1_user_review_button3 = document.createElement('input');
+        left_container_half1_user_review_button3.type = "radio";
+        left_container_half1_user_review_button3.name = "rating";
+        left_container_half1_user_review_button3.value = "3";
+        if(doc.data().userRating == 3){
+            left_container_half1_user_review_button3.checked = true;
+        }
+        left_container_half1_user_review_button3.onclick = function(){
+            setUserRating(doc.data().uid, 3);
+        };
+        left_container_half1_user_review.append(left_container_half1_user_review_button3);
+        let left_container_half1_user_review_button3_span = document.createElement('span');
+        left_container_half1_user_review_button3_span.innerHTML = " 3 ";
+        left_container_half1_user_review.append(left_container_half1_user_review_button3_span);
+
+        let left_container_half1_user_review_button4 = document.createElement('input');
+        left_container_half1_user_review_button4.type = "radio";
+        left_container_half1_user_review_button4.name = "rating";
+        left_container_half1_user_review_button4.value = "4";
+        if(doc.data().userRating == 4){
+            left_container_half1_user_review_button4.checked = true;
+        }
+        left_container_half1_user_review_button4.onclick = function(){
+            setUserRating(doc.data().uid, 4);
+        };
+        left_container_half1_user_review.append(left_container_half1_user_review_button4);
+        let left_container_half1_user_review_button4_span = document.createElement('span');
+        left_container_half1_user_review_button4_span.innerHTML = " 4 ";
+        left_container_half1_user_review.append(left_container_half1_user_review_button4_span);
+
+        let left_container_half1_user_review_button5 = document.createElement('input');
+        left_container_half1_user_review_button5.type = "radio";
+        left_container_half1_user_review_button5.name = "rating";
+        left_container_half1_user_review_button5.value = "5";
+        if(doc.data().userRating == 5){
+            left_container_half1_user_review_button5.checked = true;
+        }
+        left_container_half1_user_review_button5.onclick = function(){
+            setUserRating(doc.data().uid, 5);
+        };
+        left_container_half1_user_review.append(left_container_half1_user_review_button5);
+        let left_container_half1_user_review_button5_span = document.createElement('span');
+        left_container_half1_user_review_button5_span.innerHTML = " 5 ";
+        left_container_half1_user_review.append(left_container_half1_user_review_button5_span);
+
+        left_container_half1.append(left_container_half1_user_review);
+
+        left_container.append(left_container_half1);
+
+        let left_container_half2 = document.createElement('div');
+        left_container_half2.classList.add('half');
+        let left_container_half2_author = document.createElement('div');
+        left_container_half2_author.classList.add('listing_author');
+        left_container_half2_author.classList.add('listing_text');
+        let left_container_half2_title = document.createElement('div');
+        left_container_half2_title.classList.add('listing_text');
+        firestore.collection("users").where("uid", "==", doc.data().uid).limit(1).get().then((snapshot) =>
+            snapshot.docs.forEach(user => {
+                left_container_half2_author.innerHTML = user.data().name;
+                left_container_half2_title.innerHTML = user.data().occupation;
+            })
+        );
+
+        left_container_half2.append(left_container_half2_author);
+        left_container_half2.append(left_container_half2_title);
+        left_container.append(left_container_half2);
+        main_container.append(left_container);
+
+        let right_container = document.createElement('div');
+        right_container.classList.add('twothirds');
+        let right_container_content = document.createElement('div');
+        right_container_content.classList.add('listing_description');
+        right_container_content.classList.add('listing_text');
+        right_container_content.innerHTML = doc.data().content;
+
+        right_container.append(right_container_content);
+        main_container.append(right_container);
+
+        resume_review_list.prepend(main_container);
+    }else {
+        firestore.collection('resumes').doc(current_resume_id).get().then(info => {
+            let user = firebase.auth().currentUser;
+            if (info.data().user == user.uid) {
+                let main_container = document.createElement('div');
+                main_container.classList.add("feedback_listing");
+                main_container.classList.add("container");
+
+                let left_container = document.createElement('div');
+                left_container.classList.add('third');
+                left_container.classList.add('container');
+
+                let left_container_half1 = document.createElement('div');
+                left_container_half1.classList.add('half');
+
+                let left_container_half1_profile_pic = document.createElement('i');
+                left_container_half1_profile_pic.classList.add('center');
+                left_container_half1_profile_pic.classList.add('fa');
+                left_container_half1_profile_pic.classList.add('fa-user');
+                left_container_half1_profile_pic.classList.add('fa-3x');
+
+                left_container_half1.append(left_container_half1_profile_pic);
+
+                let left_container_half1_user_review = document.createElement('form');
+
+                let left_container_half1_user_review_button1 = document.createElement('input');
+                left_container_half1_user_review_button1.type = "radio";
+                left_container_half1_user_review_button1.name = "rating";
+                left_container_half1_user_review_button1.value = "1";
+                if(doc.data().userRating == 1){
+                    left_container_half1_user_review_button1.checked = true;
+                }
+                left_container_half1_user_review_button1.onclick = function(){
+                    setUserRating(doc.data().uid, 1);
+                };
+                left_container_half1_user_review.append(left_container_half1_user_review_button1);
+                let left_container_half1_user_review_button1_span = document.createElement('span');
+                left_container_half1_user_review_button1_span.innerHTML = "1 ";
+                left_container_half1_user_review.append(left_container_half1_user_review_button1_span);
+
+                let left_container_half1_user_review_button2 = document.createElement('input');
+                left_container_half1_user_review_button2.type = "radio";
+                left_container_half1_user_review_button2.name = "rating";
+                left_container_half1_user_review_button2.value = "2";
+                if(doc.data().userRating == 2){
+                    left_container_half1_user_review_button2.checked = true;
+                }
+                left_container_half1_user_review_button2.onclick = function(){
+                    setUserRating(doc.data().uid, 2);
+                };
+                left_container_half1_user_review.append(left_container_half1_user_review_button2);
+                let left_container_half1_user_review_button2_span = document.createElement('span');
+                left_container_half1_user_review_button2_span.innerHTML = " 2 ";
+                left_container_half1_user_review.append(left_container_half1_user_review_button2_span);
+
+                let left_container_half1_user_review_button3 = document.createElement('input');
+                left_container_half1_user_review_button3.type = "radio";
+                left_container_half1_user_review_button3.name = "rating";
+                left_container_half1_user_review_button3.value = "3";
+                if(doc.data().userRating == 3){
+                    left_container_half1_user_review_button3.checked = true;
+                }
+                left_container_half1_user_review_button3.onclick = function(){
+                    setUserRating(doc.data().uid, 3);
+                };
+                left_container_half1_user_review.append(left_container_half1_user_review_button3);
+                let left_container_half1_user_review_button3_span = document.createElement('span');
+                left_container_half1_user_review_button3_span.innerHTML = " 3 ";
+                left_container_half1_user_review.append(left_container_half1_user_review_button3_span);
+
+                let left_container_half1_user_review_button4 = document.createElement('input');
+                left_container_half1_user_review_button4.type = "radio";
+                left_container_half1_user_review_button4.name = "rating";
+                left_container_half1_user_review_button4.value = "4";
+                if(doc.data().userRating == 4){
+                    left_container_half1_user_review_button4.checked = true;
+                }
+                left_container_half1_user_review_button4.onclick = function(){
+                    setUserRating(doc.data().uid, 4);
+                };
+                left_container_half1_user_review.append(left_container_half1_user_review_button4);
+                let left_container_half1_user_review_button4_span = document.createElement('span');
+                left_container_half1_user_review_button4_span.innerHTML = " 4 ";
+                left_container_half1_user_review.append(left_container_half1_user_review_button4_span);
+
+                let left_container_half1_user_review_button5 = document.createElement('input');
+                left_container_half1_user_review_button5.type = "radio";
+                left_container_half1_user_review_button5.name = "rating";
+                left_container_half1_user_review_button5.value = "5";
+                if(doc.data().userRating == 5){
+                    left_container_half1_user_review_button5.checked = true;
+                }
+                left_container_half1_user_review_button5.onclick = function(){
+                    setUserRating(doc.data().uid, 5);
+                };
+                left_container_half1_user_review.append(left_container_half1_user_review_button5);
+                let left_container_half1_user_review_button5_span = document.createElement('span');
+                left_container_half1_user_review_button5_span.innerHTML = " 5 ";
+                left_container_half1_user_review.append(left_container_half1_user_review_button5_span);
+
+                left_container_half1.append(left_container_half1_user_review);
+
+                left_container.append(left_container_half1);
+
+                let left_container_half2 = document.createElement('div');
+                left_container_half2.classList.add('half');
+                let left_container_half2_author = document.createElement('div');
+                left_container_half2_author.classList.add('listing_author');
+                left_container_half2_author.classList.add('listing_text');
+                let left_container_half2_title = document.createElement('div');
+                left_container_half2_title.classList.add('listing_text');
+                firestore.collection("users").where("uid", "==", doc.data().uid).limit(1).get().then((snapshot) =>
+                    snapshot.docs.forEach(user => {
+                        left_container_half2_author.innerHTML = user.data().name;
+                        left_container_half2_title.innerHTML = user.data().occupation;
+                    })
+                );
+
+                left_container_half2.append(left_container_half2_author);
+                left_container_half2.append(left_container_half2_title);
+                left_container.append(left_container_half2);
+                main_container.append(left_container);
+
+                let right_container = document.createElement('div');
+                right_container.classList.add('twothirds');
+                let right_container_content = document.createElement('div');
+                right_container_content.classList.add('listing_description');
+                right_container_content.classList.add('listing_text');
+                right_container_content.innerHTML = doc.data().content;
+
+                right_container.append(right_container_content);
+                main_container.append(right_container);
+
+                resume_review_list.prepend(main_container);
+            } else {
+                let main_container = document.createElement('div');
+                main_container.classList.add("feedback_listing");
+                main_container.classList.add("container");
+
+                let left_container = document.createElement('div');
+                left_container.classList.add('third');
+                left_container.classList.add('container');
+
+                let left_container_half1 = document.createElement('div');
+                left_container_half1.classList.add('half');
+
+                let left_container_half1_profile_pic = document.createElement('i');
+                left_container_half1_profile_pic.classList.add('center');
+                left_container_half1_profile_pic.classList.add('fa');
+                left_container_half1_profile_pic.classList.add('fa-user');
+                left_container_half1_profile_pic.classList.add('fa-3x');
+
+                left_container_half1.append(left_container_half1_profile_pic);
+                left_container.append(left_container_half1);
+
+                let left_container_half2 = document.createElement('div');
+                left_container_half2.classList.add('half');
+                let left_container_half2_author = document.createElement('div');
+                left_container_half2_author.classList.add('listing_author');
+                left_container_half2_author.classList.add('listing_text');
+                let left_container_half2_title = document.createElement('div');
+                left_container_half2_title.classList.add('listing_text');
+                firestore.collection("users").where("uid", "==", doc.data().uid).limit(1).get().then((snapshot) =>
+                    snapshot.docs.forEach(user => {
+                        left_container_half2_author.innerHTML = user.data().name;
+                        left_container_half2_title.innerHTML = user.data().occupation;
+                    })
+                );
+
+                left_container_half2.append(left_container_half2_author);
+                left_container_half2.append(left_container_half2_title);
+                left_container.append(left_container_half2);
+                main_container.append(left_container);
+
+                let right_container = document.createElement('div');
+                right_container.classList.add('twothirds');
+                let right_container_content = document.createElement('div');
+                right_container_content.classList.add('listing_description');
+                right_container_content.classList.add('listing_text');
+                right_container_content.innerHTML = doc.data().content;
+
+                right_container.append(right_container_content);
+                main_container.append(right_container);
+
+                resume_review_list.prepend(main_container);
+
+            }
+        }).catch(error => {
+
+        });
+    }
 };
 
 let show_current_resume_replies = function(current_resume_id){
