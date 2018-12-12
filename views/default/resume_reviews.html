@@ -54,8 +54,8 @@
             <input type="radio" name = "rating" value=4>4
             <input type="radio" name = "rating" value=5>5<br>
           </form>
-          <button type="button" >Edit</button>
-          <button type="button" >Delete</button>
+          <button type="button" @click = "edit_reply">Edit</button>
+          <button type="button" @click = "delete_reply">Delete</button>
         </div>
         <<h2 id = "reply_error"></h2>
         <div id="resume_review_list" class="resume_review_list"></div>

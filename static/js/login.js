@@ -64,7 +64,7 @@ firebase.auth().onAuthStateChanged(function(user) {
               let current_resume_id = vars['id'];
               show_current_resume(current_resume_id);
               show_current_resume_replies(current_resume_id);
-              change_current_resume_review_area();
+              check_reply();
               break;
       }
 
@@ -505,13 +505,12 @@ let show_current_resume_replies = function(current_resume_id){
 };
 
 let check_reply = function(){
-  console.log("Checking If User has already replied to this Resume");
   let vars = {};
   window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
       vars[key] = value;
   });
   let current_resume_id = vars['id'];
-  let status = true;
+  let status =true;
   firestore.collection("resumes").doc(current_resume_id).collection("replies")
         .where("uid","==",getCurrentUserId()).limit(1).get().then((snapshot) =>
           snapshot.docs.forEach(doc => {
@@ -520,36 +519,31 @@ let check_reply = function(){
             }
         })
       ).then(function(){
-        if(!status){
-          document.getElementById("reply_error").innerHTML = "You have already reviewed this resume!";
+        console.log(status);
+        if(status){
+          document.getElementById("current_resume_review_div").style.display= "block";
+          document.getElementById("alreaady_reviewed_div").style.display = "none";
         }
-        return status;
+        else{
+          let vars = {};
+          window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+              vars[key] = value;
+          });
+          let current_resume_id = vars['id'];
+          firestore.collection("resumes").doc(current_resume_id).collection("replies")
+            .where("uid","==",getCurrentUserId()).limit(1).get().then((snapshot) =>
+              snapshot.docs.forEach(doc => {
+                console.log(doc.data().content);
+                  document.getElementById("user_reviewed").value = doc.data().content;
+                  document.getElementById("user_rated").innerHTML = "You gave this review a " +doc.data().rating + "/5";
+            })
+          ).then(function(){
+            document.getElementById("current_resume_review_div").style.display= "none";
+            document.getElementById("alreaady_reviewed_div").style.display = "block";
+          })
+        }
       })
 };
-let change_current_resume_review_area = function(){
-  if(check_reply()){
-    document.getElementById("current_resume_review_div").style.display= "block";
-    document.getElementById("alreaady_reviewed_div").style.display = "none";
-  }
-  else{
-    let vars = {};
-    window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
-        vars[key] = value;
-    });
-    let current_resume_id = vars['id'];
-    firestore.collection("resumes").doc(current_resume_id).collection("replies")
-      .where("uid","==",getCurrentUserId()).limit(1).get().then((snapshot) =>
-        snapshot.docs.forEach(doc => {
-          console.log(doc.data().content);
-            document.getElementById("user_reviewed").value = doc.data().content;
-            document.getElementById("user_rated").innerHTML = "You gave this review a " +doc.data().rating + "/5";
-      })
-    ).then(function(){
-      document.getElementById("current_resume_review_div").style.display= "none";
-      document.getElementById("alreaady_reviewed_div").style.display = "block";
-    })
-  }
-}
 // let getUserRating = function (){
 //   let user = firebase.auth().currentUser;
 //   let users_ref = firestore.collection("users");
@@ -963,7 +957,6 @@ let app = function() {
 
   let add_reply = function(){
       console.log("Adding a reply");
-      if(check_reply()){
         let vars = {};
         window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
             vars[key] = value;
@@ -994,6 +987,7 @@ let app = function() {
         }).then((docRef) => {
             console.log("Document written with ID: ", docRef.id);
             setResumeRating(current_resume_id,rating,1);
+            check_reply();
             docRef.get().then(doc =>{
               document.getElementById("reply_error").style.display= "none";
               render_current_resume_replies(doc);
@@ -1004,11 +998,62 @@ let app = function() {
         });
 
         document.getElementById("review_textarea").value = "";
-      }
     //call the update_resume_rating function from the new rating
     //also figure out how to instantly add the reply to the screen
   };
 
+  let edit_reply = function(){
+    let vars = {};
+    window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+        vars[key] = value;
+    });
+    let current_resume_id = vars['id'];
+    let rate = document.forms[1];
+    let rating = 0;
+    for (var i = 0; i < rate.length; i++) {
+      if (rate[i].checked) {
+          rating = parseFloat(rate[i].value);
+      }
+    }
+    if (rating == 0){
+        document.getElementById("reply_error").style.display= "block";
+        document.getElementById("reply_error").innerHTML = "Please Select A Rating";
+        return;
+    }
+    firestore.collection("resumes").doc(current_resume_id).collection("replies")
+      .where("uid","==",getCurrentUserId()).limit(1).get().then((snapshot) => {
+        snapshot.docs.forEach(doc => {
+          firestore.collection("resumes").doc(current_resume_id).collection("replies").doc(doc.id).update({
+            content: document.getElementById("user_reviewed").value,
+            rating: rating
+          })
+          .then(function(){
+            console.log("Update Success")
+            check_reply();
+          }).catch(function(error){
+            console.log("Error Deleting: ", error);
+          });
+        })
+      });
+  }
+  let delete_reply = function(){
+    let vars = {};
+    window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+        vars[key] = value;
+    });
+    let current_resume_id = vars['id'];
+    firestore.collection("resumes").doc(current_resume_id).collection("replies")
+      .where("uid","==",getCurrentUserId()).limit(1).get().then((snapshot) => {
+        snapshot.docs.forEach(doc => {
+          firestore.collection("resumes").doc(current_resume_id).collection("replies").doc(doc.id).delete().then(function(){
+            console.log("Delete Success")
+            check_reply();
+          }).catch(function(error){
+            console.log("Error Deleting: ", error);
+          });
+        })
+      });
+  };
   var revealPassword = function() {
     var x = document.getElementById("signPassword");
     var y = document.getElementById("signConfirmPassword");
@@ -1130,7 +1175,9 @@ let app = function() {
         home_upload_button : home_upload_button,
         home_login_button : home_login_button,
         revealPassword : revealPassword,
-        add_reply: add_reply
+        add_reply: add_reply,
+        delete_reply: delete_reply,
+        edit_reply: edit_reply
     }
   });
 
