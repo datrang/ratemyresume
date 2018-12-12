@@ -39,6 +39,28 @@
     <main class="white" style="background: #E9EBEE">
       {{include}}
     </main>
+    <div class="footer-container">
+          <div id="logo">
+            <img src="/images/logo.png" alt="ResumeRater"/>
+          </div>
+          <div id="creators">
+            <li>Ryan Cho</li>
+            <li>Matthew Oey</li>
+            <li>David Trang</li>
+            <li>Thomas Wong</li>
+          </div>
+          <div id="emails">
+            <li>rccho@ucsc.edu</li>
+            <li>moey@ucsc.edu</li>
+            <li>datrang@ucsc.edu</li>
+            <li>twong40@ucsc.edu</li>
+          </div>
+          <div class="social-media-icons">
+            <a class="fa fa-facebook" href="https://www.facebook.com/sharer/sharer.php?u={url}"></a>
+            <a class="fa fa-twitter" href="https://twitter.com/home?status={url}"></a>
+            <a class="fa fa-google" href="https://plus.google.com/share?url={url}"></a>
+          </div>
+      </div>
   </body>
   <script src="{{=URL('static','js/marked.min.js')}}"></script>
   <script src="{{=URL('static','js/vue.min.js')}}"></script>
