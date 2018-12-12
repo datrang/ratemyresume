@@ -60,7 +60,7 @@ firebase.auth().onAuthStateChanged(function(user) {
               let current_resume_id = vars['id'];
               show_current_resume(current_resume_id);
               show_current_resume_replies(current_resume_id);
-
+              set_current_user_rating(current_resume_id);
               break;
       }
 
@@ -92,6 +92,16 @@ let listing_mouseover = function(listing){
 let listing_mouseout = function(listing){
     listing.style.background = "#FFFFFF"
 };
+
+let set_current_user_rating = function(current_resume_id){
+        firestore.collection('resumes').doc(current_resume_id).collection('rating').where("uid", "==",getCurrentUserId()).limit(1).get().then((snapshot) => {
+        if(!snapshot.empty){
+            snapshot.docs.forEach(doc => {
+                document.getElementById('current_user_rating').innerHTML = doc.data().rating;
+            })
+        }
+    })
+}
 
 let getCurrentUserId = function(){
   return firebase.auth().currentUser.uid;
@@ -417,6 +427,7 @@ let set_user_rating = function(rating){
                     rating: rating
                 }).then(function(){
                     console.log("Document successfully updated!");
+                    document.getElementById('current_user_rating').innerHTML = rating;
                 }).catch(function(error){
                     console.error("Error updating document: ", error);
                 });
@@ -428,6 +439,7 @@ let set_user_rating = function(rating){
                 uid: getCurrentUserId()
             }).then(function(docRef){
                 console.log("Document written with ID: ", docRef.id)
+                document.getElementById('current_user_rating').innerHTML = rating;
             }).catch(function(error){
                 console.error("Error adding document: ", error);
             });
