@@ -5,6 +5,11 @@ html * {
   font-family: Tahoma, Geneva, sans-serif;
 }
 
+h2 {
+  font-size: 30px;
+  font-weight: normal;
+}
+
 .checkboxes label {
   margin-top: 10px;
   font-family: Tahoma, Geneva, sans-serif;
@@ -117,6 +122,13 @@ html * {
   background-attachment: fixed;
   background-repeat: no-repeat;
   display: flex;
+}
+
+.header-logo img {
+  margin: 5px;
+  height: 40px;
+  position: absolute;
+  right: 0px;
 }
 
 .header-content {
